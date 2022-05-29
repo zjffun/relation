@@ -1,6 +1,6 @@
 import { Change } from "diff";
 
-export const getLiensRelation = (linesRelation, line1) => {
+export const getRelationLine = (linesRelation, line1) => {
   const oldLines = [];
   const newLines = [];
 

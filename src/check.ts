@@ -5,6 +5,7 @@ import { getFileContent } from "./gitFileContent";
 import { relationCheck, RELATION_TYPE } from ".";
 import { diffLines } from "diff";
 import { getLiensRelation } from "./getLiensRelation";
+import { getRelationLine } from "./getRelationLine";
 
 export const check = () => {
   let cwd = process.cwd();
@@ -59,13 +60,3 @@ export const check = () => {
 
   return fileMap;
 };
-function getRelationLine(
-  linesRelation: {
-    oldLines: any[];
-    newLines: any[];
-    linesRelationMap: Map<any, any>;
-  },
-  line1: any
-) {
-  throw new Error("Function not implemented.");
-}

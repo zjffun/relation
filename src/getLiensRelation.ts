@@ -13,15 +13,17 @@ export const getLiensRelation = (diffLinesResult: Change[]) => {
 
   for (const diffLine of diffLinesResult) {
     if (diffLine.removed) {
-      let oldLine = [oldStart, oldEnd - 1];
       oldEnd += diffLine.count;
+      let oldLine = [oldStart, oldEnd - 1];
+
       oldLines.push(oldLine);
       oldStart = oldEnd;
 
       linesRelationMap.set(oldLine, []);
     } else if (diffLine.added) {
-      let newLine = [newStart, newEnd - 1];
       newEnd += diffLine.count;
+      let newLine = [newStart, newEnd - 1];
+
       newLines.push(newLine);
       newStart = newEnd;
 
@@ -33,13 +35,13 @@ export const getLiensRelation = (diffLinesResult: Change[]) => {
         linesRelationMap.set(latestOldLine, newLine);
       }
     } else {
-      let oldLine = [oldStart, oldEnd - 1];
       oldEnd += diffLine.count;
+      let oldLine = [oldStart, oldEnd - 1];
       oldLines.push(oldLine);
       oldStart = oldEnd;
 
-      let newLine = [newStart, newEnd - 1];
       newEnd += diffLine.count;
+      let newLine = [newStart, newEnd - 1];
       newLines.push(newLine);
       newStart = newEnd;
 

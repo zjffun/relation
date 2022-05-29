@@ -1,0 +1,10 @@
+[
+  {
+    "commitid1": "7ecfcac18e8852a0036ea8f2bb6d3e23dab98deb",
+    "path1": "./readme.md",
+    "line1": [3, 4],
+    "commitid2": "7ecfcac18e8852a0036ea8f2bb6d3e23dab98deb",
+    "path2": "./readme.zh-CN.md",
+    "line2": [3, 4]
+  }
+]

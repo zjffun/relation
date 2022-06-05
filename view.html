@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div,
+      p,
+      pre,
+      code {
+        margin: 0;
+        padding: 0;
+        display: block;
+      }
+      .container {
+        position: relative;
+      }
+      .relation-view-texts {
+        display: flex;
+        gap: 30px;
+      }
+      .relation-view-texts__text {
+        flex: 1 1 30%;
+      }
+      code {
+        min-height: 1em;
+        border: 1px solid violet;
+      }
+      svg {
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      rect,
+      path {
+        fill: lightgreen;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container"></div>
+
+    <script src="./dist/bundle.js"></script>
+
+    <script type="text">
+      const str1 = `test1
+      test2
+      test3
+      test4
+      test5
+      test6
+      `;
+
+      const str2 = `test1
+      test2new
+      test3
+      test4
+      test4new1
+      test5
+      test6
+      `;
+
+      const str3 = `test1
+      test2new
+      test3
+      test4
+      test4new1
+      test5
+      test6
+      `;
+
+      insertText("str1", str1);
+      insertText("str2", str2);
+      insertText("str3", str3);
+
+      function insertText(id, str1) {
+        const str1Div = document.getElementById(id);
+        str1.split("\n").forEach((line, i) => {
+          const p = document.createElement("p");
+          p.id = `${id}${i + 1}`;
+          p.innerText = line;
+          str1Div.appendChild(p);
+        });
+      }
+    </script>
+
+    <script type="text">
+      import { select } from "https://cdn.skypack.dev/d3-selection";
+      import { linkHorizontal, line } from "https://cdn.skypack.dev/d3-shape";
+
+      function rangeLinkHorizontal() {
+        const linkHorizontalGen = linkHorizontal();
+        return function (d) {
+          const lineTop = linkHorizontalGen({
+            source: d.source[0],
+            target: d.target[0],
+          });
+
+          const lineRight = `L${d.target[1][0]} ${d.target[1][1]}`;
+
+          const lineBottom = linkHorizontalGen({
+            source: d.target[1],
+            target: d.source[1],
+          });
+
+          const lineLeft = `L${d.target[0][0]} ${d.target[0][1]}`;
+
+          return lineTop + lineRight + lineBottom + lineLeft;
+        };
+      }
+
+      drawRelation(
+        {
+          start: document.getElementById("str11"),
+          end: document.getElementById("str11"),
+        },
+        {
+          start: document.getElementById("str21"),
+          end: document.getElementById("str25"),
+        }
+      );
+
+      function drawRelation(from, to) {
+        const svgEl = document.getElementById("svg");
+        const containerEl = document.querySelector(".container");
+        const containerElRect = containerEl.getBoundingClientRect();
+        svgEl.setAttribute(
+          "viewBox",
+          `0 0 ${containerElRect.width} ${containerElRect.height}`
+        );
+        svgEl.style.width = containerElRect.width;
+        svgEl.style.height = containerElRect.height;
+        const start1 = from.start.getBoundingClientRect();
+        const end1 = from.end.getBoundingClientRect();
+
+        const start2 = to.start.getBoundingClientRect();
+        const end2 = to.end.getBoundingClientRect();
+
+        const linkHorizontalGen = linkHorizontal();
+
+        const lineData = {
+          source: [
+            [
+              start1.x + start1.width - containerElRect.x,
+              start1.y - containerElRect.y,
+            ],
+            [
+              start2.x - containerElRect.x,
+              end2.y + end2.height - containerElRect.y,
+            ],
+          ],
+          target: [
+            [start2.x - containerElRect.x, start2.y - containerElRect.y],
+            [
+              start1.x + start1.width - containerElRect.x,
+              end1.y + end1.height - containerElRect.y,
+            ],
+          ],
+        };
+
+        renderLinks({ svg: select("#svg"), links: [lineData] });
+      }
+
+      function renderLinks({ svg, links }) {
+        const rangeLinkHorizontalGen = rangeLinkHorizontal();
+
+        const link = svg
+          .select(".links")
+          .selectAll(".link")
+
+          .data(links)
+          .join(
+            (enter) => {
+              const g = enter.append("g").attr("class", "link");
+
+              const linkEl = g
+                .append("path")
+                .attr("class", "link")
+                .attr("fill", "none")
+                .attr("stroke-width", 0.1)
+                // .style("opacity", 0)
+                .attr("d", rangeLinkHorizontalGen)
+
+                .attr(
+                  "id",
+                  (d, i) => "linklabel_" + i
+                  // d.source.name +
+                  // "_" +
+                  // d.target.name +
+                  // "_" +
+                  // d.source.index +
+                  // "_" +
+                  // d.target.index
+                )
+                .style("opacity", 0.65)
+                .attr("stroke-width", (d) => Math.max(1, d.width));
+            },
+            (update) => {
+              update
+                .select("path")
+                // .attr("id", (d, i) => "linklabel" + i)
+
+                .attr("d", rangeLinkHorizontalGen)
+
+                .attr("stroke-width", (d) => Math.max(1, d.width))
+                .attr(
+                  "id",
+                  (d, i) => "linklabel_" + i
+                  // "linklabel_" +
+                  // d.source.name +
+                  // "_" +
+                  // d.target.name +
+                  // "_" +
+                  // d.source.index +
+                  // "_" +
+                  // d.target.index
+                );
+            },
+            (exit) => {
+              exit
+                .call((g) => g.select("path").attr("stroke-width", (d) => 1))
+                .remove();
+            }
+          );
+      }
+    </script>
+  </body>
+</html>

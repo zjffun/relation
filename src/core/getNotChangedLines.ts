@@ -1,14 +1,14 @@
 import { Change } from "diff";
 
-export const getNotChangedLiens = (diffLinesResult: Change[]) => {
-  const result = [];
+export const getNotChangedLines = (changes: Change[]) => {
+  const notChangedLines = [];
   let start = 1;
   let end = 1;
 
-  for (const diffLine of diffLinesResult) {
+  for (const diffLine of changes) {
     if (diffLine.removed) {
       if (start !== end) {
-        result.push([start, end - 1]);
+        notChangedLines.push([start, end - 1]);
       }
       end += diffLine.count;
       start = end;
@@ -16,7 +16,7 @@ export const getNotChangedLiens = (diffLinesResult: Change[]) => {
       if (start === end) {
         continue;
       }
-      result.push([start, end - 1]);
+      notChangedLines.push([start, end - 1]);
       start = end;
     } else {
       end += diffLine.count;
@@ -24,8 +24,8 @@ export const getNotChangedLiens = (diffLinesResult: Change[]) => {
   }
 
   if (start !== end) {
-    result.push([start, end - 1]);
+    notChangedLines.push([start, end - 1]);
   }
 
-  return result;
+  return notChangedLines;
 };

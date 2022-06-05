@@ -1,0 +1,98 @@
+[
+  [
+    "./readme.zh-CN.md",
+    [
+      {
+        "commitid1": "7ecfcac18e8852a0036ea8f2bb6d3e23dab98deb",
+        "path1": "./readme.md",
+        "line1": [
+          3,
+          4
+        ],
+        "commitid2": "7ecfcac18e8852a0036ea8f2bb6d3e23dab98deb",
+        "path2": "./readme.zh-CN.md",
+        "line2": [
+          3,
+          4
+        ],
+        "viewRelation": [
+          [
+            [
+              3,
+              3
+            ],
+            [
+              3,
+              3
+            ]
+          ],
+          [
+            5,
+            [
+              5,
+              7
+            ]
+          ]
+        ],
+        "linesRelation": {
+          "oldLines": [
+            [
+              1,
+              2
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ]
+          ],
+          "newLines": [
+            [
+              1,
+              2
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              7
+            ]
+          ],
+          "linesRelationMap": {}
+        },
+        "relationLine": {
+          "oldLines": [
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ]
+          ],
+          "newLines": [
+            [
+              3,
+              3
+            ],
+            null
+          ]
+        },
+        "content1old": "# test\n\ntest1\ntest2\n",
+        "content1new": "# test\n\ntest1 new\ntest2\n\ntest3\ntest4\n",
+        "content2old": "# 测试\n\n测试 1\n测试 2\n\n测试 3\n测试 4\n",
+        "content2new": "# 测试\n\n测试 1\n测试 2\n\n测试 3\n测试 4\n"
+      }
+    ]
+  ]
+]

@@ -2,8 +2,7 @@ export const getRelationRange = (linesRelationMap, range) => {
   let start;
   let end;
 
-  for (const a of Array.from(linesRelationMap.entries())) {
-    const [oldRange, newRange] = a as any;
+  for (const [oldRange, newRange] of linesRelationMap) {
     if (oldRange[0] <= range[0] && oldRange[1] >= range[0]) {
       if (start !== undefined) {
         continue;

@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "downlevelIteration": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "jsx": "react"
   }
 }

@@ -1,98 +1,1814 @@
 [
-  [
-    "./readme.zh-CN.md",
-    [
-      {
-        "commitid1": "7ecfcac18e8852a0036ea8f2bb6d3e23dab98deb",
-        "path1": "./readme.md",
-        "line1": [
-          3,
-          4
-        ],
-        "commitid2": "7ecfcac18e8852a0036ea8f2bb6d3e23dab98deb",
-        "path2": "./readme.zh-CN.md",
-        "line2": [
-          3,
-          4
-        ],
-        "viewRelation": [
+  {
+    "rev": "42677f4701e77d257594df857ca5060f0645ccb8",
+    "path": "./markdown/README.zh-CN.md",
+    "range": [
+      1,
+      4
+    ],
+    "srcRev": "42677f4701e77d257594df857ca5060f0645ccb8",
+    "srcPath": "./markdown/README.md",
+    "srcRange": [
+      1,
+      4
+    ],
+    "dirty": false,
+    "content": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "contentHEAD": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "linesRelation": {
+      "oldLines": [
+        [
+          1,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
           [
-            [
-              3,
-              3
-            ],
-            [
-              3,
-              3
-            ]
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ]
+    },
+    "relationRange": [
+      1,
+      4
+    ],
+    "srcContent": "# test\n\ndescription\n\n## Installation\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## Usage\n\n### Create\n\n<-- will be deleted -->\n\n### Update\n\nxxx\n\n### Read\n\nxxx\n\n### Delete\n\nxxx\n\n## API\n\nxxx\n",
+    "srcContentHEAD": "# test\n\ndescription\n\n<-- add in range -->\n\n## Installation\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## Usage\n\n### Create\n\n### Update\n\n<-- update -->\n\n<-- update -->\n\n<-- update -->\n\n### Read\n\nxxx\n\n### Delete\n\nxxx\n\n## <-- add out of range -->\n\n<-- add out of range -->\n\n## API\n\nxxx\n",
+    "srcLinesRelation": {
+      "oldLines": [
+        [
+          1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          22,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          23,
+          24
+        ],
+        [
+          25,
+          26,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          28,
+          28,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          29,
+          36,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          37,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          24,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          25,
+          26,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          28,
+          28,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          29,
+          32
+        ],
+        [
+          33,
+          40,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          41,
+          44
+        ],
+        [
+          45,
+          48,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            23,
+            24
+          ],
+          [
+            25,
+            null
+          ]
+        ],
+        [
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            27,
+            27
+          ],
+          [
+            27,
+            27
+          ]
+        ],
+        [
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            29,
+            36,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            33,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            37,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            45,
+            48,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            6
           ],
           [
             5,
-            [
-              5,
-              7
-            ]
-          ]
-        ],
-        "linesRelation": {
-          "oldLines": [
-            [
-              1,
-              2
-            ],
-            [
-              3,
-              3
-            ],
-            [
-              4,
-              4
-            ]
-          ],
-          "newLines": [
-            [
-              1,
-              2
-            ],
-            [
-              3,
-              3
-            ],
-            [
-              4,
-              4
-            ],
-            [
-              5,
-              7
-            ]
-          ],
-          "linesRelationMap": {}
-        },
-        "relationLine": {
-          "oldLines": [
-            [
-              3,
-              3
-            ],
-            [
-              4,
-              4
-            ]
-          ],
-          "newLines": [
-            [
-              3,
-              3
-            ],
             null
           ]
-        },
-        "content1old": "# test\n\ntest1\ntest2\n",
-        "content1new": "# test\n\ntest1 new\ntest2\n\ntest3\ntest4\n",
-        "content2old": "# 测试\n\n测试 1\n测试 2\n\n测试 3\n测试 4\n",
-        "content2new": "# 测试\n\n测试 1\n测试 2\n\n测试 3\n测试 4\n"
-      }
+        ],
+        [
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            27,
+            27
+          ],
+          [
+            27,
+            27
+          ]
+        ],
+        [
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            29,
+            32
+          ],
+          [
+            29,
+            null
+          ]
+        ],
+        [
+          [
+            33,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            29,
+            36,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            41,
+            44
+          ],
+          [
+            37,
+            null
+          ]
+        ],
+        [
+          [
+            45,
+            48,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            37,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ]
+    },
+    "srcRelationRange": [
+      1,
+      4
     ]
-  ]
+  },
+  {
+    "rev": "42677f4701e77d257594df857ca5060f0645ccb8",
+    "path": "./markdown/README.zh-CN.md",
+    "range": [
+      5,
+      18
+    ],
+    "srcRev": "42677f4701e77d257594df857ca5060f0645ccb8",
+    "srcPath": "./markdown/README.md",
+    "srcRange": [
+      5,
+      18
+    ],
+    "dirty": false,
+    "content": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "contentHEAD": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "linesRelation": {
+      "oldLines": [
+        [
+          1,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ]
+    },
+    "relationRange": [
+      5,
+      18
+    ],
+    "srcContent": "# test\n\ndescription\n\n## Installation\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## Usage\n\n### Create\n\n<-- will be deleted -->\n\n### Update\n\nxxx\n\n### Read\n\nxxx\n\n### Delete\n\nxxx\n\n## API\n\nxxx\n",
+    "srcContentHEAD": "# test\n\ndescription\n\n<-- add in range -->\n\n## Installation\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## Usage\n\n### Create\n\n### Update\n\n<-- update -->\n\n<-- update -->\n\n<-- update -->\n\n### Read\n\nxxx\n\n### Delete\n\nxxx\n\n## <-- add out of range -->\n\n<-- add out of range -->\n\n## API\n\nxxx\n",
+    "srcLinesRelation": {
+      "oldLines": [
+        [
+          1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          22,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          23,
+          24
+        ],
+        [
+          25,
+          26,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          28,
+          28,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          29,
+          36,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          37,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          24,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          25,
+          26,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          28,
+          28,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          29,
+          32
+        ],
+        [
+          33,
+          40,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          41,
+          44
+        ],
+        [
+          45,
+          48,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            23,
+            24
+          ],
+          [
+            25,
+            null
+          ]
+        ],
+        [
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            27,
+            27
+          ],
+          [
+            27,
+            27
+          ]
+        ],
+        [
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            29,
+            36,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            33,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            37,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            45,
+            48,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            null
+          ]
+        ],
+        [
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            27,
+            27
+          ],
+          [
+            27,
+            27
+          ]
+        ],
+        [
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            29,
+            32
+          ],
+          [
+            29,
+            null
+          ]
+        ],
+        [
+          [
+            33,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            29,
+            36,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            41,
+            44
+          ],
+          [
+            37,
+            null
+          ]
+        ],
+        [
+          [
+            45,
+            48,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            37,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ]
+    },
+    "srcRelationRange": [
+      7,
+      20
+    ]
+  },
+  {
+    "rev": "42677f4701e77d257594df857ca5060f0645ccb8",
+    "path": "./markdown/README.zh-CN.md",
+    "range": [
+      19,
+      36
+    ],
+    "srcRev": "42677f4701e77d257594df857ca5060f0645ccb8",
+    "srcPath": "./markdown/README.md",
+    "srcRange": [
+      19,
+      36
+    ],
+    "dirty": true,
+    "content": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "contentHEAD": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "linesRelation": {
+      "oldLines": [
+        [
+          1,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ]
+    },
+    "relationRange": [
+      19,
+      36
+    ],
+    "srcContent": "# test\n\ndescription\n\n## Installation\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## Usage\n\n### Create\n\n<-- will be deleted -->\n\n### Update\n\nxxx\n\n### Read\n\nxxx\n\n### Delete\n\nxxx\n\n## API\n\nxxx\n",
+    "srcContentHEAD": "# test\n\ndescription\n\n<-- add in range -->\n\n## Installation\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## Usage\n\n### Create\n\n### Update\n\n<-- update -->\n\n<-- update -->\n\n<-- update -->\n\n### Read\n\nxxx\n\n### Delete\n\nxxx\n\n## <-- add out of range -->\n\n<-- add out of range -->\n\n## API\n\nxxx\n",
+    "srcLinesRelation": {
+      "oldLines": [
+        [
+          1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          22,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          23,
+          24
+        ],
+        [
+          25,
+          26,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          28,
+          28,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          29,
+          36,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          37,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          24,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          25,
+          26,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          28,
+          28,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          29,
+          32
+        ],
+        [
+          33,
+          40,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          41,
+          44
+        ],
+        [
+          45,
+          48,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            23,
+            24
+          ],
+          [
+            25,
+            null
+          ]
+        ],
+        [
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            27,
+            27
+          ],
+          [
+            27,
+            27
+          ]
+        ],
+        [
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            29,
+            36,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            33,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            37,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            45,
+            48,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            null
+          ]
+        ],
+        [
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            27,
+            27
+          ],
+          [
+            27,
+            27
+          ]
+        ],
+        [
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            29,
+            32
+          ],
+          [
+            29,
+            null
+          ]
+        ],
+        [
+          [
+            33,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            29,
+            36,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            41,
+            44
+          ],
+          [
+            37,
+            null
+          ]
+        ],
+        [
+          [
+            45,
+            48,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            37,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ]
+    },
+    "srcRelationRange": [
+      21,
+      40
+    ]
+  },
+  {
+    "rev": "42677f4701e77d257594df857ca5060f0645ccb8",
+    "path": "./markdown/README.zh-CN.md",
+    "range": [
+      37,
+      40
+    ],
+    "srcRev": "42677f4701e77d257594df857ca5060f0645ccb8",
+    "srcPath": "./markdown/README.md",
+    "srcRange": [
+      37,
+      40
+    ],
+    "dirty": false,
+    "content": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "contentHEAD": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "linesRelation": {
+      "oldLines": [
+        [
+          1,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ]
+    },
+    "relationRange": [
+      37,
+      40
+    ],
+    "srcContent": "# test\n\ndescription\n\n## Installation\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## Usage\n\n### Create\n\n<-- will be deleted -->\n\n### Update\n\nxxx\n\n### Read\n\nxxx\n\n### Delete\n\nxxx\n\n## API\n\nxxx\n",
+    "srcContentHEAD": "# test\n\ndescription\n\n<-- add in range -->\n\n## Installation\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## Usage\n\n### Create\n\n### Update\n\n<-- update -->\n\n<-- update -->\n\n<-- update -->\n\n### Read\n\nxxx\n\n### Delete\n\nxxx\n\n## <-- add out of range -->\n\n<-- add out of range -->\n\n## API\n\nxxx\n",
+    "srcLinesRelation": {
+      "oldLines": [
+        [
+          1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          22,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          23,
+          24
+        ],
+        [
+          25,
+          26,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          28,
+          28,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          29,
+          36,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          37,
+          40,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          24,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          25,
+          26,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          27,
+          27
+        ],
+        [
+          28,
+          28,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          29,
+          32
+        ],
+        [
+          33,
+          40,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          41,
+          44
+        ],
+        [
+          45,
+          48,
+          {
+            "dirty": false
+          }
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            23,
+            24
+          ],
+          [
+            25,
+            null
+          ]
+        ],
+        [
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            27,
+            27
+          ],
+          [
+            27,
+            27
+          ]
+        ],
+        [
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            29,
+            36,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            33,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            37,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            45,
+            48,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            null
+          ]
+        ],
+        [
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
+            26,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            27,
+            27
+          ],
+          [
+            27,
+            27
+          ]
+        ],
+        [
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            28,
+            28,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            29,
+            32
+          ],
+          [
+            29,
+            null
+          ]
+        ],
+        [
+          [
+            33,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            29,
+            36,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            41,
+            44
+          ],
+          [
+            37,
+            null
+          ]
+        ],
+        [
+          [
+            45,
+            48,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            37,
+            40,
+            {
+              "dirty": false
+            }
+          ]
+        ]
+      ]
+    },
+    "srcRelationRange": [
+      45,
+      48
+    ]
+  }
 ]

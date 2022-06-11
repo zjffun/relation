@@ -29,8 +29,13 @@ function initTexts(
       .append("pre")
       .attr("class", "relation-view-texts__text");
 
-    text.split("\n").forEach((d) => {
-      const el = textEl.append("code").text(d);
+    text.split("\n").forEach((d, i) => {
+      const el = textEl.append("div").attr("class", "line");
+      el.append("span")
+        .attr("class", "line-num")
+        .text(`${i + 1}`);
+
+      el.append("code").text(`${d}`);
       textArray.push(el);
     });
 
@@ -68,17 +73,19 @@ function initRelations(linksEl, relations, textsArray, viewContainer) {
     viewRelation.forEach((d, i) => {
       const line = d[0];
       const nline = d[1];
+      const type = d[2]?.type;
       let start1, start2, end1, end2;
 
-      if (Array.isArray(line)) {
+      if (line[1] !== null) {
         start1 = textsArray1[line[0] - 1].node().getBoundingClientRect();
         start2 = textsArray1[line[1] - 1].node().getBoundingClientRect();
 
-        if (Array.isArray(nline)) {
+        if (nline[1] !== null) {
           end1 = textsArray2[nline[0] - 1].node().getBoundingClientRect();
           end2 = textsArray2[nline[1] - 1].node().getBoundingClientRect();
           links.push({
             source: [
+              [start1.x - containerElRect.x, start1.y - containerElRect.y],
               [
                 start1.x + start1.width - containerElRect.x,
                 start1.y - containerElRect.y,
@@ -87,20 +94,34 @@ function initRelations(linksEl, relations, textsArray, viewContainer) {
                 start2.x + start2.width - containerElRect.x,
                 start2.y + start2.height - containerElRect.y,
               ],
+              [
+                start2.x - containerElRect.x,
+                start2.y + start2.height - containerElRect.y,
+              ],
             ],
             target: [
               [end1.x - containerElRect.x, end1.y - containerElRect.y],
+              [
+                end1.x + end1.width - containerElRect.x,
+                end1.y - containerElRect.y,
+              ],
+              [
+                end2.x + end2.width - containerElRect.x,
+                end2.y + end2.height - containerElRect.y,
+              ],
               [
                 end2.x - containerElRect.x,
                 end2.y + end2.height - containerElRect.y,
               ],
             ],
+            type,
           });
         } else {
-          end1 = textsArray2[nline - 1].getBoundingClientRect();
+          end1 = textsArray2[nline[0] - 1].node().getBoundingClientRect();
 
           links.push({
             source: [
+              [start1.x - containerElRect.x, start1.y - containerElRect.y],
               [
                 start1.x + start1.width - containerElRect.x,
                 start1.y - containerElRect.y,
@@ -109,21 +130,35 @@ function initRelations(linksEl, relations, textsArray, viewContainer) {
                 start2.x + start2.width - containerElRect.x,
                 start2.y + start2.height - containerElRect.y,
               ],
+              [
+                start2.x - containerElRect.x,
+                start2.y + start2.height - containerElRect.y,
+              ],
             ],
             target: [
               [end1.x - containerElRect.x, end1.y - containerElRect.y],
+              [
+                end1.x + end1.width - containerElRect.x,
+                end1.y - containerElRect.y,
+              ],
+              [
+                end1.x + end1.width - containerElRect.x,
+                end1.y - containerElRect.y,
+              ],
               [end1.x - containerElRect.x, end1.y - containerElRect.y],
             ],
+            type,
           });
         }
       } else {
         end1 = textsArray2[nline[0] - 1].node().getBoundingClientRect();
         end2 = textsArray2[nline[1] - 1].node().getBoundingClientRect();
 
-        start1 = textsArray1[line - 1].node().getBoundingClientRect();
+        start1 = textsArray1[line[0] - 1].node().getBoundingClientRect();
 
         links.push({
           source: [
+            [start1.x - containerElRect.x, start1.y - containerElRect.y],
             [
               start1.x + start1.width - containerElRect.x,
               start1.y - containerElRect.y,
@@ -132,14 +167,25 @@ function initRelations(linksEl, relations, textsArray, viewContainer) {
               start1.x + start1.width - containerElRect.x,
               start1.y - containerElRect.y,
             ],
+            [start1.x - containerElRect.x, start1.y - containerElRect.y],
           ],
           target: [
             [end1.x - containerElRect.x, end1.y - containerElRect.y],
+            [
+              end1.x + end1.width - containerElRect.x,
+              end1.y - containerElRect.y,
+            ],
+            [
+              end2.x + end2.width - containerElRect.x,
+              end2.y + end2.height - containerElRect.y,
+            ],
             [
               end2.x - containerElRect.x,
               end2.y + end2.height - containerElRect.y,
             ],
           ],
+
+          type,
         });
       }
     });
@@ -159,9 +205,9 @@ function initRelations(linksEl, relations, textsArray, viewContainer) {
 
           const linkEl = g
             .append("path")
-            .attr("class", "link")
+            .attr("class", (link) => `link ${link.type}`)
             .attr("fill", "none")
-            .attr("stroke-width", 0.1)
+            .attr("stroke-width", 1)
             // .style("opacity", 0)
             .attr("d", rangeLinkHorizontalGen)
 
@@ -212,20 +258,49 @@ function initRelations(linksEl, relations, textsArray, viewContainer) {
 function rangeLinkHorizontal() {
   const linkHorizontalGen = linkHorizontal();
   return function (d) {
-    const lineTop = linkHorizontalGen({
+    const lineTop1 = linkHorizontalGen({
       source: d.source[0],
-      target: d.target[0],
-    });
-
-    const lineRight = `L${d.target[1][0]} ${d.target[1][1]}`;
-
-    const lineBottom = linkHorizontalGen({
-      source: d.target[1],
       target: d.source[1],
     });
 
-    const lineLeft = `L${d.target[0][0]} ${d.target[0][1]}`;
+    const lineTop2 = linkHorizontalGen({
+      source: d.source[1],
+      target: d.target[0],
+    }).replace(/^M.*C/, "C");
 
-    return lineTop + lineRight + lineBottom + lineLeft;
+    const lineTop3 = linkHorizontalGen({
+      source: d.target[0],
+      target: d.target[1],
+    }).replace(/^M.*C/, "C");
+
+    const lineRight = `L${d.target[2][0]} ${d.target[2][1]}`;
+
+    const lineBottom1 = linkHorizontalGen({
+      source: d.target[2],
+      target: d.target[3],
+    }).replace(/^M.*C/, "C");
+
+    const lineBottom2 = linkHorizontalGen({
+      source: d.target[3],
+      target: d.source[2],
+    }).replace(/^M.*C/, "C");
+
+    const lineBottom3 = linkHorizontalGen({
+      source: d.source[2],
+      target: d.source[3],
+    }).replace(/^M.*C/, "C");
+
+    const lineLeft = `L${d.source[0][0]} ${d.source[0][1]}`;
+
+    return (
+      lineTop1 +
+      lineTop2 +
+      lineTop3 +
+      lineRight +
+      lineBottom1 +
+      lineBottom2 +
+      lineBottom3 +
+      lineLeft
+    );
   };
 }

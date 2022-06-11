@@ -1,4 +1,4 @@
-export const getRelationRange = (linesRelationMap, range) => {
+export const getRelationRange = (linesRelationMap, range): [number, number] => {
   let start;
   let end;
 

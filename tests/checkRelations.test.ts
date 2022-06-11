@@ -8,13 +8,20 @@ it("check", function () {
   expect(checkRelations()).to.be.not.throw;
 });
 
-// it.only("check print", function () {
-//   process.env.NODE_ENV = "test";
-//   const result = check();
-//   writeFileSync(
-//     "checkresult.json",
-//     JSON.stringify(Array.from(result.entries()), null, 2)
-//   );
-
-//   // expect().to.be.eql([]);
-// });
+it.only("check print", function () {
+  process.env.NODE_ENV = "test";
+  const result = checkRelations();
+  writeFileSync(
+    "checkresult.json",
+    JSON.stringify(
+      Array.from(result.values()),
+      (key, value: any) => {
+        if (value instanceof Map) {
+          return Array.from(value.entries());
+        }
+        return value;
+      },
+      2
+    )
+  );
+});

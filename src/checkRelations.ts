@@ -1,13 +1,14 @@
 import { join } from "node:path";
 import { readFileSync } from "node:fs";
 import { getFileContent } from "./git/gitFileContent";
-import { IRawRelation } from "./index.d";
+import { ICheckResult, IRawRelation } from "./index.d";
 import { diffLines } from "diff";
 import { getLinesRelation } from "./core/getLinesRelation";
 import { getRelationRange } from "./core/getRelationRange";
 import { checkDirty } from "./core/checkDirty";
+import { fixChanges } from "./core/fixChanges";
 
-export const checkRelations = () => {
+export const checkRelations = (): ICheckResult[] => {
   let cwd = process.cwd();
 
   if (process.env.NODE_ENV === "test") {
@@ -18,7 +19,7 @@ export const checkRelations = () => {
   const relationBuffer = readFileSync(relationFilePath);
   const rawRelations: IRawRelation[] = JSON.parse(relationBuffer.toString());
 
-  const relations = [];
+  const relations: ICheckResult[] = [];
 
   rawRelations.forEach((rawRelation) => {
     const content = getFileContent(rawRelation.rev, rawRelation.path);
@@ -27,14 +28,14 @@ export const checkRelations = () => {
     const srcContent = getFileContent(rawRelation.srcRev, rawRelation.srcPath);
     const srcContentHEAD = getFileContent("@", rawRelation.srcPath);
 
-    const changes = diffLines(content, contentHEAD);
+    const changes = fixChanges(diffLines(content, contentHEAD));
     const linesRelation = getLinesRelation(changes);
     const relationRange = getRelationRange(
       linesRelation.oldLinesRelationMap,
       rawRelation.srcRange
     );
 
-    const srcChanges = diffLines(srcContent, srcContentHEAD);
+    const srcChanges = fixChanges(diffLines(srcContent, srcContentHEAD));
     const srcLinesRelation = getLinesRelation(srcChanges);
     const srcRelationRange = getRelationRange(
       srcLinesRelation.oldLinesRelationMap,

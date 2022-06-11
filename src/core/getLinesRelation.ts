@@ -1,8 +1,9 @@
 import { Change } from "diff";
+import { ILineRange, ILinesRelation } from "../index.d";
 
-export const getLinesRelation = (changes: Change[]) => {
-  const oldLines = [];
-  const newLines = [];
+export const getLinesRelation = (changes: Change[]): ILinesRelation => {
+  const oldLines: ILineRange[] = [];
+  const newLines: ILineRange[] = [];
   const oldLinesRelationMap = new Map();
   const newLinesRelationMap = new Map();
 
@@ -15,7 +16,7 @@ export const getLinesRelation = (changes: Change[]) => {
   for (const change of changes) {
     if (change.removed) {
       oldEnd += change.count;
-      let oldLine = [oldStart, oldEnd - 1];
+      let oldLine: ILineRange = [oldStart, oldEnd - 1];
 
       oldLines.push(oldLine);
       oldStart = oldEnd;
@@ -28,7 +29,7 @@ export const getLinesRelation = (changes: Change[]) => {
       }
     } else if (change.added) {
       newEnd += change.count;
-      let newLine = [newStart, newEnd - 1];
+      let newLine: ILineRange = [newStart, newEnd - 1];
 
       newLines.push(newLine);
       newStart = newEnd;
@@ -44,12 +45,12 @@ export const getLinesRelation = (changes: Change[]) => {
       }
     } else {
       oldEnd += change.count;
-      let oldLine = [oldStart, oldEnd - 1, { dirty: false }];
+      let oldLine: ILineRange = [oldStart, oldEnd - 1, { dirty: false }];
       oldLines.push(oldLine);
       oldStart = oldEnd;
 
       newEnd += change.count;
-      let newLine = [newStart, newEnd - 1, { dirty: false }];
+      let newLine: ILineRange = [newStart, newEnd - 1, { dirty: false }];
       newLines.push(newLine);
       newStart = newEnd;
 

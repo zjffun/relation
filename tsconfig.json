@@ -1,0 +1,12 @@
+{
+  "exclude": ["node_modules", "./tests/", "./dist/", "./src/view"],
+  "include": ["./src"],
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "module": "ESNext",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "downlevelIteration": true,
+    "jsx": "react"
+  }
+}

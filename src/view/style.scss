@@ -1,0 +1,77 @@
+$add: lightgreen;
+$remove: lightcoral;
+$change: mediumpurple;
+$relate: lightskyblue;
+$dirty: mediumvioletred;
+
+div,
+pre {
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+.relation-container {
+  position: relative;
+}
+
+.relation-view {
+  &-texts {
+    display: flex;
+    gap: 30px;
+    &__text {
+      // max-height: 90vh;
+      // overflow-y: scroll;
+
+      font-size: 12px;
+      font-family: Menlo, Monaco, "Courier New", monospace;
+      flex: 1 1 400px;
+
+      .line-num {
+        display: inline-block;
+        width: 3em;
+        user-select: none;
+      }
+
+      .line {
+        line-height: 1.2em;
+        min-height: 1.2em;
+      }
+    }
+  }
+  &-svg {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    rect,
+    path {
+      stroke: gray;
+    }
+
+    .remove {
+      fill: $remove;
+    }
+
+    .add {
+      fill: $add;
+    }
+
+    .change {
+      fill: $change;
+    }
+
+    .relate {
+      fill: $relate;
+    }
+
+    .dirty {
+      fill: $dirty;
+    }
+  }
+}

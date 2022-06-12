@@ -10,9 +10,9 @@
     "prepublishOnly": "npm run build && npm run test",
     "build": "rm -rf dist && yarn build:cli && yarn build:view",
     "build:cli": "tsc --project tsconfig.build.json",
-    "build:view": "NODE_OPTIONS='--loader ts-node/esm' webpack --config ./src/view/webpack/webpack.prod.ts",
-    "watch:view": "NODE_OPTIONS='--loader ts-node/esm' webpack serve --open --config ./src/view/webpack/webpack.dev.ts",
-    "test": "NODE_OPTIONS='--loader ts-node/esm' mocha 'tests/**/*.ts'"
+    "build:view": "cross-env NODE_OPTIONS='--loader ts-node/esm' webpack --config ./src/view/webpack/webpack.prod.ts",
+    "watch:view": "cross-env NODE_OPTIONS='--loader ts-node/esm' webpack serve --open --config ./src/view/webpack/webpack.dev.ts",
+    "test": "cross-env NODE_OPTIONS='--loader ts-node/esm' mocha 'tests/**/*.ts'"
   },
   "files": [
     "dist"
@@ -33,6 +33,8 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "chai": "^4.3.6",
+    "codecov": "^3.8.3",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "d3": "^7.4.4",
     "html-webpack-plugin": "^5.5.0",

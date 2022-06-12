@@ -22,10 +22,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node_version }}
-
-      - name: yarn install, build and test
-        run: |
-          yarn install
-          yarn build
-          yarn test
-          yarn codecov
+      - name: Install dependencies
+        run: yarn install
+      - name: Run tests
+        run: yarn test
+      - name: codecov
+        run: yarn codecov

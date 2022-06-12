@@ -5,6 +5,7 @@ import checkResults from "../../checkresult.json";
 import RelationComponent from "./components/RelationComponent";
 import RelationOverview from "./components/RelationOverview";
 import { createViewRelation } from "./createViewRelation";
+import groupBy from "lodash/groupBy";
 
 import "./style.scss";
 
@@ -15,6 +16,34 @@ export enum RelationEnum {
   relate = "relate",
   dirty = "dirty",
 }
+
+const Page = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
+  const fileCheckResults = groupBy(checkResults, (d) => {
+    return `${d.srcPath} -> ${d.path}`;
+  });
+  const fileCheckResultsEntries = Object.entries(fileCheckResults);
+
+  return (
+    <>
+      <ul>
+        {fileCheckResultsEntries.map(([file]) => {
+          return <li>{file}</li>;
+        })}
+      </ul>
+      <hr />
+      {fileCheckResultsEntries.map(([file, checkResults]) => {
+        return (
+          <>
+            <div>{file}</div>
+            <RelationOverview checkResults={checkResults}></RelationOverview>
+            <hr />
+            <Relations checkResults={checkResults}></Relations>
+          </>
+        );
+      })}
+    </>
+  );
+};
 
 const Relations = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
   return (
@@ -35,7 +64,16 @@ const Relations = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
                   checkResult.contentHEAD,
                 ],
                 relations: [
-                  createViewRelation(checkResult.srcLinesRelation),
+                  [
+                    [
+                      checkResult.srcRange,
+                      checkResult.srcRelationRange,
+                      {
+                        type,
+                      },
+                    ],
+                    ...createViewRelation(checkResult.srcLinesRelation),
+                  ],
                   [
                     [
                       checkResult.srcRelationRange,
@@ -44,6 +82,16 @@ const Relations = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
                         type,
                       },
                     ],
+                  ],
+                  [
+                    [
+                      checkResult.range,
+                      checkResult.relationRange,
+                      {
+                        type,
+                      },
+                    ],
+                    ...createViewRelation(checkResult.linesRelation),
                   ],
                 ],
               }}
@@ -59,9 +107,6 @@ const Relations = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
 createRoot(document.getElementById("root")).render(
   <>
     {/* @ts-ignore */}
-    <RelationOverview checkResults={checkResults}></RelationOverview>
-    <hr />
-    {/* @ts-ignore */}
-    <Relations checkResults={checkResults}></Relations>
+    <Page checkResults={checkResults} />
   </>
 );

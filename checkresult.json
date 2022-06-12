@@ -14,11 +14,29 @@
     ],
     "dirty": false,
     "content": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
-    "contentHEAD": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "contentHEAD": "# 测试\n\n描述\n\n<-- 添加 -->\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
     "linesRelation": {
       "oldLines": [
         [
           1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          22,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          23,
+          24
+        ],
+        [
+          25,
           40,
           {
             "dirty": false
@@ -28,6 +46,24 @@
       "newLines": [
         [
           1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          24,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          25,
           40,
           {
             "dirty": false
@@ -38,13 +74,55 @@
         [
           [
             1,
-            40,
+            4,
             {
               "dirty": false
             }
           ],
           [
             1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            23,
+            24
+          ],
+          [
+            25,
+            null
+          ]
+        ],
+        [
+          [
+            25,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
             40,
             {
               "dirty": false
@@ -56,13 +134,55 @@
         [
           [
             1,
-            40,
+            4,
             {
               "dirty": false
             }
           ],
           [
             1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            null
+          ]
+        ],
+        [
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            25,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
             40,
             {
               "dirty": false
@@ -467,11 +587,29 @@
     ],
     "dirty": false,
     "content": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
-    "contentHEAD": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "contentHEAD": "# 测试\n\n描述\n\n<-- 添加 -->\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
     "linesRelation": {
       "oldLines": [
         [
           1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          22,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          23,
+          24
+        ],
+        [
+          25,
           40,
           {
             "dirty": false
@@ -481,6 +619,24 @@
       "newLines": [
         [
           1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          24,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          25,
           40,
           {
             "dirty": false
@@ -491,13 +647,55 @@
         [
           [
             1,
-            40,
+            4,
             {
               "dirty": false
             }
           ],
           [
             1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            23,
+            24
+          ],
+          [
+            25,
+            null
+          ]
+        ],
+        [
+          [
+            25,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
             40,
             {
               "dirty": false
@@ -509,13 +707,55 @@
         [
           [
             1,
-            40,
+            4,
             {
               "dirty": false
             }
           ],
           [
             1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            null
+          ]
+        ],
+        [
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            25,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
             40,
             {
               "dirty": false
@@ -525,8 +765,8 @@
       ]
     },
     "relationRange": [
-      5,
-      18
+      7,
+      20
     ],
     "srcContent": "# test\n\ndescription\n\n## Installation\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## Usage\n\n### Create\n\n<-- will be deleted -->\n\n### Update\n\nxxx\n\n### Read\n\nxxx\n\n### Delete\n\nxxx\n\n## API\n\nxxx\n",
     "srcContentHEAD": "# test\n\ndescription\n\n<-- add in range -->\n\n## Installation\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## Usage\n\n### Create\n\n### Update\n\n<-- update -->\n\n<-- update -->\n\n<-- update -->\n\n### Read\n\nxxx\n\n### Delete\n\nxxx\n\n## <-- add out of range -->\n\n<-- add out of range -->\n\n## API\n\nxxx\n",
@@ -920,11 +1160,29 @@
     ],
     "dirty": true,
     "content": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
-    "contentHEAD": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "contentHEAD": "# 测试\n\n描述\n\n<-- 添加 -->\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
     "linesRelation": {
       "oldLines": [
         [
           1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          22,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          23,
+          24
+        ],
+        [
+          25,
           40,
           {
             "dirty": false
@@ -934,6 +1192,24 @@
       "newLines": [
         [
           1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          24,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          25,
           40,
           {
             "dirty": false
@@ -944,13 +1220,55 @@
         [
           [
             1,
-            40,
+            4,
             {
               "dirty": false
             }
           ],
           [
             1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            23,
+            24
+          ],
+          [
+            25,
+            null
+          ]
+        ],
+        [
+          [
+            25,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
             40,
             {
               "dirty": false
@@ -962,13 +1280,55 @@
         [
           [
             1,
-            40,
+            4,
             {
               "dirty": false
             }
           ],
           [
             1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            null
+          ]
+        ],
+        [
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            25,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
             40,
             {
               "dirty": false
@@ -978,7 +1338,7 @@
       ]
     },
     "relationRange": [
-      19,
+      21,
       36
     ],
     "srcContent": "# test\n\ndescription\n\n## Installation\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## Usage\n\n### Create\n\n<-- will be deleted -->\n\n### Update\n\nxxx\n\n### Read\n\nxxx\n\n### Delete\n\nxxx\n\n## API\n\nxxx\n",
@@ -1373,11 +1733,29 @@
     ],
     "dirty": false,
     "content": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
-    "contentHEAD": "# 测试\n\n描述\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n<-- 将删除 -->\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
+    "contentHEAD": "# 测试\n\n描述\n\n<-- 添加 -->\n\n## 安装\n\nnpm\n\n```bash\nnpm install test\n```\n\nyarn\n\n```bash\nyarn add test\n```\n\n## 使用\n\n### 增加\n\n### 修改\n\nxxx\n\n### 查询\n\nxxx\n\n### 删除\n\nxxx\n\n## API\n\nxxx\n",
     "linesRelation": {
       "oldLines": [
         [
           1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          22,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          23,
+          24
+        ],
+        [
+          25,
           40,
           {
             "dirty": false
@@ -1387,6 +1765,24 @@
       "newLines": [
         [
           1,
+          4,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          24,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          25,
           40,
           {
             "dirty": false
@@ -1397,13 +1793,55 @@
         [
           [
             1,
-            40,
+            4,
             {
               "dirty": false
             }
           ],
           [
             1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            23,
+            24
+          ],
+          [
+            25,
+            null
+          ]
+        ],
+        [
+          [
+            25,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
             40,
             {
               "dirty": false
@@ -1415,13 +1853,55 @@
         [
           [
             1,
-            40,
+            4,
             {
               "dirty": false
             }
           ],
           [
             1,
+            4,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            null
+          ]
+        ],
+        [
+          [
+            7,
+            24,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            5,
+            22,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            25,
+            40,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            25,
             40,
             {
               "dirty": false
@@ -1809,6 +2289,1026 @@
     "srcRelationRange": [
       45,
       48
+    ]
+  },
+  {
+    "rev": "aef5629e2727f166f7c9a7cc7ec2cb2d351502d0",
+    "path": "./txt/test.zh-CN.txt",
+    "range": [
+      1,
+      3
+    ],
+    "srcRev": "aef5629e2727f166f7c9a7cc7ec2cb2d351502d0",
+    "srcPath": "./txt/test.txt",
+    "srcRange": [
+      1,
+      3
+    ],
+    "dirty": false,
+    "content": "测试\n测试\n测试\n测试-添加\n测试-添加\n测试-添加\n测试-删除\n测试-删除\n测试-删除\n测试-修改\n测试-修改\n测试-修改",
+    "contentHEAD": "测试\n测试\n测试\n测试-添加\n测试-添加\n测试-添加\n测试-删除\n测试-删除\n测试-删除\n测试-修改1\n测试-修改2\n测试-修改3",
+    "linesRelation": {
+      "oldLines": [
+        [
+          1,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ]
+    },
+    "relationRange": [
+      1,
+      3
+    ],
+    "srcContent": "test\ntest\ntest\ntest-add\ntest-add\ntest-add\ntest-remove\ntest-remove\ntest-remove\ntest-change\ntest-change\ntest-change",
+    "srcContentHEAD": "test\ntest\ntest\ntest-add\ntest-add\ntest-add\ntest-add\ntest-remove\ntest-remove\ntest-change1\ntest-change2\ntest-change3",
+    "srcLinesRelation": {
+      "oldLines": [
+        [
+          1,
+          6,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          7,
+          8,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          9,
+          12
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          6,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          8,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            7,
+            8,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            8,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            9,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            7,
+            7
+          ],
+          [
+            7,
+            null
+          ]
+        ],
+        [
+          [
+            8,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            8,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            9,
+            12
+          ]
+        ]
+      ]
+    },
+    "srcRelationRange": [
+      1,
+      3
+    ]
+  },
+  {
+    "rev": "aef5629e2727f166f7c9a7cc7ec2cb2d351502d0",
+    "path": "./txt/test.zh-CN.txt",
+    "range": [
+      4,
+      6
+    ],
+    "srcRev": "aef5629e2727f166f7c9a7cc7ec2cb2d351502d0",
+    "srcPath": "./txt/test.txt",
+    "srcRange": [
+      4,
+      6
+    ],
+    "dirty": false,
+    "content": "测试\n测试\n测试\n测试-添加\n测试-添加\n测试-添加\n测试-删除\n测试-删除\n测试-删除\n测试-修改\n测试-修改\n测试-修改",
+    "contentHEAD": "测试\n测试\n测试\n测试-添加\n测试-添加\n测试-添加\n测试-删除\n测试-删除\n测试-删除\n测试-修改1\n测试-修改2\n测试-修改3",
+    "linesRelation": {
+      "oldLines": [
+        [
+          1,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ]
+    },
+    "relationRange": [
+      4,
+      6
+    ],
+    "srcContent": "test\ntest\ntest\ntest-add\ntest-add\ntest-add\ntest-remove\ntest-remove\ntest-remove\ntest-change\ntest-change\ntest-change",
+    "srcContentHEAD": "test\ntest\ntest\ntest-add\ntest-add\ntest-add\ntest-add\ntest-remove\ntest-remove\ntest-change1\ntest-change2\ntest-change3",
+    "srcLinesRelation": {
+      "oldLines": [
+        [
+          1,
+          6,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          7,
+          8,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          9,
+          12
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          6,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          8,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            7,
+            8,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            8,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            9,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            7,
+            7
+          ],
+          [
+            7,
+            null
+          ]
+        ],
+        [
+          [
+            8,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            8,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            9,
+            12
+          ]
+        ]
+      ]
+    },
+    "srcRelationRange": [
+      4,
+      6
+    ]
+  },
+  {
+    "rev": "aef5629e2727f166f7c9a7cc7ec2cb2d351502d0",
+    "path": "./txt/test.zh-CN.txt",
+    "range": [
+      7,
+      9
+    ],
+    "srcRev": "aef5629e2727f166f7c9a7cc7ec2cb2d351502d0",
+    "srcPath": "./txt/test.txt",
+    "srcRange": [
+      7,
+      9
+    ],
+    "dirty": true,
+    "content": "测试\n测试\n测试\n测试-添加\n测试-添加\n测试-添加\n测试-删除\n测试-删除\n测试-删除\n测试-修改\n测试-修改\n测试-修改",
+    "contentHEAD": "测试\n测试\n测试\n测试-添加\n测试-添加\n测试-添加\n测试-删除\n测试-删除\n测试-删除\n测试-修改1\n测试-修改2\n测试-修改3",
+    "linesRelation": {
+      "oldLines": [
+        [
+          1,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ]
+    },
+    "relationRange": [
+      7,
+      9
+    ],
+    "srcContent": "test\ntest\ntest\ntest-add\ntest-add\ntest-add\ntest-remove\ntest-remove\ntest-remove\ntest-change\ntest-change\ntest-change",
+    "srcContentHEAD": "test\ntest\ntest\ntest-add\ntest-add\ntest-add\ntest-add\ntest-remove\ntest-remove\ntest-change1\ntest-change2\ntest-change3",
+    "srcLinesRelation": {
+      "oldLines": [
+        [
+          1,
+          6,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          7,
+          8,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          9,
+          12
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          6,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          8,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            7,
+            8,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            8,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            9,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            7,
+            7
+          ],
+          [
+            7,
+            null
+          ]
+        ],
+        [
+          [
+            8,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            8,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            9,
+            12
+          ]
+        ]
+      ]
+    },
+    "srcRelationRange": [
+      8,
+      12
+    ]
+  },
+  {
+    "rev": "aef5629e2727f166f7c9a7cc7ec2cb2d351502d0",
+    "path": "./txt/test.zh-CN.txt",
+    "range": [
+      10,
+      12
+    ],
+    "srcRev": "aef5629e2727f166f7c9a7cc7ec2cb2d351502d0",
+    "srcPath": "./txt/test.txt",
+    "srcRange": [
+      10,
+      12
+    ],
+    "dirty": true,
+    "content": "测试\n测试\n测试\n测试-添加\n测试-添加\n测试-添加\n测试-删除\n测试-删除\n测试-删除\n测试-修改\n测试-修改\n测试-修改",
+    "contentHEAD": "测试\n测试\n测试\n测试-添加\n测试-添加\n测试-添加\n测试-删除\n测试-删除\n测试-删除\n测试-修改1\n测试-修改2\n测试-修改3",
+    "linesRelation": {
+      "oldLines": [
+        [
+          1,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ]
+    },
+    "relationRange": [
+      10,
+      12
+    ],
+    "srcContent": "test\ntest\ntest\ntest-add\ntest-add\ntest-add\ntest-remove\ntest-remove\ntest-remove\ntest-change\ntest-change\ntest-change",
+    "srcContentHEAD": "test\ntest\ntest\ntest-add\ntest-add\ntest-add\ntest-add\ntest-remove\ntest-remove\ntest-change1\ntest-change2\ntest-change3",
+    "srcLinesRelation": {
+      "oldLines": [
+        [
+          1,
+          6,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          7,
+          8,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          9,
+          12
+        ]
+      ],
+      "newLines": [
+        [
+          1,
+          6,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          8,
+          9,
+          {
+            "dirty": false
+          }
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "oldLinesRelationMap": [
+        [
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            7,
+            8,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            8,
+            9,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            9,
+            12
+          ],
+          [
+            10,
+            12
+          ]
+        ]
+      ],
+      "newLinesRelationMap": [
+        [
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            1,
+            6,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            7,
+            7
+          ],
+          [
+            7,
+            null
+          ]
+        ],
+        [
+          [
+            8,
+            9,
+            {
+              "dirty": false
+            }
+          ],
+          [
+            7,
+            8,
+            {
+              "dirty": false
+            }
+          ]
+        ],
+        [
+          [
+            10,
+            12
+          ],
+          [
+            9,
+            12
+          ]
+        ]
+      ]
+    },
+    "srcRelationRange": [
+      10,
+      12
     ]
   }
 ]

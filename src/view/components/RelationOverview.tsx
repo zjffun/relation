@@ -26,7 +26,6 @@ export default ({ checkResults }: { checkResults: ICheckResultView[] }) => {
         },
       ]);
     });
-
     createView(ref.current, {
       texts: [srcContentHEAD, contentHEAD],
       relations: [relation],

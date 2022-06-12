@@ -1,11 +1,13 @@
+import { RelationEnum } from ".";
+
 export const createViewRelation = (linesRelation) => {
   const viewRelation = [];
   linesRelation.oldLinesRelationMap.forEach((d) => {
     if (d[0]?.[2]?.dirty !== false) {
-      let type = "change";
+      let type = RelationEnum.change;
 
       if (d[1][1] === null) {
-        type = "add";
+        type = RelationEnum.remove;
       }
 
       viewRelation.push([...d, { type }]);
@@ -18,7 +20,7 @@ export const createViewRelation = (linesRelation) => {
         d[1],
         d[0],
         {
-          type: "add",
+          type: RelationEnum.add,
         },
       ]);
     }

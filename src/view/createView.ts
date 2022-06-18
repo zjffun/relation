@@ -35,7 +35,7 @@ function initTexts(
         .attr("class", "line-num")
         .text(`${i + 1}`);
 
-      el.append("code").text(`${d}`);
+      el.append("code").attr("class", "line-code").text(`${d}`);
       textArray.push(el);
     });
 

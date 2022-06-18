@@ -5,10 +5,22 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "test",
+      "args": ["${workspaceFolder}/tests/**/*.ts"],
+      "internalConsoleOptions": "openOnSessionStart",
+      "name": "Mocha Tests",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "request": "launch",
-      "runtimeArgs": ["run-script", "test"],
-      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
+      "env": {
+        "NODE_OPTIONS": "--loader ts-node/esm"
+      },
+      "type": "node"
+    },
+    {
+      "args": ["create", "--srcRev", "HEAD"],
+      "name": "CLI",
+      "program": "${workspaceFolder}/cli.js",
+      "request": "launch",
       "skipFiles": ["<node_internals>/**"],
       "type": "node"
     }

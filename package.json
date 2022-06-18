@@ -11,6 +11,7 @@
     "build": "rm -rf dist && yarn build:cli && yarn build:view",
     "build:cli": "tsc --project tsconfig.build.json",
     "build:view": "cross-env NODE_OPTIONS='--loader ts-node/esm' webpack --config ./src/view/webpack/webpack.prod.ts",
+    "watch:cli": "tsc --watch",
     "watch:view": "cross-env NODE_OPTIONS='--loader ts-node/esm' webpack serve --open --config ./src/view/webpack/webpack.dev.ts",
     "test": "cross-env NODE_OPTIONS='--loader ts-node/esm' mocha 'tests/**/*.ts'"
   },
@@ -20,7 +21,9 @@
   "dependencies": {
     "commander": "^9.3.0",
     "diff": "^5.0.0",
-    "fs-extra": "^10.1.0"
+    "fs-extra": "^10.1.0",
+    "remark-parse": "^10.0.1",
+    "unified": "^10.1.2"
   },
   "devDependencies": {
     "@types/chai": "^4.3.1",

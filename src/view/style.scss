@@ -11,31 +11,34 @@ pre {
   display: block;
 }
 
-.relation-container {
-  position: relative;
-}
-
 .relation-view {
+  &-container {
+    position: relative;
+    width: max-content;
+  }
   &-texts {
     display: flex;
-    gap: 30px;
+    gap: 2em;
     &__text {
-      // max-height: 90vh;
-      // overflow-y: scroll;
-
       font-size: 12px;
       font-family: Menlo, Monaco, "Courier New", monospace;
-      flex: 1 1 400px;
-
-      .line-num {
-        display: inline-block;
-        width: 3em;
-        user-select: none;
-      }
+      flex: 1 1 calc(50vw - 2em);
+      max-width: calc(50vw - 2em);
 
       .line {
+        display: flex;
         line-height: 1.2em;
         min-height: 1.2em;
+
+        .line-num {
+          width: 3em;
+          margin-right: 0.5em;
+          user-select: none;
+        }
+
+        .line-code {
+          white-space: pre-wrap;
+        }
       }
     }
   }

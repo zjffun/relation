@@ -2,6 +2,7 @@
 yarn.lock
 
 dist
+test-data
 
 # Logs
 logs

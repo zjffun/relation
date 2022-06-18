@@ -28,8 +28,12 @@ export const checkRelations = (): ICheckResult[] => {
     const content = getFileContent(rawRelation.rev, rawRelation.path);
     const contentHEAD = getFileContent("@", rawRelation.path);
 
-    const srcContent = getFileContent(rawRelation.srcRev, rawRelation.srcPath);
-    const srcContentHEAD = getFileContent("@", rawRelation.srcPath);
+    const srcContent = getFileContent(
+      rawRelation.srcRev,
+      rawRelation.srcPath,
+      true
+    );
+    const srcContentHEAD = getFileContent("@", rawRelation.srcPath, true);
 
     const changes = fixChanges(diffLines(content, contentHEAD));
     const linesRelation = getLinesRelation(changes);

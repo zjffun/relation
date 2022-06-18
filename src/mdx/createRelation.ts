@@ -8,9 +8,9 @@ export async function createRelations({
   srcRev: srcRevParam,
   rev: revParam,
 }) {
-  const srcRev = revParse(srcRevParam);
+  const srcRev = revParse(srcRevParam, true);
   const rev = revParse(revParam);
-  const srcContent = getFileContent(srcRev, srcPath);
+  const srcContent = getFileContent(srcRev, srcPath, true);
   const content = getFileContent(rev, path);
   const relationRanges = await getRelationRanges(srcContent, content);
 

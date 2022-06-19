@@ -4,6 +4,7 @@ import path, { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { checkDirty } from "./core/checkDirty.js";
 import { fixChanges } from "./core/fixChanges.js";
+import { getConfig } from "./core/getConfig.js";
 import { getLinesRelation } from "./core/getLinesRelation.js";
 import { getRelationRange } from "./core/getRelationRange.js";
 import { getFileContent } from "./git/gitFileContent.js";
@@ -12,10 +13,18 @@ import { ICheckResult, IRawRelation } from "./index.d";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const checkRelations = (): ICheckResult[] => {
+  const config = getConfig();
+
   let cwd = process.cwd();
 
   if (process.env.NODE_ENV === "test") {
     cwd = join(__dirname, "../tests/relation-test-repo");
+  }
+
+  let baseRev = "@";
+
+  if (config.baseRev) {
+    baseRev = config.baseRev;
   }
 
   const relationFilePath = join(cwd, ".relation", "relation.json");
@@ -26,14 +35,14 @@ export const checkRelations = (): ICheckResult[] => {
 
   rawRelations.forEach((rawRelation) => {
     const content = getFileContent(rawRelation.rev, rawRelation.path);
-    const contentHEAD = getFileContent("@", rawRelation.path);
+    const contentHEAD = getFileContent(baseRev, rawRelation.path);
 
     const srcContent = getFileContent(
       rawRelation.srcRev,
       rawRelation.srcPath,
       true
     );
-    const srcContentHEAD = getFileContent("@", rawRelation.srcPath, true);
+    const srcContentHEAD = getFileContent(baseRev, rawRelation.srcPath, true);
 
     const changes = fixChanges(diffLines(content, contentHEAD));
     const linesRelation = getLinesRelation(changes);

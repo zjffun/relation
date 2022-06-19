@@ -17,8 +17,28 @@
       "type": "node"
     },
     {
-      "args": ["create", "--srcRev", "HEAD"],
-      "name": "CLI",
+      "cwd": "/Users/zjf/gh/translated-content-relation",
+      "args": ["check"],
+      "name": "CLI check",
+      "program": "${workspaceFolder}/cli.js",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "cwd": "/Users/zjf/gh/translated-content-relation",
+      "args": [
+        "create",
+        "--srcRev",
+        "main",
+        "--rev",
+        "origin/zjf-translate-forbidden_header_name",
+        "--srcPath",
+        "files/en-us/glossary/forbidden_header_name/index.md",
+        "--path",
+        "files/zh-cn/glossary/forbidden_header_name/index.md"
+      ],
+      "name": "CLI create",
       "program": "${workspaceFolder}/cli.js",
       "request": "launch",
       "skipFiles": ["<node_internals>/**"],

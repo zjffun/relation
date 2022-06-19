@@ -25,4 +25,6 @@ export const getConfig = () => {
   } catch (error) {
     config = {};
   }
+
+  return config;
 };

@@ -15,7 +15,7 @@ export function getCwd(isSrc?: boolean) {
   }
 
   if (isSrc && config.srcSubmoduleRelativePath) {
-    join(cwd, config.srcSubmoduleRelativePath);
+    cwd = join(cwd, config.srcSubmoduleRelativePath);
   }
 
   return cwd;

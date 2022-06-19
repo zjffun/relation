@@ -39,7 +39,7 @@ export const checkRelations = (): ICheckResult[] => {
     const linesRelation = getLinesRelation(changes);
     const relationRange = getRelationRange(
       linesRelation.oldLinesRelationMap,
-      rawRelation.srcRange
+      rawRelation.range
     );
 
     const srcChanges = fixChanges(diffLines(srcContent, srcContentHEAD));

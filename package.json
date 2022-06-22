@@ -16,6 +16,7 @@
     "test": "cross-env NODE_OPTIONS='--loader ts-node/esm' mocha 'tests/**/*.ts'"
   },
   "files": [
+    "./cli.js",
     "dist"
   ],
   "dependencies": {

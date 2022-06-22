@@ -1,6 +1,6 @@
 {
   "name": "relation2",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "bin": "./cli.js",
   "repository": "git@github.com:zjffun/relation.git",

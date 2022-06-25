@@ -1,3 +1,4 @@
+import { nanoid } from "../core/nanoid.js";
 import { getFileContent } from "../git/gitFileContent.js";
 import { revParse } from "../git/revParse.js";
 import { getRelationRanges } from "./getRelationRanges.js";
@@ -16,6 +17,7 @@ export async function createRelations({
 
   const relations = relationRanges.map((d) => {
     return {
+      id: nanoid(),
       rev,
       path,
       range: d.range,

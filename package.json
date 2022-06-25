@@ -23,6 +23,7 @@
     "commander": "^9.3.0",
     "diff": "^5.0.0",
     "fs-extra": "^10.1.0",
+    "nanoid": "^4.0.0",
     "remark-parse": "^10.0.1",
     "unified": "^10.1.2"
   },

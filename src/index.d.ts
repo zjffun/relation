@@ -1,4 +1,5 @@
 export interface IRawRelation {
+  id?: string;
   rev: string;
   path: string;
   range: [number, number];

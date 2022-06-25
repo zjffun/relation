@@ -43,6 +43,27 @@
       "request": "launch",
       "skipFiles": ["<node_internals>/**"],
       "type": "node"
+    },
+    {
+      "cwd": "/Users/zjf/gh/translated-content-relation",
+      "args": [
+        "update",
+        "--srcRev",
+        "main",
+        "--rev",
+        "origin/zjf-translate-forbidden_header_name",
+        "--srcPath",
+        "files/en-us/glossary/forbidden_header_name/index.md",
+        "--path",
+        "files/zh-cn/glossary/forbidden_header_name/index.md",
+        "--srcRange",
+        "10,20"
+      ],
+      "name": "CLI update",
+      "program": "${workspaceFolder}/cli.js",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
     }
   ]
 }

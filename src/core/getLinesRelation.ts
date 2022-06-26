@@ -1,5 +1,5 @@
 import { Change } from "diff";
-import { ILineRange, ILinesRelation } from "../index.d";
+import { ILineRange, ILinesRelation } from "../types";
 
 export const getLinesRelation = (changes: Change[]): ILinesRelation => {
   const oldLines: ILineRange[] = [];

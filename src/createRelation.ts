@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import path, { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { IRawRelation } from "./index.d";
+import { IRawRelation } from "./types";
 import { createRelations } from "./mdx/createRelation.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

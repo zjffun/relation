@@ -8,7 +8,7 @@ import { getConfig } from "./core/getConfig.js";
 import { getLinesRelation } from "./core/getLinesRelation.js";
 import { getRelationRange } from "./core/getRelationRange.js";
 import { getFileContent } from "./git/gitFileContent.js";
-import { ICheckResult, IRawRelation } from "./index.d";
+import { ICheckResult, IRawRelation } from "./types";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

@@ -1,4 +1,4 @@
-import { IRawRelation } from "../index.d";
+import { IRawRelation } from "../types";
 
 export default function (
   relation: IRawRelation,

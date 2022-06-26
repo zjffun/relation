@@ -3,7 +3,7 @@ import path, { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import mergeRelation from "./core/mergeRelation.js";
 import { revParse } from "./git/revParse.js";
-import { IRawRelation } from "./index.d";
+import { IRawRelation } from "./types";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

@@ -2,10 +2,12 @@
   "name": "relation2",
   "version": "0.0.4",
   "type": "module",
+  "module": "dist/index.js",
   "bin": "./cli.js",
   "repository": "git@github.com:zjffun/relation.git",
   "author": "Jufeng Zhang <zjffun@gmail.com>",
   "license": "MIT",
+  "types": "index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run build && npm run test",
     "build": "rm -rf dist && yarn build:cli && yarn build:view",

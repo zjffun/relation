@@ -7,8 +7,8 @@ import { checkRelations } from "../checkRelations.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default function (program: Command) {
-  program.command("check").action(() => {
-    const result = checkRelations();
+  program.command("check").action(async () => {
+    const result = await checkRelations();
     const resultJSONString = JSON.stringify(
       Array.from(result.values()),
       (key, value: any) => {

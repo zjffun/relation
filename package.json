@@ -27,6 +27,7 @@
     "fs-extra": "^10.1.0",
     "nanoid": "^4.0.0",
     "remark-parse": "^10.0.1",
+    "simple-git": "^3.10.0",
     "unified": "^10.1.2"
   },
   "devDependencies": {

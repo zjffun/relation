@@ -6,17 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let config;
 
-export const getConfig = () => {
-  if (config !== undefined) {
-    return config;
-  }
-
-  let cwd = process.cwd();
-
-  if (process.env.NODE_ENV === "test") {
-    cwd = join(__dirname, "../tests/relation-test-repo");
-  }
-
+export const getConfig = (cwd) => {
   const relationFilePath = join(cwd, ".relation", "config.json");
 
   try {

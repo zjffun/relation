@@ -2,7 +2,7 @@
   "name": "relation2",
   "version": "0.0.4",
   "type": "module",
-  "module": "dist/index.js",
+  "exports": "./dist/index.js",
   "bin": "./cli.js",
   "repository": "git@github.com:zjffun/relation.git",
   "author": "Jufeng Zhang <zjffun@gmail.com>",

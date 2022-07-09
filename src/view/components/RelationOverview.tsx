@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { RelationEnum } from "..";
-import { ICheckResultView } from "../../index.d";
+import { ICheckResultView } from "../../index";
 import { createView } from "../createView";
 
 export default ({ checkResults }: { checkResults: ICheckResultView[] }) => {

@@ -171,9 +171,11 @@ const Relations = ({
   );
 };
 
-createRoot(document.getElementById("root")).render(
-  <>
-    {/* @ts-ignore */}
-    <Page checkResults={checkResults} />
-  </>
-);
+const rootEl = document.getElementById("root");
+if (rootEl) {
+  createRoot(rootEl).render(
+    <>
+      <Page checkResults={checkResults} />
+    </>
+  );
+}

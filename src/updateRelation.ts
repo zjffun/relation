@@ -14,8 +14,10 @@ export const updateRelation = async (options) => {
   const srcSimpleGit = simpleGit(srcCwd);
   const destSimpleGit = simpleGit(cwd);
 
-  const parsedRev = await destSimpleGit.raw("rev-parse", options.rev);
-  const parsedSrcRev = await srcSimpleGit.raw("rev-parse", options.srcRev);
+  const parsedRev = (await destSimpleGit.raw("rev-parse", options.rev)).trim();
+  const parsedSrcRev = (
+    await srcSimpleGit.raw("rev-parse", options.srcRev)
+  ).trim();
 
   const relationFilePath = join(cwd, ".relation", "relation.json");
   const relationBuffer = readFileSync(relationFilePath);

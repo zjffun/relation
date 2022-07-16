@@ -2,6 +2,16 @@
 
 TODO
 
+## API
+
+### `createRelation()`
+
+### `updateRelation()`
+
+### `deleteRelation()`
+
+### `checkRelations()`
+
 ## Example
 
 ### Relations in Single File

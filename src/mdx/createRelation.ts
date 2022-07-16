@@ -15,8 +15,8 @@ export async function createRelations(options: IOptions) {
     `${options.srcRev}:${options.srcPath}`,
   ]);
 
-  const rev = await destSimpleGit.raw("rev-parse", options.rev);
-  const srcRev = await srcSimpleGit.raw("rev-parse", options.srcRev);
+  const rev = (await destSimpleGit.raw("rev-parse", options.rev)).trim();
+  const srcRev = (await srcSimpleGit.raw("rev-parse", options.srcRev)).trim();
 
   const relationRanges = await getRelationRanges(srcContent, content);
 

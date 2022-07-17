@@ -6,7 +6,10 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config: Configuration | any = {
-  entry: "./src/view/index.tsx",
+  entry: {
+    bundle: "./src/view/index.tsx",
+    form: "./src/view/form.tsx",
+  },
   module: {
     rules: [
       {
@@ -25,11 +28,13 @@ const config: Configuration | any = {
   },
   output: {
     publicPath: "./",
-    filename: "bundle.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, "../../../dist/view"),
   },
   plugins: [
+    // check-result
     new HtmlWebpackPlugin({
+      filename: "index.html",
       templateContent: `
         <html>
           <body>
@@ -38,6 +43,19 @@ const config: Configuration | any = {
           </body>
         </html>
       `,
+      chunks: ["bundle"],
+    }),
+    // form
+    new HtmlWebpackPlugin({
+      filename: "form.html",
+      templateContent: `
+        <html>
+          <body>
+            <div id="root"></div>
+          </body>
+        </html>
+      `,
+      chunks: ["form"],
     }),
   ],
 };

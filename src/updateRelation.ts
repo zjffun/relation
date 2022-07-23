@@ -1,35 +1,23 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import path, { join } from "node:path";
-import { fileURLToPath } from "node:url";
-import { simpleGit } from "simple-git";
 import { getInfo } from "./core/getInfo.js";
 import mergeRelation from "./core/mergeRelation.js";
-import { IRawRelation } from "./types";
+import { IOptions, IRawRelation } from "./types";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+export const updateRelation = async (options: IOptions) => {
+  const { relationFilePath } = getInfo(options);
 
-export const updateRelation = async (options) => {
-  const { cwd, srcCwd, config } = getInfo(options);
-
-  const srcSimpleGit = simpleGit(srcCwd);
-  const destSimpleGit = simpleGit(cwd);
-
-  const parsedRev = (await destSimpleGit.raw("rev-parse", options.rev)).trim();
-  const parsedSrcRev = (
-    await srcSimpleGit.raw("rev-parse", options.srcRev)
-  ).trim();
-
-  const relationFilePath = join(cwd, ".relation", "relation.json");
   const relationBuffer = readFileSync(relationFilePath);
   const rawRelations: IRawRelation[] = JSON.parse(relationBuffer.toString());
 
   const relations: IRawRelation[] = rawRelations.map((relation) => {
     if (relation.id === options.id) {
       return mergeRelation(relation, {
-        srcRev: parsedSrcRev,
-        rev: parsedRev,
-        srcPath: options.srcPath,
-        path: options.path,
+        fromRev: options.fromPath,
+        fromPath: options.fromPath,
+        fromRange: options.fromRange,
+        toRev: options.fromPath,
+        toPath: options.toPath,
+        toRange: options.toRange,
       });
     }
     return relation;

@@ -1,34 +1,43 @@
+import * as path from "node:path";
 import { simpleGit } from "simple-git";
-import { IOptions } from "../checkRelations.js";
+import getDirnameBasename from "../core/getDirnameBasename.js";
 import { getInfo } from "../core/getInfo.js";
 import { nanoid } from "../core/nanoid.js";
+import { IOptions } from "../types.js";
 import { getRelationRanges } from "./getRelationRanges.js";
 
 export async function createRelations(options: IOptions) {
-  const { cwd, srcCwd, config } = getInfo(options);
+  const { workingDirectory } = getInfo(options);
 
-  const destSimpleGit = simpleGit(cwd);
-  const srcSimpleGit = simpleGit(srcCwd);
+  const [fromDir, fromFile] = getDirnameBasename(options.fromPath);
+  const [toDir, toFile] = getDirnameBasename(options.fromPath);
 
-  const content = await destSimpleGit.show([`${options.rev}:${options.path}`]);
-  const srcContent = await srcSimpleGit.show([
-    `${options.srcRev}:${options.srcPath}`,
+  const fromSimpleGit = simpleGit(fromDir);
+  const toSimpleGit = simpleGit(toDir);
+
+  const fromContent = await fromSimpleGit.show([
+    `${options.fromRev}:./${fromFile}`,
   ]);
+  const toContent = await toSimpleGit.show([`${options.toRev}:./${toFile}`]);
 
-  const rev = (await destSimpleGit.raw("rev-parse", options.rev)).trim();
-  const srcRev = (await srcSimpleGit.raw("rev-parse", options.srcRev)).trim();
+  const parsedFromRev = (
+    await fromSimpleGit.raw("rev-parse", options.fromRev)
+  ).trim();
+  const parsedToRev = (
+    await toSimpleGit.raw("rev-parse", options.toRev)
+  ).trim();
 
-  const relationRanges = await getRelationRanges(srcContent, content);
+  const relationRanges = await getRelationRanges(fromContent, toContent);
 
-  const relations = relationRanges.map((d) => {
+  const relations = relationRanges.map(({ fromRange, toRange }) => {
     return {
       id: nanoid(),
-      rev,
-      path: options.path,
-      range: d.range,
-      srcRev,
-      srcPath: options.srcPath,
-      srcRange: d.srcRange,
+      fromRev: parsedFromRev,
+      fromPath: path.relative(workingDirectory, options.fromPath),
+      fromRange,
+      toRev: parsedToRev,
+      toPath: path.relative(workingDirectory, options.toPath),
+      toRange,
     };
   });
 

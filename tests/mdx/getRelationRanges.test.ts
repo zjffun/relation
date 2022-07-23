@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { getRelationRanges } from "../../src/mdx/getRelationRanges.js";
 
-it("createRelation", async function () {
+it("getRelationRanges", async function () {
   const srcContent = `# h1
 
 content1
@@ -32,16 +32,16 @@ content3`;
 
   expect(relationRanges).to.be.eql([
     {
-      range: [1, 3],
-      srcRange: [1, 5],
+      toRange: [1, 3],
+      fromRange: [1, 5],
     },
     {
-      range: [5, 7],
-      srcRange: [7, 9],
+      toRange: [5, 7],
+      fromRange: [7, 9],
     },
     {
-      range: [9, 11],
-      srcRange: [11, 13],
+      toRange: [9, 11],
+      fromRange: [11, 13],
     },
   ]);
 });

@@ -1,11 +1,11 @@
 export interface IRawRelation {
   id?: string;
-  rev: string;
-  path: string;
-  range: [number, number];
-  srcRev: string;
-  srcPath: string;
-  srcRange: [number, number];
+  fromRev: string;
+  fromPath: string;
+  fromRange: [number, number];
+  toRev: string;
+  toPath: string;
+  toRange: [number, number];
 }
 
 export interface IExtra {
@@ -32,20 +32,24 @@ export interface ILinesRelationView {
 
 export interface ICheckResultBasic extends IRawRelation {
   dirty: boolean;
-  content: string;
-  contentHEAD: string;
-  relationRange: [number, number];
-  srcContent: string;
-  srcContentHEAD: string;
-  srcRelationRange: [number, number];
+  fromContent: string;
+  fromContentHEAD: string;
+  fromRelationRange: [number, number];
+  toContent: string;
+  toContentHEAD: string;
+  toRelationRange: [number, number];
 }
 
 export interface ICheckResult extends ICheckResultBasic {
-  linesRelation: ILinesRelation;
-  srcLinesRelation: ILinesRelation;
+  fromLinesRelation: ILinesRelation;
+  toLinesRelation: ILinesRelation;
 }
 
 export interface ICheckResultView extends ICheckResultBasic {
-  linesRelation: ILinesRelationView;
-  srcLinesRelation: ILinesRelationView;
+  fromLinesRelation: ILinesRelationView;
+  toLinesRelation: ILinesRelationView;
+}
+
+export interface IOptions extends Partial<IRawRelation> {
+  cwd?: string;
 }

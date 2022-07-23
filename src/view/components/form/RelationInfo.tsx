@@ -21,13 +21,16 @@ const RelationInfoItems = ({
       showLine = false;
       showRev = false;
       break;
+    case "revFile":
+      showLine = false;
+      break;
     case "fileLine":
       showRev = false;
       break;
     case "revFileLine":
       break;
     case "withoutModification":
-      return <> without modification</>;
+      return <>without modification</>;
   }
 
   const handleChange = (e) => {

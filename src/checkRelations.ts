@@ -5,72 +5,73 @@ import { fileURLToPath } from "node:url";
 import { simpleGit } from "simple-git";
 import { checkDirty } from "./core/checkDirty.js";
 import { fixChanges } from "./core/fixChanges.js";
+import getDirnameBasename from "./core/getDirnameBasename.js";
 import { getInfo } from "./core/getInfo.js";
 import { getLinesRelation } from "./core/getLinesRelation.js";
 import { getRelationRange } from "./core/getRelationRange.js";
-import { ICheckResult, IRawRelation } from "./types";
+import { ICheckResult, IOptions, IRawRelation } from "./types";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-export interface IOptions {
-  cwd?: string;
-  [key: string]: string;
-}
 
 export const checkRelations = async (
   options?: IOptions
 ): Promise<ICheckResult[]> => {
-  const { cwd, srcCwd, config } = getInfo(options);
+  const { workingDirectory, relationFilePath, config } = getInfo(options);
 
-  const relationFilePath = join(cwd, ".relation", "relation.json");
   const relationBuffer = readFileSync(relationFilePath);
   const rawRelations: IRawRelation[] = JSON.parse(relationBuffer.toString());
 
-  const srcSimpleGit = simpleGit(srcCwd);
-  const destSimpleGit = simpleGit(cwd);
-
   const relations: ICheckResult[] = [];
   for (const rawRelation of rawRelations) {
-    const content = await destSimpleGit.show([
-      `${rawRelation.rev}:${rawRelation.path}`,
-    ]);
-    const contentHEAD = await destSimpleGit.show([
-      `${config.baseRev}:${rawRelation.path}`,
-    ]);
-
-    const srcContent = await srcSimpleGit.show([
-      `${rawRelation.srcRev}:${rawRelation.srcPath}`,
-    ]);
-
-    const srcContentHEAD = await srcSimpleGit.show([
-      `${config.baseRev}:${rawRelation.srcPath}`,
-    ]);
-
-    const changes = fixChanges(diffLines(content, contentHEAD));
-    const linesRelation = getLinesRelation(changes);
-    const relationRange = getRelationRange(
-      linesRelation.oldLinesRelationMap,
-      rawRelation.range
+    const [fromDir, fromFile] = getDirnameBasename(
+      path.join(workingDirectory, rawRelation.fromPath)
+    );
+    const [toDir, toFile] = getDirnameBasename(
+      path.join(workingDirectory, rawRelation.toPath)
     );
 
-    const srcChanges = fixChanges(diffLines(srcContent, srcContentHEAD));
-    const srcLinesRelation = getLinesRelation(srcChanges);
-    const srcRelationRange = getRelationRange(
-      srcLinesRelation.oldLinesRelationMap,
-      rawRelation.srcRange
+    const fromSimpleGit = simpleGit(fromDir);
+    const toSimpleGit = simpleGit(toDir);
+
+    const fromContent = await fromSimpleGit.show([
+      `${rawRelation.fromRev}:./${fromFile}`,
+    ]);
+    const fromContentHEAD = await fromSimpleGit.show([
+      `${config.baseRev}:./${fromFile}`,
+    ]);
+
+    const toContent = await toSimpleGit.show([
+      `${rawRelation.toRev}:./${toFile}`,
+    ]);
+    const toContentHEAD = await toSimpleGit.show([
+      `${config.baseRev}:./${toFile}`,
+    ]);
+
+    const toChanges = fixChanges(diffLines(toContent, toContentHEAD));
+    const toLinesRelation = getLinesRelation(toChanges);
+    const toRelationRange = getRelationRange(
+      toLinesRelation.oldLinesRelationMap,
+      rawRelation.toRange
+    );
+
+    const fromChanges = fixChanges(diffLines(fromContent, fromContentHEAD));
+    const fromLinesRelation = getLinesRelation(fromChanges);
+    const fromRelationRange = getRelationRange(
+      fromLinesRelation.oldLinesRelationMap,
+      rawRelation.fromRange
     );
 
     relations.push({
       ...rawRelation,
-      dirty: checkDirty({ changes: srcChanges, range: rawRelation.srcRange }),
-      content,
-      contentHEAD,
-      linesRelation,
-      relationRange,
-      srcContent,
-      srcContentHEAD,
-      srcLinesRelation,
-      srcRelationRange,
+      dirty: checkDirty({ changes: fromChanges, range: rawRelation.fromRange }),
+      toContent,
+      toContentHEAD,
+      toLinesRelation,
+      toRelationRange,
+      fromContent,
+      fromContentHEAD,
+      fromLinesRelation,
+      fromRelationRange,
     });
   }
 

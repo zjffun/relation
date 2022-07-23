@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import { IOptions } from "../checkRelations.js";
+import { IOptions } from "../types.js";
 import { getConfig } from "./getConfig.js";
 
 export function getInfo(options: IOptions) {
@@ -9,13 +9,12 @@ export function getInfo(options: IOptions) {
     cwd = options.cwd;
   }
 
+  // working directory, like `git -C <path>`
+  const workingDirectory = cwd;
+
+  const relationFilePath = join(workingDirectory, ".relation", "relation.json");
+
   const config = getConfig(cwd);
-
-  let srcCwd = cwd;
-
-  if (config.srcSubmoduleRelativePath) {
-    srcCwd = join(cwd, config.srcSubmoduleRelativePath);
-  }
 
   if (!config.baseRev) {
     config.baseRev = "@";
@@ -23,7 +22,8 @@ export function getInfo(options: IOptions) {
 
   return {
     cwd,
-    srcCwd,
+    workingDirectory,
+    relationFilePath,
     config,
   };
 }

@@ -6,11 +6,11 @@ import { createView } from "../createView";
 export default ({ checkResults }: { checkResults: ICheckResultView[] }) => {
   const ref = useRef(null);
 
-  const srcContentHEAD = checkResults[0]?.srcContentHEAD;
-  const contentHEAD = checkResults[0]?.contentHEAD;
+  const srcContentHEAD = checkResults[0]?.fromContentHEAD;
+  const contentHEAD = checkResults[0]?.toContentHEAD;
 
   useEffect(() => {
-    const relation = [];
+    const relation: any = [];
 
     checkResults.forEach((record) => {
       let type = RelationEnum.relate;
@@ -19,8 +19,8 @@ export default ({ checkResults }: { checkResults: ICheckResultView[] }) => {
       }
 
       relation.push([
-        record.srcRelationRange,
-        record.relationRange,
+        record.fromRelationRange,
+        record.toRelationRange,
         {
           type,
         },

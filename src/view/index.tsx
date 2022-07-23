@@ -28,11 +28,11 @@ if (!searchParams) {
   });
 }
 const Page = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
-  const [showingFile, setShowingFile] = useState(searchParams.srcPath);
+  const [showingFile, setShowingFile] = useState(searchParams.fromPath);
   const [showingRelation, setShowingRelation] = useState(searchParams.id);
 
   const fileCheckResults = groupBy(checkResults, (d) => {
-    return `${d.srcPath} -> ${d.path}`;
+    return `${d.fromPath} -> ${d.toPath}`;
   });
   const fileCheckResultsEntries = Object.entries(fileCheckResults);
 
@@ -41,13 +41,13 @@ const Page = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
       <ul className="file-check-result-list">
         {fileCheckResultsEntries.map(([file, relations]) => {
           return (
-            <li>
+            <li key={file}>
               <details>
                 <summary>
                   {file}
                   <button
                     onClick={() => {
-                      setShowingFile(file);
+                      setShowingFile(relations[0].fromPath);
                       setShowingRelation("");
                     }}
                   >
@@ -63,7 +63,7 @@ const Page = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
                           setShowingRelation(relation.id);
                         }}
                       >
-                        L{relation.srcRange[0]},{relation.srcRange[1]}
+                        L{relation.fromRange[0]},{relation.fromRange[1]}
                       </li>
                     );
                   })}
@@ -76,8 +76,8 @@ const Page = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
       <hr />
       {fileCheckResultsEntries.map(([file, checkResults]) => {
         return (
-          <>
-            {showingFile === checkResults[0].srcPath ? (
+          <div key={file}>
+            {showingFile === checkResults[0].fromPath ? (
               <>
                 <div>{file}</div>
                 <RelationOverview
@@ -89,7 +89,7 @@ const Page = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
               showingRelation={showingRelation}
               checkResults={checkResults}
             ></Relations>
-          </>
+          </div>
         );
       })}
     </>
@@ -119,33 +119,33 @@ const Relations = ({
         return (
           <>
             <div>
-              {checkResult.srcPath}:L{checkResult.srcRange[0]},
-              {checkResult.srcRange[1]} -&gt; {checkResult.path}:L
-              {checkResult.range[0]},{checkResult.range[1]}
+              {checkResult.fromPath}:L{checkResult.fromRange[0]},
+              {checkResult.fromRange[1]} -&gt; {checkResult.toPath}:L
+              {checkResult.toRange[0]},{checkResult.toRange[1]}
             </div>
             <RelationComponent
               relation={{
                 texts: [
-                  checkResult.srcContent,
-                  checkResult.srcContentHEAD,
-                  checkResult.content,
-                  checkResult.contentHEAD,
+                  checkResult.fromContent,
+                  checkResult.fromContentHEAD,
+                  checkResult.toContent,
+                  checkResult.toContentHEAD,
                 ],
                 relations: [
                   [
                     [
-                      checkResult.srcRange,
-                      checkResult.srcRelationRange,
+                      checkResult.fromRange,
+                      checkResult.fromRelationRange,
                       {
                         type,
                       },
                     ],
-                    ...createViewRelation(checkResult.srcLinesRelation),
+                    ...createViewRelation(checkResult.fromLinesRelation),
                   ],
                   [
                     [
-                      checkResult.srcRelationRange,
-                      checkResult.range,
+                      checkResult.fromRelationRange,
+                      checkResult.toRange,
                       {
                         type,
                       },
@@ -153,13 +153,13 @@ const Relations = ({
                   ],
                   [
                     [
-                      checkResult.range,
-                      checkResult.relationRange,
+                      checkResult.toRange,
+                      checkResult.toRelationRange,
                       {
                         type,
                       },
                     ],
-                    ...createViewRelation(checkResult.linesRelation),
+                    ...createViewRelation(checkResult.toLinesRelation),
                   ],
                 ],
               }}

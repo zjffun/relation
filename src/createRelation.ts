@@ -5,9 +5,8 @@ import { createRelations } from "./mdx/createRelation.js";
 import { IRawRelation } from "./types";
 
 export const createRelation = async (options) => {
-  const { cwd, srcCwd, config } = getInfo(options);
+  const { relationFilePath } = getInfo(options);
 
-  const relationFilePath = join(cwd, ".relation", "relation.json");
   const relationBuffer = readFileSync(relationFilePath);
   const rawRelations: IRawRelation[] = JSON.parse(relationBuffer.toString());
 

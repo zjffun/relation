@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { getInfo } from "./core/getInfo.js";
 import mergeRelation from "./core/mergeRelation.js";
-import { IOptions, IRawRelation } from "./types";
+import { IOptions, IRawRelation } from "./types.js";
 
 export const updateRelation = async (options: IOptions) => {
   const { relationFilePath } = getInfo(options);

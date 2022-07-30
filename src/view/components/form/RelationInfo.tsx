@@ -141,6 +141,22 @@ export default ({
               <label>file</label>
             </li>
             <li>
+              <input
+                name={formConfigSelectName}
+                checked={value[formConfigSelectName] === "revFile"}
+                value="revFile"
+                type="radio"
+                onChange={() => {
+                  onChange({
+                    ...value,
+                    [formConfigSelectName]: "revFile",
+                  });
+                  setShowConfigRadios(false);
+                }}
+              />
+              <label>rev and file</label>
+            </li>
+            <li>
               <label>
                 <input
                   name={formConfigSelectName}

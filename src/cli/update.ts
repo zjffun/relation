@@ -1,9 +1,5 @@
 import { Command } from "commander";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { updateRelation } from "../updateRelation.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const getRange = (value, dummyPrevious) => {
   if (!value) {

@@ -1,7 +1,6 @@
 import { diffLines } from "diff";
 import { readFileSync } from "node:fs";
-import path, { join } from "node:path";
-import { fileURLToPath } from "node:url";
+import path from "node:path";
 import { simpleGit } from "simple-git";
 import { checkDirty } from "./core/checkDirty.js";
 import { fixChanges } from "./core/fixChanges.js";
@@ -10,8 +9,6 @@ import { getInfo } from "./core/getInfo.js";
 import { getLinesRelation } from "./core/getLinesRelation.js";
 import { getRelationRange } from "./core/getRelationRange.js";
 import { ICheckResult, IOptions, IRawRelation } from "./types";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const checkRelations = async (
   options?: IOptions

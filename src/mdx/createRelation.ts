@@ -10,7 +10,7 @@ export async function createRelations(options: IOptions) {
   const { workingDirectory } = getInfo(options);
 
   const [fromDir, fromFile] = getDirnameBasename(options.fromPath);
-  const [toDir, toFile] = getDirnameBasename(options.fromPath);
+  const [toDir, toFile] = getDirnameBasename(options.toPath);
 
   const fromSimpleGit = simpleGit(fromDir);
   const toSimpleGit = simpleGit(toDir);

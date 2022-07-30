@@ -25,6 +25,9 @@ pre {
     display: flex;
     gap: 2em;
     &__text {
+      height: 100vh;
+      overflow-y: scroll;
+
       font-size: 12px;
       font-family: Menlo, Monaco, "Courier New", monospace;
       flex: 1 1 calc(50vw - 2em);

@@ -1,9 +1,5 @@
 import { Command } from "commander";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { createRelation } from "../createRelation.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { createRelation } from "../createRelation";
 
 export default function (program: Command) {
   program

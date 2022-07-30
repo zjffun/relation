@@ -1,10 +1,8 @@
 import { Command } from "commander";
 import fse from "fs-extra";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { checkRelations } from "../checkRelations.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { checkRelations } from "../checkRelations";
+import baseDirname from "../baseDirname";
 
 export default function (program: Command) {
   program.command("check").action(async () => {
@@ -23,12 +21,12 @@ export default function (program: Command) {
 
     const resultPath = path.join(process.cwd(), "relation-check-result");
 
-    fse.copySync(path.join(__dirname, "../view"), resultPath, {
+    fse.copySync(path.join(baseDirname, "view"), resultPath, {
       overwrite: true,
     });
 
     fse.writeFileSync(
-      path.join(resultPath, "check-results-data.js"),
+      path.join(resultPath, "check-results-data"),
       resultJSString
     );
   });

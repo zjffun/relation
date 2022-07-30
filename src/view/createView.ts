@@ -7,27 +7,39 @@ export function createView(selector, { texts, relations }) {
     .append("div")
     .attr("class", "relation-view-container");
   const svg = viewContainer.append("svg").attr("class", "relation-view-svg");
-  const links = svg.append("g").attr("class", "relation-view-svg__links");
+  const linksEl = svg.append("g").attr("class", "relation-view-svg__links");
 
   const textsEl = viewContainer
     .append("div")
     .attr("class", "relation-view-texts");
 
-  const textsArray = initTexts(textsEl, texts);
+  const update = () => {
+    initRelations(linksEl, relations, textsArray, viewContainer);
+  };
 
-  initRelations(links, relations, textsArray, viewContainer);
+  const textsArray = initTexts(textsEl, texts, update);
+
+  relations.forEach(() => {
+    linksEl.append("g").attr("class", "relation-view-svg__links__link");
+  });
+
+  update();
 }
 
 function initTexts(
   textsEl: Selection<HTMLDivElement, unknown, null, undefined>,
-  texts
+  texts,
+  update
 ) {
   const textsArray = [];
   texts.forEach((text) => {
     const textArray = [];
     const textEl = textsEl
       .append("pre")
-      .attr("class", "relation-view-texts__text");
+      .attr("class", "relation-view-texts__text")
+      .on("scroll", () => {
+        update();
+      });
 
     text.split("\n").forEach((d, i) => {
       const el = textEl.append("div").attr("class", "line");
@@ -45,22 +57,26 @@ function initTexts(
   return textsArray;
 }
 
-function initRelations(linksEl, relations, textsArray, viewContainer) {
-  relations.forEach((viewRelation, i) => {
-    const linkEl = linksEl
-      .append("g")
-      .attr("class", "relation-view-svg__links__link");
-
-    renderLinks(
-      linkEl,
-      viewRelationToLinks(
-        viewRelation,
-        textsArray[i],
-        textsArray[i + 1],
-        viewContainer
-      )
-    );
-  });
+function initRelations(
+  linksEl: Selection<SVGGElement, unknown, null, undefined>,
+  relations,
+  textsArray,
+  viewContainer
+) {
+  [...linksEl.selectAll(".relation-view-svg__links__link").nodes()].forEach(
+    (linkEl, i) => {
+      const viewRelation = relations[i];
+      renderLinks(
+        select(linkEl),
+        viewRelationToLinks(
+          viewRelation,
+          textsArray[i],
+          textsArray[i + 1],
+          viewContainer
+        )
+      );
+    }
+  );
 
   function viewRelationToLinks(
     viewRelation,

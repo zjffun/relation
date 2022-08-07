@@ -16,12 +16,12 @@
     "dist"
   ],
   "dependencies": {
-    "relation2-core": "^0.0.1",
     "classnames": "^2.3.1",
     "commander": "^9.3.0",
     "diff": "^5.0.0",
     "fs-extra": "^10.1.0",
     "nanoid": "^4.0.0",
+    "relation2-core": "^0.0.1",
     "remark-parse": "^10.0.1",
     "simple-git": "^3.10.0",
     "unified": "^10.1.2"
@@ -57,5 +57,6 @@
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.9.2",
     "webpack-merge": "^5.8.0"
-  }
+  },
+  "gitHead": "96ac5c9a09cc47f59251d469967675d43a305f77"
 }

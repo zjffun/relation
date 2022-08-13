@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 
-import OperationTypeSelect from "./components/form/OperationTypeSelect";
-import RelationFormTo from "./components/form/RelationFormTo";
+import OperationTypeSelect from "./form/OperationTypeSelect";
+import RelationFormTo from "./form/RelationFormTo";
 
 export interface IFormData {
   operationType: string;

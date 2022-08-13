@@ -10,6 +10,7 @@ const config: Configuration | any = {
   entry: {
     bundle: "./src/index.tsx",
     form: "./src/form.tsx",
+    relationView: "./src/relationView.tsx",
   },
   module: {
     rules: [
@@ -33,7 +34,7 @@ const config: Configuration | any = {
     path: path.resolve(__dirname, "./dist"),
   },
   plugins: [
-    // check-result
+    // check-result index
     new HtmlWebpackPlugin({
       filename: "index.html",
       templateContent: `
@@ -45,6 +46,19 @@ const config: Configuration | any = {
         </html>
       `,
       chunks: ["bundle"],
+    }),
+    // check-result relation-view
+    new HtmlWebpackPlugin({
+      filename: "relation-view.html",
+      templateContent: `
+        <html>
+          <body>
+            <div id="root"></div>
+            <script src="./check-results-data.js"></script>
+          </body>
+        </html>
+      `,
+      chunks: ["relationView"],
     }),
     // form
     new HtmlWebpackPlugin({

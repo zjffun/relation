@@ -1,5 +1,5 @@
 import React from "react";
-import { IFormData } from "../../form";
+import { IFormData } from "../form";
 import RelationInfo from "./RelationInfo";
 
 export default ({

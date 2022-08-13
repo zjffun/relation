@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
-import { IFormData } from "../../form";
+import { IFormData } from "../form";
 
 import "./RelationInfo.scss";
 

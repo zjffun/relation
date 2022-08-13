@@ -1,4 +1,4 @@
-import { RelationEnum } from ".";
+import { RelationEnum } from "../types";
 
 export const createViewRelation = (linesRelation) => {
   const viewRelation = [];

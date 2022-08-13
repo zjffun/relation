@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { RelationEnum } from "..";
-import { ICheckResultView } from "../../types";
+import { ICheckResultView, RelationEnum } from "../../types";
 import { createView } from "../createView";
 
 export default ({ checkResults }: { checkResults: ICheckResultView[] }) => {
@@ -21,9 +20,7 @@ export default ({ checkResults }: { checkResults: ICheckResultView[] }) => {
       relation.push([
         record.fromRelationRange,
         record.toRelationRange,
-        {
-          type,
-        },
+        { id: record.id, type },
       ]);
     });
     createView(ref.current, {

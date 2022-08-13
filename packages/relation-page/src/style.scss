@@ -52,6 +52,25 @@ pre {
 
     pointer-events: none;
 
+    .relation-link {
+      &__options {
+        pointer-events: all;
+      }
+    }
+
+    .relation-options {
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      justify-content: flex-end;
+
+      &__detail {
+      }
+      &__delete {
+      }
+    }
+
     rect,
     path {
       stroke: gray;

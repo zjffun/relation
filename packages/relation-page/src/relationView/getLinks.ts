@@ -18,6 +18,7 @@ export default ({ fromEditor, toEditor, relations }) => {
 
   relations.forEach(([fromLine, toLine, info]) => {
     const type = info?.type;
+    const id = info?.id;
 
     let fromLineTopEnd, toLineTopEnd;
 
@@ -53,6 +54,7 @@ export default ({ fromEditor, toEditor, relations }) => {
         [toLeft, toLine2TopSubScrollTop],
       ],
       type,
+      id,
     });
   });
 

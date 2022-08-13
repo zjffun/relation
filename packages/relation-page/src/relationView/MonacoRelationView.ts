@@ -3,6 +3,9 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import getLeftMiddleRightScrollTopMaps from "./getLeftMiddleRightScrollTopMaps";
 import getLinks from "./getLinks";
 
+const optionsWidth = 150;
+const optionsHeight = 24;
+
 export default class {
   public fromEditor: monaco.editor.IStandaloneCodeEditor;
   public toEditor: monaco.editor.IStandaloneCodeEditor;
@@ -28,6 +31,29 @@ export default class {
 
     this.syncEditor();
     this.syncRelation();
+    this.renderLinks();
+  }
+
+  public onDetailClick(event) {
+    document.dispatchEvent(
+      new CustomEvent("submitRelationFormData", {
+        detail: {
+          type: "detail",
+          id: event.target.getAttribute("relation-id"),
+        },
+      })
+    );
+  }
+
+  public onDeleteClick(event) {
+    document.dispatchEvent(
+      new CustomEvent("submitRelationFormData", {
+        detail: {
+          type: "delete",
+          id: event.target.getAttribute("relation-id"),
+        },
+      })
+    );
   }
 
   private syncEditor() {
@@ -45,6 +71,7 @@ export default class {
   }
 
   private onMouseWheel(event) {
+    event.preventDefault();
     event.stopImmediatePropagation();
     event.stopPropagation();
 
@@ -90,22 +117,60 @@ export default class {
 
     const rangeLinkHorizontalGen = rangeLinkHorizontal();
 
+    const optionsXGen = (d) => d.target[1][0] - optionsWidth;
+
+    const optionsYGen = (d) => d.target[1][1];
+
     const link = this.linkEl
-      .selectAll(".link")
+      .selectAll(".relation-link")
       .data(links)
       .join(
         (enter) => {
-          enter
+          const group = enter.append("g").attr("class", "relation-link");
+
+          group
             .append("path")
-            .attr("class", (link) => `link ${link.type}`)
+            .attr("class", (link) => `${link.type}`)
             .attr("fill", "none")
             .attr("stroke-width", 1)
             .attr("d", rangeLinkHorizontalGen)
             .style("opacity", 0.65);
+
+          const options = group.append("foreignObject");
+
+          options
+            .attr("class", "relation-link__options")
+            .attr("x", optionsXGen)
+            .attr("y", optionsYGen)
+            .attr("width", optionsWidth)
+            .attr("height", optionsHeight);
+
+          const optionsBody = options.append("xhtml:body");
+
+          optionsBody.attr("class", "relation-options");
+
+          const detailBtn = optionsBody
+            .append("button")
+            .text("detail")
+            .attr("class", "relation-options__detail")
+            .attr("relation-id", (d) => d.id)
+            .on("click", this.onDetailClick);
+
+          const deleteBtn = optionsBody
+            .append("button")
+            .text("delete")
+            .attr("class", "relation-options__delete")
+            .attr("relation-id", (d) => d.id)
+            .on("click", this.onDetailClick);
         },
         (update) => {
           // console.log("update", update);
-          update.attr("d", rangeLinkHorizontalGen);
+          update.select("path").attr("d", rangeLinkHorizontalGen);
+
+          update
+            .select(".relation-link__options")
+            .attr("x", optionsXGen)
+            .attr("y", optionsYGen);
         },
         (exit) => {
           // console.log("exit", exit);

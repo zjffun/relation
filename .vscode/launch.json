@@ -5,9 +5,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "args": ["${workspaceFolder}/tests/**/*.ts"],
+      "name": "Launch Chrome",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}/packages/relation-page"
+    },
+    {
+      "name": "Mocha Tests relation-core",
+      "cwd": "${workspaceFolder}/packages/relation-core",
+      "args": ["${workspaceFolder}/packages/relation-core/tests/**/*.ts"],
       "internalConsoleOptions": "openOnSessionStart",
-      "name": "Mocha Tests",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "request": "launch",
       "skipFiles": ["<node_internals>/**"],

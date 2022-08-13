@@ -13,32 +13,34 @@ export function getBlocks(ast: Root) {
     return blocks;
   }
 
-  let block: IBlock = {
-    start: children[0].position.start.line,
-  };
+  let startLine;
 
-  let i;
-  for (i = 1; i < children.length - 1; i++) {
-    if (block.start === undefined) {
-      block.start = children[i].position.start.line;
+  for (let i = 0; i < children.length - 1; i++) {
+    if (startLine === undefined) {
+      startLine = children[i].position.start.line;
     }
 
     if (children[i + 1].type !== "heading") {
       continue;
     }
 
-    block.end = children[i].position.end.line;
-    blocks.push(block);
-    block = {};
+    blocks.push({
+      start: startLine,
+      end: children[i].position.end.line,
+    });
+    startLine = undefined;
   }
 
-  if (block.start === undefined) {
-    block.start = children[i].position.end.line;
+  const lastChild = children.at(-1);
+
+  if (startLine === undefined) {
+    startLine = lastChild.position.start.line;
   }
 
-  block.end = children[i].position.end.line;
-
-  blocks.push(block);
+  blocks.push({
+    start: startLine,
+    end: lastChild.position.end.line,
+  });
 
   return blocks;
 }

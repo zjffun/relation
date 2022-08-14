@@ -24,7 +24,7 @@ function initEditors(
   const editors = [];
   texts.forEach((text) => {
     const textEl = textsEl
-      .append("pre")
+      .append("div")
       .attr("class", "relation-view-texts__text");
 
     const editor = MonacoRelationView.createEditor(textEl.node(), {

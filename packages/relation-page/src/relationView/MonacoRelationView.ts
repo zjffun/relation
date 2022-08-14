@@ -31,14 +31,16 @@ export default class {
 
     this.syncEditor();
     this.syncRelation();
+
+    this.initCreate();
+
     this.renderLinks();
   }
 
   public onDetailClick(event) {
     document.dispatchEvent(
-      new CustomEvent("submitRelationFormData", {
+      new CustomEvent("relationDetailButtonClick", {
         detail: {
-          type: "detail",
           id: event.target.getAttribute("relation-id"),
         },
       })
@@ -47,9 +49,8 @@ export default class {
 
   public onDeleteClick(event) {
     document.dispatchEvent(
-      new CustomEvent("submitRelationFormData", {
+      new CustomEvent("relationDeleteButtonClick", {
         detail: {
-          type: "delete",
           id: event.target.getAttribute("relation-id"),
         },
       })
@@ -64,6 +65,35 @@ export default class {
   private syncRelation() {
     this.fromEditor.onDidScrollChange(() => this.onDidScrollChange());
     this.toEditor.onDidScrollChange(() => this.onDidScrollChange());
+  }
+
+  private initCreate() {
+    this.fromEditor.onDidChangeCursorSelection(() =>
+      this.onDidChangeCursorSelection()
+    );
+    this.toEditor.onDidChangeCursorSelection(() =>
+      this.onDidChangeCursorSelection()
+    );
+  }
+
+  private onDidChangeCursorSelection() {
+    const fromSelection = this.fromEditor.getSelection();
+    const toSelection = this.toEditor.getSelection();
+    const fromStartLine = fromSelection.getStartPosition().lineNumber;
+    const fromEndLine = fromSelection.getEndPosition().lineNumber;
+    const toStartLine = toSelection.getStartPosition().lineNumber;
+    const toEndLine = toSelection.getEndPosition().lineNumber;
+
+    document.dispatchEvent(
+      new CustomEvent("relationCreateRangeChange", {
+        detail: {
+          fromStartLine,
+          fromEndLine,
+          toStartLine,
+          toEndLine,
+        },
+      })
+    );
   }
 
   private onDidScrollChange() {
@@ -161,7 +191,7 @@ export default class {
             .text("delete")
             .attr("class", "relation-options__delete")
             .attr("relation-id", (d) => d.id)
-            .on("click", this.onDetailClick);
+            .on("click", this.onDeleteClick);
         },
         (update) => {
           // console.log("update", update);

@@ -57,8 +57,8 @@ const Page = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
 const rootEl = document.getElementById("root");
 if (rootEl) {
   createRoot(rootEl).render(
-    <>
+    <div className="relation-view-page">
       <Page checkResults={checkResults} />
-    </>
+    </div>
   );
 }

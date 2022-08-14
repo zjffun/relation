@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { createView } from "../createView";
 
+import "./RelationComponent.scss";
+
 export default ({ relation }) => {
   const ref = useRef(null);
 
@@ -8,5 +10,5 @@ export default ({ relation }) => {
     createView(ref.current, relation);
   }, []);
 
-  return <section className="relation-container" ref={ref}></section>;
+  return <div className="relation-component" ref={ref}></div>;
 };

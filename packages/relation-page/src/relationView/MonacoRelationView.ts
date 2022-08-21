@@ -1,3 +1,4 @@
+import { Selection } from "d3-selection";
 import { linkHorizontal } from "d3-shape";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import getLeftMiddleRightScrollTopMaps from "./getLeftMiddleRightScrollTopMaps";
@@ -10,7 +11,7 @@ export default class {
   public fromEditor: monaco.editor.IStandaloneCodeEditor;
   public toEditor: monaco.editor.IStandaloneCodeEditor;
   public relations;
-  public container: SVGElement;
+  public container: Selection<HTMLDivElement, unknown, null, undefined>;
 
   private leftMiddleRightScrollTopMaps;
   private middleTop: number = 0;
@@ -37,6 +38,21 @@ export default class {
     this.renderLinks();
   }
 
+  public scrollToRelation(id) {
+    const relation = this.relations.find(([, , info]) => info.id === id);
+    if (!relation) {
+      return;
+    }
+    const fromLine = relation[0][0];
+    const leftTop = this.fromEditor.getTopForLineNumber(fromLine);
+
+    this.fromEditor.setScrollTop(leftTop);
+    const middleTop = this.getMiddleTopFromLeftTop(leftTop);
+    this.middleTop = middleTop;
+    const rightTop = this.getRightTopFromMiddleTop(middleTop);
+    this.toEditor.setScrollTop(rightTop);
+  }
+
   public onDetailClick(event) {
     document.dispatchEvent(
       new CustomEvent("relationDetailButtonClick", {
@@ -55,6 +71,41 @@ export default class {
         },
       })
     );
+  }
+
+  public getMiddleTopFromLeftTop(leftTop) {
+    const current = this.leftMiddleRightScrollTopMaps.find((d) => {
+      if (d[0][0] <= leftTop && d[0][1] >= leftTop) {
+        return true;
+      }
+    });
+
+    if (current) {
+      const ratio = (leftTop - current[0][0]) / (current[0][1] - current[0][0]);
+
+      return current[1][0] + (current[1][1] - current[1][0]) * ratio;
+    } else {
+      const lastLeftMiddleRight = this.leftMiddleRightScrollTopMaps.at(-1);
+      return lastLeftMiddleRight[1][1];
+    }
+  }
+
+  private getRightTopFromMiddleTop(middleTop) {
+    const current = this.leftMiddleRightScrollTopMaps.find((d) => {
+      if (d[1][0] <= middleTop && d[1][1] >= middleTop) {
+        return true;
+      }
+    });
+
+    if (current) {
+      const ratio =
+        (middleTop - current[1][0]) / (current[1][1] - current[1][0]);
+
+      return current[2][0] + (current[2][1] - current[2][0]) * ratio;
+    } else {
+      const lastLeftMiddleRight = this.leftMiddleRightScrollTopMaps.at(-1);
+      return lastLeftMiddleRight[2][1];
+    }
   }
 
   private syncEditor() {
@@ -136,6 +187,9 @@ export default class {
       this.fromEditor.setScrollTop(lastLeftMiddleRight[0][1]);
       this.toEditor.setScrollTop(lastLeftMiddleRight[2][1]);
     }
+
+    // scroll X
+    window.scrollBy(event.deltaX, 0);
   }
 
   public renderLinks() {

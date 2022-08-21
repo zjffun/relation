@@ -2,7 +2,7 @@ import { select, Selection } from "d3-selection";
 
 import MonacoRelationView from "./relationView/MonacoRelationView";
 
-export function createView(selector, { texts, relationsArray }) {
+export function createView(selector, { texts, relationsArray, currentId }) {
   const container = select(selector);
   const viewContainer = container
     .append("div")
@@ -14,7 +14,7 @@ export function createView(selector, { texts, relationsArray }) {
 
   const editors = initEditors(textsEl, texts);
 
-  initRelations(editors, relationsArray, viewContainer);
+  initRelations(editors, relationsArray, viewContainer, currentId);
 }
 
 function initEditors(
@@ -37,7 +37,7 @@ function initEditors(
   return editors;
 }
 
-function initRelations(editors, relationsArray, viewContainer) {
+function initRelations(editors, relationsArray, viewContainer, currentId) {
   for (let i = 0; i < editors.length - 1; i++) {
     const svg = viewContainer
       .append("svg")
@@ -53,6 +53,15 @@ function initRelations(editors, relationsArray, viewContainer) {
 
     const formEditor = editors[i];
     const toEditor = editors[i + 1];
-    new MonacoRelationView(formEditor, toEditor, relationsArray[i], svg);
+    const monacoRelationView = new MonacoRelationView(
+      formEditor,
+      toEditor,
+      relationsArray[i],
+      svg
+    );
+
+    if (currentId) {
+      monacoRelationView.scrollToRelation(currentId);
+    }
   }
 }

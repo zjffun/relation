@@ -15,8 +15,16 @@ export default async (options?: IOptions): Promise<ICheckResult[]> => {
 
   const rawRelations = readRelation(options);
 
+  let filteredRawRelations = rawRelations;
+
+  if (options.fromPath) {
+    filteredRawRelations = rawRelations.filter(
+      ({ fromPath }) => fromPath === options.fromPath
+    );
+  }
+
   const relations: ICheckResult[] = [];
-  for (const rawRelation of rawRelations) {
+  for (const rawRelation of filteredRawRelations) {
     const [fromDir, fromFile] = getDirnameBasename(
       path.join(workingDirectory, rawRelation.fromPath)
     );

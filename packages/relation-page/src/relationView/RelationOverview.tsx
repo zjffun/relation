@@ -63,7 +63,13 @@ const CreateMode = () => {
   );
 };
 
-export default ({ checkResults }: { checkResults: ICheckResultView[] }) => {
+export default ({
+  checkResults,
+  currentId,
+}: {
+  checkResults: ICheckResultView[];
+  currentId?: string;
+}) => {
   const srcContentHEAD = checkResults[0]?.fromContentHEAD;
   const contentHEAD = checkResults[0]?.toContentHEAD;
 
@@ -96,6 +102,7 @@ export default ({ checkResults }: { checkResults: ICheckResultView[] }) => {
           relation={{
             texts: [srcContentHEAD, contentHEAD],
             relationsArray: [relation],
+            currentId,
           }}
         ></RelationComponent>
       </section>

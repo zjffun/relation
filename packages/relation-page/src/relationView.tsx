@@ -22,17 +22,23 @@ if (!searchParams) {
 const Page = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
   const [showingFile, setShowingFile] = useState(searchParams.fromPath);
   const [showingRelation, setShowingRelation] = useState(searchParams.id);
+  const [detailMode, setDetailMode] = useState(searchParams.detailMode);
 
   const fileCheckResults = groupBy(checkResults, (d) => {
     return `${d.fromPath} -> ${d.toPath}`;
   });
   const fileCheckResultsEntries = Object.entries(fileCheckResults);
 
-  if (showingRelation) {
+  if (detailMode) {
     const checkResult = checkResults.find((d) => d.id === showingRelation);
 
     if (checkResult) {
-      return <RelationDetail checkResult={checkResult}></RelationDetail>;
+      return (
+        <RelationDetail
+          checkResult={checkResult}
+          currentId={showingRelation}
+        ></RelationDetail>
+      );
     }
 
     return <>Not Find {showingRelation}</>;
@@ -40,14 +46,16 @@ const Page = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
 
   const showingCheckResults = fileCheckResultsEntries.find(
     ([, checkResults]) => {
-      console.log(checkResults[0].fromPath, showingFile);
       return checkResults[0].fromPath === showingFile;
     }
   )?.[1];
 
   if (showingCheckResults) {
     return (
-      <RelationOverview checkResults={showingCheckResults}></RelationOverview>
+      <RelationOverview
+        checkResults={showingCheckResults}
+        currentId={showingRelation}
+      ></RelationOverview>
     );
   }
 

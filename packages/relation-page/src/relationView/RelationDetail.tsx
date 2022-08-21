@@ -5,7 +5,13 @@ import { createViewRelation } from "../createViewRelation";
 
 import "./RelationDetail.scss";
 
-export default ({ checkResult }: { checkResult: ICheckResultView }) => {
+export default ({
+  checkResult,
+  currentId,
+}: {
+  checkResult: ICheckResultView;
+  currentId?: string;
+}) => {
   let type = RelationEnum.relate;
   if (checkResult.dirty) {
     type = RelationEnum.dirty;
@@ -61,6 +67,7 @@ export default ({ checkResult }: { checkResult: ICheckResultView }) => {
                 ...createViewRelation(checkResult.toLinesRelation),
               ],
             ],
+            currentId,
           }}
         ></RelationComponent>
       </section>

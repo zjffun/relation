@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "version": "0.0.5",
+  "version": "0.0.6",
   "repository": "git@github.com:zjffun/relation.git",
   "author": "Jufeng Zhang <zjffun@gmail.com>",
   "license": "MIT",

@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "version": "0.0.0",
+  "version": "0.0.5",
   "repository": "git@github.com:zjffun/relation.git",
   "author": "Jufeng Zhang <zjffun@gmail.com>",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "prepublishOnly": "npm run build && npm run test",
     "build": "lerna run build",
     "test": "lerna run test",
-    "publish": "lerna publish from-package --yes"
+    "publish": "lerna publish"
   },
   "dependencies": {},
   "devDependencies": {

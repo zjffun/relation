@@ -7,6 +7,7 @@
   "author": "Jufeng Zhang <zjffun@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "prepublishOnly": "npm run build && npm run test",
     "start": "npm run watch",
     "build": "tsc --project tsconfig.build.json",
     "watch": "tsc --watch",

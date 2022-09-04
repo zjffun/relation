@@ -8,11 +8,11 @@
   "license": "MIT",
   "types": "index.d.ts",
   "scripts": {
+    "prepublishOnly": "npm run build && npm run test",
     "start": "npm run watch",
     "build": "cross-env NODE_OPTIONS='--loader ts-node/esm' webpack --config ./webpack.prod.ts",
     "watch": "cross-env NODE_OPTIONS='--loader ts-node/esm' webpack serve --open --config ./webpack.dev.ts",
-    "test": "echo 'relation-page test'",
-    "prepublishOnly": "npm run build && npm run test"
+    "test": "echo 'relation-page test'"
   },
   "files": [
     "dist"

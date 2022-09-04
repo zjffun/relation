@@ -6,5 +6,11 @@
   "npmClient": "yarn",
   "useNx": true,
   "useWorkspaces": true,
-  "version": "0.0.10"
+  "version": "0.0.11",
+  "command": {
+    "version": {
+      "forcePublish": true,
+      "exact": true
+    }
+  }
 }

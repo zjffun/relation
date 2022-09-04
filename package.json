@@ -9,7 +9,7 @@
   "author": "Jufeng Zhang <zjffun@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prepublishOnly": "npm run build && npm run test ",
+    "prepublishOnly": "npm run build && npm run test",
     "build": "lerna run build",
     "test": "lerna run test",
     "publish": "lerna publish from-package --yes"

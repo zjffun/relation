@@ -1,1 +1,6 @@
-{}
+{
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  }
+}

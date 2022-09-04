@@ -22,8 +22,10 @@
     "fs-extra": "^10.1.0",
     "nanoid": "^4.0.0",
     "relation2-core": "^0.0.1",
+    "relation2-page": "^0.0.1",
     "remark-parse": "^10.0.1",
     "simple-git": "^3.10.0",
+    "stringify-json-script-content": "^0.0.2",
     "unified": "^10.1.2"
   },
   "devDependencies": {

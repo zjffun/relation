@@ -25,15 +25,26 @@ export default async (options) => {
     await toSimpleGit.raw("rev-parse", options.toRev)
   ).trim();
 
+  const fromRootDir = await fromSimpleGit.revparse(["--show-toplevel"]);
+  const toRootDir = await toSimpleGit.revparse(["--show-toplevel"]);
+
+  const fromBaseDir = path.relative(workingDirectory, fromRootDir);
+  const toBaseDir = path.relative(workingDirectory, toRootDir);
+
+  const fromPath = path.relative(fromRootDir, options.fromPath);
+  const toPath = path.relative(toRootDir, options.toPath);
+
   const relations: IRawRelation[] = [
     ...rawRelations,
     {
       id: nanoid(),
       fromRev: parsedFromRev,
-      fromPath: path.relative(workingDirectory, options.fromPath),
+      fromPath,
+      fromBaseDir,
       fromRange: options.fromRange,
       toRev: parsedToRev,
-      toPath: path.relative(workingDirectory, options.toPath),
+      toPath,
+      toBaseDir,
       toRange: options.toRange,
     },
   ];

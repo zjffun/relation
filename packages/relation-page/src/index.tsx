@@ -1,49 +1,63 @@
-import groupBy from "lodash/groupBy";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { ICheckResultView } from "../types";
 
 import "./style.scss";
 
-const checkResults = (window as any).checkResults as ICheckResultView[];
+const Page = () => {
+  const [viewCheckResults, setViewCheckResults] = useState(
+    (window as any).checkResults as ICheckResultView[]
+  );
 
-const Page = ({ checkResults }: { checkResults: ICheckResultView[] }) => {
-  const fileCheckResults = groupBy(checkResults, (d) => {
-    return `${d.fromPath} -> ${d.toPath}`;
-  });
-  const fileCheckResultsEntries = Object.entries(fileCheckResults);
+  useEffect(() => {
+    if ((window as any).relationLoadData) {
+      fetch("./check-results-data.json")
+        .then((d) => d.json())
+        .then((d) => {
+          setViewCheckResults(d);
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    }
+  }, []);
+
+  if (!viewCheckResults) {
+    return null;
+  }
 
   return (
     <ul className="file-check-result-list">
-      {fileCheckResultsEntries.map(([file, relations]) => {
+      {viewCheckResults.map(({ id, key, checkResults, dirty }) => {
         return (
-          <li key={file}>
+          <li key={key}>
             <details>
               <summary>
-                {file}
+                {dirty && "! "}
+                {key}
                 <button
                   onClick={() => {
                     window.open(
-                      `relation-view.html?fromPath=${relations[0].fromPath}`
+                      `relation-preview-view.html?checkResultViewId=${id}`
                     );
                   }}
                 >
                   view
                 </button>
               </summary>
-              <ul>
-                {relations.map((relation) => {
+              {/* <ul>
+                {checkResults.map((checkReault) => {
                   return (
                     <li
                       onClick={() => {
-                        window.open(`relation-view.html?id=${relation.id}`);
+                        window.open(`relation-view.html?id=${checkReault.id}`);
                       }}
                     >
-                      L{relation.fromRange[0]},{relation.fromRange[1]}
+                      L{checkReault.fromRange[0]},{checkReault.fromRange[1]}
                     </li>
                   );
                 })}
-              </ul>
+              </ul> */}
             </details>
           </li>
         );
@@ -56,7 +70,7 @@ const rootEl = document.getElementById("root");
 if (rootEl) {
   createRoot(rootEl).render(
     <>
-      <Page checkResults={checkResults} />
+      <Page />
     </>
   );
 }

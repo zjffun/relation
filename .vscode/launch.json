@@ -28,7 +28,7 @@
       "cwd": "/Users/zjf/gh/translated-content-relation",
       "args": ["check"],
       "name": "CLI check",
-      "program": "${workspaceFolder}/cli.js",
+      "program": "${workspaceFolder}/packages/relation-cli/dist/index.js",
       "request": "launch",
       "skipFiles": ["<node_internals>/**"],
       "type": "node"
@@ -69,6 +69,21 @@
       ],
       "name": "CLI update",
       "program": "${workspaceFolder}/cli.js",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
+    },
+    {
+      "cwd": "/Users/zjf/gh/translated-content-relation",
+      "args": [
+        "check",
+        "--output",
+        "html",
+        "--from",
+        "content/files/en-us/web/javascript/guide/regular_expressions/character_classes/index.md"
+      ],
+      "name": "CLI check - html",
+      "program": "${workspaceFolder}/packages/relation-cli/dist/index.js",
       "request": "launch",
       "skipFiles": ["<node_internals>/**"],
       "type": "node"

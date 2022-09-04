@@ -29,19 +29,20 @@ export default async (options?: IOptions): Promise<IRawRelationWithDirty[]> => {
     const fromParsedRev = await gitServer.parseRev(
       workingDirectory,
       rawRelation.fromRev,
-      rawRelation.fromPath
+      rawRelation.fromBaseDir
     );
 
     const fromParsedRevHead = await gitServer.parseRev(
       workingDirectory,
       config.baseRev,
-      rawRelation.fromPath
+      rawRelation.fromBaseDir
     );
 
     const fromChanges = await ChangeServer.singleton().getFixedChanges(
       workingDirectory,
       fromParsedRev,
       fromParsedRevHead,
+      rawRelation.fromBaseDir,
       rawRelation.fromPath
     );
 

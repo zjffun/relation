@@ -1,6 +1,5 @@
 import path from "path";
 import simpleGit from "simple-git";
-import getDirnameBasename from "./getDirnameBasename.js";
 
 let singleton: GitServer = null;
 
@@ -8,8 +7,8 @@ export default class GitServer {
   public showMap = new Map<string, string>();
   public revMap = new Map<string, string>();
 
-  async parseRev(workingDirectory, revision, filePath) {
-    const key = `${revision}:${filePath}`;
+  async parseRev(workingDirectory, revision, baseDir) {
+    const key = `${revision}:${baseDir}`;
 
     let result = this.revMap.get(key);
 
@@ -17,9 +16,7 @@ export default class GitServer {
       return result;
     }
 
-    const [dirName] = getDirnameBasename(path.join(workingDirectory, filePath));
-
-    const simpleGitInstance = simpleGit(dirName);
+    const simpleGitInstance = simpleGit(path.join(workingDirectory, baseDir));
 
     result = (await simpleGitInstance.raw("rev-parse", revision)).trim();
 
@@ -28,7 +25,7 @@ export default class GitServer {
     return result;
   }
 
-  async show(workingDirectory, parsedRevision, filePath) {
+  async show(workingDirectory, parsedRevision, baseDir, filePath) {
     const key = `${parsedRevision}:${filePath}`;
 
     let result = this.showMap.get(key);
@@ -37,13 +34,16 @@ export default class GitServer {
       return result;
     }
 
-    const [dirName, baseName] = getDirnameBasename(
-      path.join(workingDirectory, filePath)
-    );
+    const simpleGitInstance = simpleGit(path.join(workingDirectory, baseDir));
 
-    const simpleGitInstance = simpleGit(dirName);
-
-    result = await simpleGitInstance.show([`${parsedRevision}:./${baseName}`]);
+    try {
+      result = await simpleGitInstance.show([
+        `${parsedRevision}:./${filePath}`,
+      ]);
+    } catch (error) {
+      console.error(error);
+      result = "";
+    }
 
     this.showMap.set(key, result);
 

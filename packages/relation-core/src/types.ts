@@ -1,50 +1,55 @@
-export interface IRawRelation {
-  id?: string;
-  fromRev: string;
+export interface IRawRelationCommon {
   fromPath: string;
-  fromRange: [number, number];
-  toRev: string;
+  fromBaseDir: string;
   toPath: string;
+  toBaseDir: string;
+}
+
+export interface IRawRelationBasic {
+  id?: string;
+  fromRange: [number, number];
   toRange: [number, number];
+  fromRev: string;
+  toRev: string;
 }
 
-export interface IExtra {
+export interface IRawRelation extends IRawRelationCommon, IRawRelationBasic {}
+
+export enum LineRelationTypeEnum {
+  ADDED = "ADDED",
+  REMOVED = "REMOVED",
+  MODIFIED = "MODIFIED",
+}
+
+export interface ILineRelation {
+  originalRange: [number, number];
+  modifiedRange: [number, number];
+  type?: LineRelationTypeEnum;
+}
+
+export interface ICheckResultCommon {
+  currentFromRev: string;
+  currentToRev: string;
+}
+
+export interface ICheckResultBasic {
   dirty: boolean;
+  fromModifiedRange: [number, number];
+  toModifiedRange: [number, number];
 }
 
-export type ILineRange = [number, number, IExtra] | [number, number];
-
-export type ILinesRelationMap = Map<ILineRange, ILineRange>;
-
-export interface ILinesRelation {
-  oldLines: ILineRange[];
-  newLines: ILineRange[];
-  oldLinesRelationMap: ILinesRelationMap;
-  newLinesRelationMap: ILinesRelationMap;
-}
-
-export interface ILinesRelationView {
-  oldLines: ILineRange[];
-  newLines: ILineRange[];
-  oldLinesRelationMap: [ILineRange, ILineRange][];
-  newLinesRelationMap: [ILineRange, ILineRange][];
-}
-
-export interface ICheckResultBasic extends IRawRelation {
-  dirty: boolean;
-  fromContent: string;
-  fromContentHEAD: string;
-  fromRelationRange: [number, number];
-  toContent: string;
-  toContentHEAD: string;
-  toRelationRange: [number, number];
-}
-
-export interface ICheckResult extends ICheckResultBasic {
-  fromLinesRelation: ILinesRelation;
-  toLinesRelation: ILinesRelation;
-}
+export interface ICheckResult
+  extends ICheckResultBasic,
+    ICheckResultCommon,
+    IRawRelation {}
 
 export interface IOptions extends Partial<IRawRelation> {
   cwd?: string;
+}
+
+export interface IOriginalAndModifiedContentResult {
+  fromOriginalContent: string;
+  fromModifiedContent: string;
+  toOriginalContent: string;
+  toModifiedContent: string;
 }

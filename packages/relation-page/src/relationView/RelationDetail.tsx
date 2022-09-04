@@ -1,20 +1,25 @@
 import React from "react";
-import { ICheckResultView, RelationEnum } from "../../types";
-import RelationComponent from "./RelationComponent";
-import { createViewRelation } from "../createViewRelation";
+import { RelationTypeEnum } from "../../types";
+import RelationComponent from "./RelationsMain";
 
+import {
+  ICheckResult,
+  IOriginalAndModifiedContentResult,
+} from "relation2-core";
 import "./RelationDetail.scss";
 
 export default ({
   checkResult,
   currentId,
+  originalAndModifiedContents,
 }: {
-  checkResult: ICheckResultView;
+  originalAndModifiedContents: IOriginalAndModifiedContentResult;
+  checkResult: ICheckResult;
   currentId?: string;
 }) => {
-  let type = RelationEnum.relate;
+  let type = RelationTypeEnum.relate;
   if (checkResult.dirty) {
-    type = RelationEnum.dirty;
+    type = RelationTypeEnum.dirty;
   }
 
   return (
@@ -25,29 +30,29 @@ export default ({
         {checkResult.toRange[0]},{checkResult.toRange[1]}
       </header>
       <section className="relation-detail__relations">
-        <RelationComponent
+        {/* <RelationComponent
           relation={{
             texts: [
-              checkResult.fromContent,
-              checkResult.fromContentHEAD,
-              checkResult.toContent,
-              checkResult.toContentHEAD,
+              originalAndModifiedContents.fromOriginalContent,
+              originalAndModifiedContents.fromModifiedContent,
+              originalAndModifiedContents.toOriginalContent,
+              originalAndModifiedContents.toModifiedContent,
             ],
             relationsArray: [
               [
                 [
                   checkResult.fromRange,
-                  checkResult.fromRelationRange,
+                  checkResult.fromModifiedRange,
                   {
                     type,
                     id: checkResult.id,
                   },
                 ],
-                ...createViewRelation(checkResult.fromLinesRelation),
+                // ...createViewRelation(checkResult.fromLinesRelation),
               ],
               [
                 [
-                  checkResult.fromRelationRange,
+                  checkResult.fromModifiedRange,
                   checkResult.toRange,
                   {
                     type,
@@ -58,18 +63,18 @@ export default ({
               [
                 [
                   checkResult.toRange,
-                  checkResult.toRelationRange,
+                  checkResult.toModifiedRange,
                   {
                     type,
                     id: checkResult.id,
                   },
                 ],
-                ...createViewRelation(checkResult.toLinesRelation),
+                // ...createViewRelation(checkResult.toLinesRelation),
               ],
             ],
             currentId,
           }}
-        ></RelationComponent>
+        ></RelationComponent> */}
       </section>
     </main>
   );

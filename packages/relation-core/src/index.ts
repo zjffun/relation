@@ -8,3 +8,6 @@ export { default as mapRelation } from "./mapRelation.js";
 export { default as updateRelation } from "./updateRelation.js";
 export { default as insertRelation } from "./insertRelation.js";
 export { default as getRawRelationWithDirty } from "./getRawRelationWithDirty.js";
+export { default as getOriginalAndModifiedContent } from "./getOriginalAndModifiedContent.js";
+export * from "./core/groupByKey.js";
+export * from "./core/getKey.js";

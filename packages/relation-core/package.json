@@ -19,9 +19,11 @@
   "dependencies": {
     "diff": "^5.0.0",
     "fs-extra": "^10.1.0",
+    "lodash": "^4.17.21",
     "nanoid": "^4.0.0",
     "remark-parse": "^10.0.1",
     "simple-git": "^3.10.0",
+    "split-split": "^0.0.2",
     "unified": "^10.1.2"
   },
   "devDependencies": {

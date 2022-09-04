@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import createRelation from "../src/createRelation.js";
+import createRelations from "../src/createRelations.js";
 import { relationTestRepoPath } from "./common.js";
 import * as path from "node:path";
 

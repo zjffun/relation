@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { createRelation } from "relation2-core";
+import { createRelations } from "relation2-core";
 
 export default function (program: Command) {
   program
@@ -9,6 +9,6 @@ export default function (program: Command) {
     .option("--srcPath <string>", "", "")
     .option("--path <string>", "", "")
     .action((opts) => {
-      createRelation(opts);
+      createRelations(opts);
     });
 }

@@ -10,7 +10,8 @@ const config: Configuration | any = {
   entry: {
     bundle: "./src/index.tsx",
     form: "./src/form.tsx",
-    relationView: "./src/relationView.tsx",
+    relationPreviewView: "./src/relationPreviewView.tsx",
+    relationDetailView: "./src/relationDetailView.tsx",
   },
   module: {
     rules: [
@@ -41,24 +42,43 @@ const config: Configuration | any = {
         <html>
           <body>
             <div id="root"></div>
-            <script src="./check-results-data.js"></script>
+            <script>
+              window.relationLoadData = true;
+            </script>
           </body>
         </html>
       `,
       chunks: ["bundle"],
     }),
-    // check-result relation-view
+    // check-result relationPreviewView
     new HtmlWebpackPlugin({
-      filename: "relation-view.html",
+      filename: "relation-preview-view.html",
       templateContent: `
         <html>
           <body>
             <div id="root"></div>
-            <script src="./check-results-data.js"></script>
+            <script>
+              window.relationLoadData = true;
+            </script>
           </body>
         </html>
       `,
-      chunks: ["relationView"],
+      chunks: ["relationPreviewView"],
+    }),
+    // check-result relationDetailView
+    new HtmlWebpackPlugin({
+      filename: "relation-detail-view.html",
+      templateContent: `
+        <html>
+          <body>
+            <div id="root"></div>
+            <script>
+              window.relationLoadData = true;
+            </script>
+          </body>
+        </html>
+      `,
+      chunks: ["relationDetailView"],
     }),
     // form
     new HtmlWebpackPlugin({

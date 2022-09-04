@@ -1,9 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import { ICheckResultView, RelationEnum } from "../../types";
-import { createView } from "../createView";
-import RelationComponent from "./RelationComponent";
+import classNames from "classnames";
+import React, { useEffect, useState } from "react";
+import { ICheckResultView, RelationTypeEnum } from "../../types";
+import RelationsMain from "./RelationsMain";
 
-import "./RelationOverview.scss";
+import "./RelationsWindow.scss";
+
+const infoKey = [
+  "currentFromRev",
+  "fromBaseDir",
+  "fromPath",
+  "currentToRev",
+  "toBaseDir",
+  "toPath",
+];
 
 const CreateMode = () => {
   const [checked, setChecked] = useState(false);
@@ -64,47 +73,70 @@ const CreateMode = () => {
 };
 
 export default ({
-  checkResults,
+  viewCheckResults,
   currentId,
+  readOnly,
 }: {
-  checkResults: ICheckResultView[];
+  viewCheckResults: ICheckResultView;
   currentId?: string;
+  readOnly?: boolean;
 }) => {
-  const srcContentHEAD = checkResults[0]?.fromContentHEAD;
-  const contentHEAD = checkResults[0]?.toContentHEAD;
+  const [openInfo, setOpenInfo] = useState(false);
+  const { checkResults } = viewCheckResults;
 
   const relation: any = [];
 
   checkResults.forEach((record) => {
-    let type = RelationEnum.relate;
+    let type = RelationTypeEnum.relate;
     if (record.dirty) {
-      type = RelationEnum.dirty;
+      type = RelationTypeEnum.dirty;
     }
 
     relation.push([
-      record.fromRelationRange,
-      record.toRelationRange,
+      record.fromModifiedRange,
+      record.toModifiedRange,
       { id: record.id, type },
     ]);
   });
 
   return (
-    <main className="relation-overview">
+    <main
+      className={classNames({
+        "relation-overview": true,
+        "relation-overview--read-only": readOnly,
+      })}
+    >
       <header className="relation-overview__header">
         <ul className="relation-overview__header__list">
+          <li>
+            <button onClick={() => setOpenInfo(true)}>info</button>
+            <dialog open={openInfo} className="relation-overview__dialog">
+              <dl>
+                {infoKey.map((key, i) => {
+                  return (
+                    <>
+                      <dt key={i}>{key}</dt>
+                      <dd key={i}>{viewCheckResults[key]}</dd>
+                    </>
+                  );
+                })}
+              </dl>
+
+              <form method="dialog">
+                <button onClick={() => setOpenInfo(false)}>OK</button>
+              </form>
+            </dialog>
+          </li>
           <li className="relation-overview__header__list__item">
             <CreateMode></CreateMode>
           </li>
         </ul>
       </header>
-      <section className="relation-overview__relations">
-        <RelationComponent
-          relation={{
-            texts: [srcContentHEAD, contentHEAD],
-            relationsArray: [relation],
-            currentId,
-          }}
-        ></RelationComponent>
+      <section className={"relation-overview__relations"}>
+        <RelationsMain
+          viewCheckResults={viewCheckResults}
+          currentId={currentId}
+        ></RelationsMain>
       </section>
     </main>
   );

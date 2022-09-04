@@ -1,39 +1,52 @@
-export default ({ fromEditor, toEditor, relations }) => {
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { IRelation } from "../../types";
+
+export default ({
+  fromEditor,
+  toEditor,
+  relations,
+  fromContainerDomNode,
+  toContainerDomNode,
+}: {
+  fromEditor: monaco.editor.IStandaloneCodeEditor;
+  toEditor: monaco.editor.IStandaloneCodeEditor;
+  relations: IRelation[];
+  fromContainerDomNode?: HTMLElement;
+  toContainerDomNode?: HTMLElement;
+}) => {
   const fromScrollTop = fromEditor.getScrollTop();
   const toScrollTop = toEditor.getScrollTop();
 
-  const { width: fromEditorWidth, left: fromEditorLeft } = fromEditor
-    .getDomNode()
-    .getBoundingClientRect();
+  const currentFromContainerDomNode =
+    fromContainerDomNode || fromEditor.getDomNode();
+  const { width: fromEditorWidth, left: fromEditorLeft } =
+    currentFromContainerDomNode.getBoundingClientRect();
   const fromLeft = 0;
   const fromRight = fromEditorWidth;
 
-  const { width: toEditorWidth, left: toEditorLeft } = toEditor
-    .getDomNode()
-    .getBoundingClientRect();
+  const currentToContainerDomNode = toContainerDomNode || toEditor.getDomNode();
+  const { width: toEditorWidth, left: toEditorLeft } =
+    currentToContainerDomNode.getBoundingClientRect();
   const toLeft = toEditorLeft - fromEditorLeft;
   const toRight = toLeft + toEditorWidth;
 
   const links = [];
 
-  relations.forEach(([fromLine, toLine, info]) => {
-    const type = info?.type;
-    const id = info?.id;
-
+  relations.forEach(({ fromRange, toRange, type, id }) => {
     let fromLineTopEnd, toLineTopEnd;
 
-    const fromLineTopStart = fromEditor.getTopForLineNumber(fromLine[0]);
-    if (fromLine[1] !== null) {
-      fromLineTopEnd = fromEditor.getTopForLineNumber(fromLine[1] + 1);
+    const fromLineTopStart = fromEditor.getTopForLineNumber(fromRange[0]);
+    if (fromRange[1] !== null) {
+      fromLineTopEnd = fromEditor.getTopForLineNumber(fromRange[1] + 1);
     } else {
       fromLineTopEnd = fromLineTopStart;
     }
     const fromLine1TopSubScrollTop = fromLineTopStart - fromScrollTop;
     const fromLine2TopSubScrollTop = fromLineTopEnd - fromScrollTop;
 
-    const toLineTopStart = toEditor.getTopForLineNumber(toLine[0]);
-    if (toLine[1] !== null) {
-      toLineTopEnd = toEditor.getTopForLineNumber(toLine[1] + 1);
+    const toLineTopStart = toEditor.getTopForLineNumber(toRange[0]);
+    if (toRange[1] !== null) {
+      toLineTopEnd = toEditor.getTopForLineNumber(toRange[1] + 1);
     } else {
       toLineTopEnd = toLineTopStart;
     }

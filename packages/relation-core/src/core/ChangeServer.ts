@@ -17,9 +17,10 @@ export default class ChangeServer {
     workingDirectory,
     parsedRevision1,
     parsedRevision2,
+    baseDir,
     filePath
   ) {
-    const key = `${parsedRevision1}:${parsedRevision2}:${filePath}`;
+    const key = `${parsedRevision1}:${parsedRevision2}:${baseDir}:${filePath}`;
 
     let result = this.fixedChangesMap.get(key);
 
@@ -30,12 +31,14 @@ export default class ChangeServer {
     const content1 = await this.gitServer.show(
       workingDirectory,
       parsedRevision1,
+      baseDir,
       filePath
     );
 
     const content2 = await this.gitServer.show(
       workingDirectory,
       parsedRevision2,
+      baseDir,
       filePath
     );
 

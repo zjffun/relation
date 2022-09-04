@@ -1,3 +1,6 @@
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { IRelation } from "../../types";
+
 const getLastLeftMiddleRightScrollTopMap = ({
   fromEditor,
   toEditor,
@@ -68,22 +71,30 @@ const getGapLeftMiddleRightScrollTopMap = ({
   ];
 };
 
-export default ({ fromEditor, toEditor, relations }) => {
+export default ({
+  fromEditor,
+  toEditor,
+  relations,
+}: {
+  fromEditor: monaco.editor.IStandaloneCodeEditor;
+  toEditor: monaco.editor.IStandaloneCodeEditor;
+  relations: IRelation[];
+}) => {
   const leftMiddleRightScrollTopMaps = [];
 
-  relations.forEach(([fromLine, toLine]) => {
+  relations.forEach(({ fromRange, toRange }) => {
     let fromLineTopEnd, toLineTopEnd;
 
-    const fromLineTopStart = fromEditor.getTopForLineNumber(fromLine[0]);
-    if (fromLine[1] !== null) {
-      fromLineTopEnd = fromEditor.getTopForLineNumber(fromLine[1] + 1);
+    const fromLineTopStart = fromEditor.getTopForLineNumber(fromRange[0]);
+    if (fromRange[1] !== null) {
+      fromLineTopEnd = fromEditor.getTopForLineNumber(fromRange[1] + 1);
     } else {
       fromLineTopEnd = fromLineTopStart;
     }
 
-    const toLineTopStart = toEditor.getTopForLineNumber(toLine[0]);
-    if (toLine[1] !== null) {
-      toLineTopEnd = toEditor.getTopForLineNumber(toLine[1] + 1);
+    const toLineTopStart = toEditor.getTopForLineNumber(toRange[0]);
+    if (toRange[1] !== null) {
+      toLineTopEnd = toEditor.getTopForLineNumber(toRange[1] + 1);
     } else {
       toLineTopEnd = toLineTopStart;
     }

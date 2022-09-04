@@ -1,6 +1,7 @@
 import { Selection } from "d3-selection";
 import { linkHorizontal } from "d3-shape";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { IRelation } from "../../types";
 import getLeftMiddleRightScrollTopMaps from "./getLeftMiddleRightScrollTopMaps";
 import getLinks from "./getLinks";
 
@@ -10,19 +11,35 @@ const optionsHeight = 24;
 export default class {
   public fromEditor: monaco.editor.IStandaloneCodeEditor;
   public toEditor: monaco.editor.IStandaloneCodeEditor;
-  public relations;
+  public relations: IRelation[];
   public container: Selection<HTMLDivElement, unknown, null, undefined>;
+  public fromContainerDomNode: HTMLDivElement;
+  public toContainerDomNode: HTMLDivElement;
 
   private leftMiddleRightScrollTopMaps;
   private middleTop: number = 0;
   private linkEl;
 
-  constructor(fromEditor, toEditor, relations, container) {
+  constructor(
+    fromEditor,
+    toEditor,
+    relations,
+    container,
+    {
+      fromContainerDomNode,
+      toContainerDomNode,
+    }: {
+      fromContainerDomNode?: HTMLDivElement;
+      toContainerDomNode?: HTMLDivElement;
+    } = {}
+  ) {
     this.fromEditor = fromEditor;
     this.toEditor = toEditor;
     this.relations = relations;
     this.container = container;
     this.linkEl = container.select(".relation-view-svg__links__link");
+    this.fromContainerDomNode = fromContainerDomNode;
+    this.toContainerDomNode = toContainerDomNode;
 
     this.leftMiddleRightScrollTopMaps = getLeftMiddleRightScrollTopMaps({
       fromEditor,
@@ -39,7 +56,7 @@ export default class {
   }
 
   public scrollToRelation(id) {
-    const relation = this.relations.find(([, , info]) => info.id === id);
+    const relation = this.relations.find((relation) => relation.id === id);
     if (!relation) {
       return;
     }
@@ -197,6 +214,8 @@ export default class {
       fromEditor: this.fromEditor,
       toEditor: this.toEditor,
       relations: this.relations,
+      fromContainerDomNode: this.fromContainerDomNode,
+      toContainerDomNode: this.toContainerDomNode,
     });
 
     const rangeLinkHorizontalGen = rangeLinkHorizontal();
@@ -218,7 +237,7 @@ export default class {
             .attr("fill", "none")
             .attr("stroke-width", 1)
             .attr("d", rangeLinkHorizontalGen)
-            .style("opacity", 0.65);
+            .style("opacity", 0.15);
 
           const options = group.append("foreignObject");
 
@@ -273,6 +292,15 @@ export default class {
       language: "markdown",
       theme: "vs-dark",
       ...options,
+    });
+    return editor;
+  }
+
+  static createDiffEditor(domElement, options) {
+    const editor = monaco.editor.createDiffEditor(domElement, {
+      diffWordWrap: "on",
+      renderSideBySide: false,
+      renderOverviewRuler: false,
     });
     return editor;
   }

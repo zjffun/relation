@@ -1,3 +1,5 @@
+@import "../z-index.scss";
+
 .relation-overview {
   height: 100%;
   display: flex;
@@ -10,10 +12,18 @@
       margin: 0;
       padding: 0;
       &__item {
+        display: var(--block-operation-display);
       }
     }
   }
   &__relations {
     flex: 1 1 auto;
+  }
+  &__dialog {
+    z-index: $dialog-z-index;
+  }
+  &--read-only {
+    --block-operation-display: none;
+    --flex-operation-display: none;
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "relation2-core",
-  "version": "0.0.2",
+  "version": "0.0.8",
   "type": "module",
   "exports": "./dist/index.js",
   "repository": "git@github.com:zjffun/relation.git",

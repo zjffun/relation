@@ -12,7 +12,7 @@
     "prepublishOnly": "npm run build && npm run test",
     "build": "lerna run build",
     "test": "lerna run test",
-    "publish": "lerna publish from-git"
+    "publish": "lerna publish from-package --yes"
   },
   "dependencies": {},
   "devDependencies": {

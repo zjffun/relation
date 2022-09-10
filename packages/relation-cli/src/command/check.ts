@@ -2,6 +2,7 @@ import { Command } from "commander";
 import fse from "fs-extra";
 import pick from "lodash/pick.js";
 import crypto from "node:crypto";
+import fs from "node:fs";
 import path from "node:path";
 import {
   checkRelations,
@@ -11,7 +12,9 @@ import {
 import stringifyJsonScriptContent from "stringify-json-script-content";
 import baseDirname from "../baseDirname.js";
 
-import pkgInfo from "../../package.json";
+const pkgInfo = JSON.parse(
+  fs.readFileSync(path.resolve(baseDirname, "..", "package.json")).toString()
+);
 
 export default function(program: Command) {
   program

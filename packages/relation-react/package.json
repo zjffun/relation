@@ -1,6 +1,6 @@
 {
   "name": "relation2-react",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/relation2-react.esm.js",
@@ -22,8 +22,8 @@
     "src"
   ],
   "dependencies": {
-    "relation2-core": "0.0.12",
-    "relation2-react": "0.0.12"
+    "relation2-core": "0.0.13",
+    "relation2-react": "0.0.13"
   },
   "peerDependencies": {
     "monaco-editor": "*",

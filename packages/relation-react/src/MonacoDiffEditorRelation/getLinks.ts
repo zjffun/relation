@@ -1,5 +1,5 @@
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { IRelation } from "../../types";
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { ILink, IRelation } from '../types';
 
 export default ({
   fromEditor,
@@ -19,18 +19,22 @@ export default ({
 
   const currentFromContainerDomNode =
     fromContainerDomNode || fromEditor.getDomNode();
-  const { width: fromEditorWidth, left: fromEditorLeft } =
-    currentFromContainerDomNode.getBoundingClientRect();
+  const {
+    width: fromEditorWidth,
+    left: fromEditorLeft,
+  } = currentFromContainerDomNode!.getBoundingClientRect();
   const fromLeft = 0;
   const fromRight = fromEditorWidth;
 
   const currentToContainerDomNode = toContainerDomNode || toEditor.getDomNode();
-  const { width: toEditorWidth, left: toEditorLeft } =
-    currentToContainerDomNode.getBoundingClientRect();
+  const {
+    width: toEditorWidth,
+    left: toEditorLeft,
+  } = currentToContainerDomNode!.getBoundingClientRect();
   const toLeft = toEditorLeft - fromEditorLeft;
   const toRight = toLeft + toEditorWidth;
 
-  const links = [];
+  const links: ILink[] = [];
 
   relations.forEach(({ fromRange, toRange, type, id }) => {
     let fromLineTopEnd, toLineTopEnd;

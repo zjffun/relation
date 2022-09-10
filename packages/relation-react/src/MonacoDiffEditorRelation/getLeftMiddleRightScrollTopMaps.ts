@@ -1,11 +1,15 @@
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { IRelation } from "../../types";
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { IRelation, IScrollTopMap } from '../types';
 
 const getLastLeftMiddleRightScrollTopMap = ({
   fromEditor,
   toEditor,
   leftMiddleRightScrollTopMaps,
-}) => {
+}: {
+  fromEditor: monaco.editor.IStandaloneCodeEditor;
+  toEditor: monaco.editor.IStandaloneCodeEditor;
+  leftMiddleRightScrollTopMaps: IScrollTopMap[];
+}): IScrollTopMap => {
   const fromLineTopEnd = fromEditor.getTopForLineNumber(
     Number.POSITIVE_INFINITY
   );
@@ -42,7 +46,11 @@ const getGapLeftMiddleRightScrollTopMap = ({
   fromLineTopStart,
   toLineTopStart,
   leftMiddleRightScrollTopMaps,
-}) => {
+}: {
+  fromLineTopStart: number;
+  toLineTopStart: number;
+  leftMiddleRightScrollTopMaps: IScrollTopMap[];
+}): IScrollTopMap => {
   const lastLeftMiddleRightScrollTopMaps = leftMiddleRightScrollTopMaps.at(-1);
 
   if (lastLeftMiddleRightScrollTopMaps) {
@@ -80,7 +88,7 @@ export default ({
   toEditor: monaco.editor.IStandaloneCodeEditor;
   relations: IRelation[];
 }) => {
-  const leftMiddleRightScrollTopMaps = [];
+  const leftMiddleRightScrollTopMaps: IScrollTopMap[] = [];
 
   relations.forEach(({ fromRange, toRange }) => {
     let fromLineTopEnd, toLineTopEnd;

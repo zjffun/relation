@@ -1,9 +1,23 @@
-import { Selection } from "d3-selection";
-import { linkHorizontal } from "d3-shape";
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { IRelation } from "../../types";
-import getLeftMiddleRightScrollTopMaps from "./getLeftMiddleRightScrollTopMaps";
-import getLinks from "./getLinks";
+import { select, selection } from 'd3-selection';
+import { linkHorizontal } from 'd3-shape';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { IRelation, IScrollTopMap } from '../types';
+import getLeftMiddleRightScrollTopMaps from './getLeftMiddleRightScrollTopMaps';
+import getLinks from './getLinks';
+import { createElement, FC } from 'react';
+import { createRoot } from 'react-dom/client';
+
+(selection.prototype as any).rc = function(reactComponent: any) {
+  if (!reactComponent) {
+    return;
+  }
+
+  const initReactComponent = function(this: any, data: any) {
+    createRoot(this).render(createElement(reactComponent, data));
+  };
+
+  this.each(initReactComponent);
+};
 
 const optionsWidth = 150;
 const optionsHeight = 24;
@@ -12,34 +26,38 @@ export default class {
   public fromEditor: monaco.editor.IStandaloneCodeEditor;
   public toEditor: monaco.editor.IStandaloneCodeEditor;
   public relations: IRelation[];
-  public container: Selection<HTMLDivElement, unknown, null, undefined>;
-  public fromContainerDomNode: HTMLDivElement;
-  public toContainerDomNode: HTMLDivElement;
+  public svgEl: SVGSVGElement;
+  public fromContainerDomNode?: HTMLElement;
+  public toContainerDomNode?: HTMLElement;
+  public options?: FC<any>;
 
-  private leftMiddleRightScrollTopMaps;
+  private leftMiddleRightScrollTopMaps: IScrollTopMap[];
   private middleTop: number = 0;
-  private linkEl;
+  private linkEl: SVGSVGElement;
 
   constructor(
-    fromEditor,
-    toEditor,
-    relations,
-    container,
+    fromEditor: monaco.editor.IStandaloneCodeEditor,
+    toEditor: monaco.editor.IStandaloneCodeEditor,
+    relations: IRelation[],
+    svgEl: SVGSVGElement,
     {
       fromContainerDomNode,
       toContainerDomNode,
+      options,
     }: {
-      fromContainerDomNode?: HTMLDivElement;
-      toContainerDomNode?: HTMLDivElement;
+      fromContainerDomNode?: HTMLElement;
+      toContainerDomNode?: HTMLElement;
+      options?: FC<any>;
     } = {}
   ) {
     this.fromEditor = fromEditor;
     this.toEditor = toEditor;
     this.relations = relations;
-    this.container = container;
-    this.linkEl = container.select(".relation-view-svg__links__link");
+    this.svgEl = svgEl;
+    this.linkEl = svgEl;
     this.fromContainerDomNode = fromContainerDomNode;
     this.toContainerDomNode = toContainerDomNode;
+    this.options = options;
 
     this.leftMiddleRightScrollTopMaps = getLeftMiddleRightScrollTopMaps({
       fromEditor,
@@ -55,12 +73,12 @@ export default class {
     this.renderLinks();
   }
 
-  public scrollToRelation(id) {
-    const relation = this.relations.find((relation) => relation.id === id);
+  public scrollToRelation(id: string) {
+    const relation = this.relations.find(relation => relation.id === id);
     if (!relation) {
       return;
     }
-    const fromLine = relation[0][0];
+    const fromLine = relation.fromRange[0];
     const leftTop = this.fromEditor.getTopForLineNumber(fromLine);
 
     this.fromEditor.setScrollTop(leftTop);
@@ -70,31 +88,32 @@ export default class {
     this.toEditor.setScrollTop(rightTop);
   }
 
-  public onDetailClick(event) {
+  public onDetailClick(event: any) {
     document.dispatchEvent(
-      new CustomEvent("relationDetailButtonClick", {
+      new CustomEvent('relationDetailButtonClick', {
         detail: {
-          id: event.target.getAttribute("relation-id"),
+          id: event.target.getAttribute('relation-id'),
         },
       })
     );
   }
 
-  public onDeleteClick(event) {
+  public onDeleteClick(event: any) {
     document.dispatchEvent(
-      new CustomEvent("relationDeleteButtonClick", {
+      new CustomEvent('relationDeleteButtonClick', {
         detail: {
-          id: event.target.getAttribute("relation-id"),
+          id: event.target.getAttribute('relation-id'),
         },
       })
     );
   }
 
-  public getMiddleTopFromLeftTop(leftTop) {
-    const current = this.leftMiddleRightScrollTopMaps.find((d) => {
+  public getMiddleTopFromLeftTop(leftTop: number): number {
+    const current = this.leftMiddleRightScrollTopMaps.find(d => {
       if (d[0][0] <= leftTop && d[0][1] >= leftTop) {
         return true;
       }
+      return false;
     });
 
     if (current) {
@@ -103,15 +122,19 @@ export default class {
       return current[1][0] + (current[1][1] - current[1][0]) * ratio;
     } else {
       const lastLeftMiddleRight = this.leftMiddleRightScrollTopMaps.at(-1);
-      return lastLeftMiddleRight[1][1];
+      if (lastLeftMiddleRight) {
+        return lastLeftMiddleRight[1][1];
+      }
+      return leftTop;
     }
   }
 
-  private getRightTopFromMiddleTop(middleTop) {
-    const current = this.leftMiddleRightScrollTopMaps.find((d) => {
+  private getRightTopFromMiddleTop(middleTop: number) {
+    const current = this.leftMiddleRightScrollTopMaps.find(d => {
       if (d[1][0] <= middleTop && d[1][1] >= middleTop) {
         return true;
       }
+      return false;
     });
 
     if (current) {
@@ -121,13 +144,20 @@ export default class {
       return current[2][0] + (current[2][1] - current[2][0]) * ratio;
     } else {
       const lastLeftMiddleRight = this.leftMiddleRightScrollTopMaps.at(-1);
-      return lastLeftMiddleRight[2][1];
+      if (lastLeftMiddleRight) {
+        return lastLeftMiddleRight[2][1];
+      }
+      return middleTop;
     }
   }
 
   private syncEditor() {
-    (this.fromEditor as any).onMouseWheel((event) => this.onMouseWheel(event));
-    (this.toEditor as any).onMouseWheel((event) => this.onMouseWheel(event));
+    (this.fromEditor as any).onMouseWheel((event: any) =>
+      this.onMouseWheel(event)
+    );
+    (this.toEditor as any).onMouseWheel((event: any) =>
+      this.onMouseWheel(event)
+    );
   }
 
   private syncRelation() {
@@ -147,13 +177,13 @@ export default class {
   private onDidChangeCursorSelection() {
     const fromSelection = this.fromEditor.getSelection();
     const toSelection = this.toEditor.getSelection();
-    const fromStartLine = fromSelection.getStartPosition().lineNumber;
-    const fromEndLine = fromSelection.getEndPosition().lineNumber;
-    const toStartLine = toSelection.getStartPosition().lineNumber;
-    const toEndLine = toSelection.getEndPosition().lineNumber;
+    const fromStartLine = fromSelection!.getStartPosition().lineNumber;
+    const fromEndLine = fromSelection!.getEndPosition().lineNumber;
+    const toStartLine = toSelection!.getStartPosition().lineNumber;
+    const toEndLine = toSelection!.getEndPosition().lineNumber;
 
     document.dispatchEvent(
-      new CustomEvent("relationCreateRangeChange", {
+      new CustomEvent('relationCreateRangeChange', {
         detail: {
           fromStartLine,
           fromEndLine,
@@ -168,7 +198,7 @@ export default class {
     this.renderLinks();
   }
 
-  private onMouseWheel(event) {
+  private onMouseWheel(event: any) {
     event.preventDefault();
     event.stopImmediatePropagation();
     event.stopPropagation();
@@ -181,10 +211,11 @@ export default class {
       this.toEditor.setScrollTop(0);
     }
 
-    const current = this.leftMiddleRightScrollTopMaps.find((d) => {
+    const current = this.leftMiddleRightScrollTopMaps.find(d => {
       if (d[1][0] <= this.middleTop && d[1][1] >= this.middleTop) {
         return true;
       }
+      return false;
     });
 
     if (current) {
@@ -200,9 +231,14 @@ export default class {
       this.toEditor.setScrollTop(rightScrollTop);
     } else {
       const lastLeftMiddleRight = this.leftMiddleRightScrollTopMaps.at(-1);
-      this.middleTop = lastLeftMiddleRight[1][1];
-      this.fromEditor.setScrollTop(lastLeftMiddleRight[0][1]);
-      this.toEditor.setScrollTop(lastLeftMiddleRight[2][1]);
+      if (lastLeftMiddleRight) {
+        this.middleTop = lastLeftMiddleRight[1][1];
+        this.fromEditor.setScrollTop(lastLeftMiddleRight[0][1]);
+        this.toEditor.setScrollTop(lastLeftMiddleRight[2][1]);
+      } else {
+        this.fromEditor.setScrollTop(this.middleTop);
+        this.toEditor.setScrollTop(this.middleTop);
+      }
     }
 
     // scroll X
@@ -220,95 +256,82 @@ export default class {
 
     const rangeLinkHorizontalGen = rangeLinkHorizontal();
 
-    const optionsXGen = (d) => d.target[1][0] - optionsWidth;
+    const optionsXGen = (d: any) => d.target[1][0] - optionsWidth;
 
-    const optionsYGen = (d) => d.target[1][1];
+    const optionsYGen = (d: any) => d.target[1][1];
 
-    const link = this.linkEl
-      .selectAll(".relation-link")
+    select(this.linkEl)
+      .selectAll('.relation-link')
       .data(links)
       .join(
-        (enter) => {
-          const group = enter.append("g").attr("class", "relation-link");
+        enter => {
+          const group = enter.append('g').attr('class', 'relation-link');
 
           group
-            .append("path")
-            .attr("class", (link) => `${link.type}`)
-            .attr("fill", "none")
-            .attr("stroke-width", 1)
-            .attr("d", rangeLinkHorizontalGen)
-            .style("opacity", 0.15);
+            .append('path')
+            .attr('class', (link: any) => `${link.type}`)
+            .attr('fill', 'none')
+            .attr('stroke-width', 1)
+            .attr('d', rangeLinkHorizontalGen)
+            .style('opacity', 0.15);
 
-          const options = group.append("foreignObject");
+          const options = group.append('foreignObject');
 
           options
-            .attr("class", "relation-link__options")
-            .attr("x", optionsXGen)
-            .attr("y", optionsYGen)
-            .attr("width", optionsWidth)
-            .attr("height", optionsHeight);
+            .attr('class', 'relation-link__options')
+            .attr('x', optionsXGen)
+            .attr('y', optionsYGen)
+            .attr('width', optionsWidth)
+            .attr('height', optionsHeight);
 
-          const optionsBody = options.append("xhtml:body");
+          const optionsBody = options.append('xhtml:body');
 
-          optionsBody.attr("class", "relation-options");
+          optionsBody.attr('class', 'relation-options');
 
-          const detailBtn = optionsBody
-            .append("button")
-            .text("detail")
-            .attr("class", "relation-options__detail")
-            .attr("relation-id", (d) => d.id)
-            .on("click", this.onDetailClick);
+          optionsBody
+            .append('button')
+            .text('detail')
+            .attr('class', 'relation-options__detail')
+            .attr('relation-id', (d: any) => d.id)
+            .on('click', this.onDetailClick);
 
-          const deleteBtn = optionsBody
-            .append("button")
-            .text("delete")
-            .attr("class", "relation-options__delete")
-            .attr("relation-id", (d) => d.id)
-            .on("click", this.onDeleteClick);
+          optionsBody
+            .append('button')
+            .text('delete')
+            .attr('class', 'relation-options__delete')
+            .attr('relation-id', (d: any) => d.id)
+            .on('click', this.onDeleteClick);
+
+          const customOptionsDiv = optionsBody
+            .append('div')
+            .attr('class', 'relation-options__custom');
+
+          (customOptionsDiv as any).rc(this?.options);
+
+          return enter;
         },
-        (update) => {
+        update => {
           // console.log("update", update);
-          update.select("path").attr("d", rangeLinkHorizontalGen);
+          update.select('path').attr('d', rangeLinkHorizontalGen);
 
           update
-            .select(".relation-link__options")
-            .attr("x", optionsXGen)
-            .attr("y", optionsYGen);
+            .select('.relation-link__options')
+            .attr('x', optionsXGen)
+            .attr('y', optionsYGen);
+
+          return update;
         },
-        (exit) => {
+        exit => {
           // console.log("exit", exit);
           exit.remove();
         }
       );
   }
-
-  static createEditor(domElement, options) {
-    const editor = monaco.editor.create(domElement, {
-      minimap: {
-        enabled: false,
-      },
-      wordWrap: "on",
-      readOnly: true,
-      language: "markdown",
-      theme: "vs-dark",
-      ...options,
-    });
-    return editor;
-  }
-
-  static createDiffEditor(domElement, options) {
-    const editor = monaco.editor.createDiffEditor(domElement, {
-      diffWordWrap: "on",
-      renderSideBySide: false,
-      renderOverviewRuler: false,
-    });
-    return editor;
-  }
 }
 
 function rangeLinkHorizontal() {
   const linkHorizontalGen = linkHorizontal();
-  return function (d) {
+  return function(d: any) {
     const lineTop1 = linkHorizontalGen({
       source: d.source[0],
       target: d.source[1],
@@ -317,29 +340,29 @@ function rangeLinkHorizontal() {
     const lineTop2 = linkHorizontalGen({
       source: d.source[1],
       target: d.target[0],
-    }).replace(/^M.*C/, "C");
+    })!.replace(/^M.*C/, 'C');
 
     const lineTop3 = linkHorizontalGen({
       source: d.target[0],
       target: d.target[1],
-    }).replace(/^M.*C/, "C");
+    })!.replace(/^M.*C/, 'C');
 
     const lineRight = `L${d.target[2][0]} ${d.target[2][1]}`;
 
     const lineBottom1 = linkHorizontalGen({
       source: d.target[2],
       target: d.target[3],
-    }).replace(/^M.*C/, "C");
+    })!.replace(/^M.*C/, 'C');
 
     const lineBottom2 = linkHorizontalGen({
       source: d.target[3],
       target: d.source[2],
-    }).replace(/^M.*C/, "C");
+    })!.replace(/^M.*C/, 'C');
 
     const lineBottom3 = linkHorizontalGen({
       source: d.source[2],
       target: d.source[3],
-    }).replace(/^M.*C/, "C");
+    })!.replace(/^M.*C/, 'C');
 
     const lineLeft = `L${d.source[0][0]} ${d.source[0][1]}`;
 

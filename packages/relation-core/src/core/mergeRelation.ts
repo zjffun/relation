@@ -1,10 +1,20 @@
 import { IRawRelation } from "../types";
 
-export default function (
+export default function(
   relation: IRawRelation,
   newRelation: Partial<IRawRelation>
 ) {
-  const keys = ["id", "rev", "path", "range", "srcRev", "srcPath", "srcRange"];
+  const keys = [
+    "id",
+    "fromRev",
+    "fromBaseDir",
+    "fromPath",
+    "fromRange",
+    "toRev",
+    "toBaseDir",
+    "toPath",
+    "toRange",
+  ];
 
   const result = { ...relation };
 

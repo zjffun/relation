@@ -11,7 +11,9 @@ import {
 import stringifyJsonScriptContent from "stringify-json-script-content";
 import baseDirname from "../baseDirname.js";
 
-export default function (program: Command) {
+import pkgInfo from "../../package.json";
+
+export default function(program: Command) {
   program
     .command("check")
     .option("--from <string>", "")
@@ -49,7 +51,7 @@ async function outputHtml(resultGroupByKey) {
 
   const results = [];
 
-  for (const result of resultGroupByKey) {
+  for (const result of Object.entries(resultGroupByKey)) {
     const data = await getViewCheckResult(result);
 
     results.push({
@@ -80,7 +82,7 @@ async function outputHtml(resultGroupByKey) {
       <script>
         window.__VIEW_CHECK_RESULTS__ = JSON.parse(document.getElementById('viewCheckResultsText').textContent);
       </script>
-      <script src="http://localhost:8080/relationPreviewView.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/relation2-page@${pkgInfo.version}/dist/relationPreviewView.js"></script>
     </body>
     </html>`;
 

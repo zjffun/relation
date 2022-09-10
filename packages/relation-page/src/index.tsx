@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { ICheckResultView } from "../types";
+import { IViewData } from "relation2-core";
 
 import "./style.scss";
 
 const Page = () => {
   const [viewCheckResults, setViewCheckResults] = useState(
-    (window as any).checkResults as ICheckResultView[]
+    (window as any).checkResults as IViewData[]
   );
 
   useEffect(() => {

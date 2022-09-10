@@ -1,7 +1,11 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
-import { ICheckResultView, RelationTypeEnum } from "../../types";
-import RelationsMain from "./RelationsMain";
+import { IViewData } from "relation2-core";
+import { ISetOptions, RelationTypeEnum } from "../../types";
+import {
+  getRelationByCheckResult,
+  MonacoDiffEditorRelation,
+} from "relation2-react";
 
 import "./RelationsWindow.scss";
 
@@ -76,10 +80,12 @@ export default ({
   viewCheckResults,
   currentId,
   readOnly,
+  setOptions,
 }: {
-  viewCheckResults: ICheckResultView;
+  viewCheckResults: IViewData;
   currentId?: string;
   readOnly?: boolean;
+  setOptions?: ISetOptions;
 }) => {
   const [openInfo, setOpenInfo] = useState(false);
   const { checkResults } = viewCheckResults;
@@ -133,10 +139,24 @@ export default ({
         </ul>
       </header>
       <section className={"relation-overview__relations"}>
-        <RelationsMain
-          viewCheckResults={viewCheckResults}
+        <MonacoDiffEditorRelation
+          fromOriginal={
+            viewCheckResults.originalAndModifiedContent.fromOriginalContent
+          }
+          fromModified={
+            viewCheckResults.originalAndModifiedContent.fromModifiedContent
+          }
+          toOriginal={
+            viewCheckResults.originalAndModifiedContent.toOriginalContent
+          }
+          toModified={
+            viewCheckResults.originalAndModifiedContent.toModifiedContent
+          }
+          relations={viewCheckResults.checkResults.map((d: any) => {
+            return getRelationByCheckResult(d);
+          })}
           currentId={currentId}
-        ></RelationsMain>
+        ></MonacoDiffEditorRelation>
       </section>
     </main>
   );

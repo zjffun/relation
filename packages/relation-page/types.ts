@@ -1,22 +1,4 @@
-import {
-  ICheckResultBasic,
-  ICheckResultCommon,
-  IOriginalAndModifiedContentResult,
-  IRawRelationBasic,
-  IRawRelationCommon,
-} from "relation2-core";
-
-export interface ICheckResult extends ICheckResultBasic, IRawRelationBasic {}
-
-export interface ICheckResultView
-  extends IRawRelationCommon,
-    ICheckResultCommon {
-  id: number;
-  key: string;
-  checkResults: ICheckResult[];
-  originalAndModifiedContent?: IOriginalAndModifiedContentResult;
-  dirty?: boolean;
-}
+import { Selection } from "d3-selection";
 
 export type IRelation = {
   id?: string;
@@ -24,6 +6,10 @@ export type IRelation = {
   toRange: [number, number];
   type: RelationTypeEnum;
 };
+
+export type ISetOptions = (
+  selection: Selection<HTMLBodyElement, unknown, null, undefined>
+) => void;
 
 export enum RelationTypeEnum {
   add = "add",

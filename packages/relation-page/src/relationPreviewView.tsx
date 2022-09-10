@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { ICheckResultView } from "../types";
-import RelationOverview from "./relationView/RelationsWindow";
+import { IViewData } from "relation2-core";
+import RelationsWindow from "./relationView/RelationsWindow";
 
 import "./style.scss";
 
@@ -17,7 +17,7 @@ if (!searchParams) {
 
 const Page = () => {
   const [viewCheckResults, setviewCheckResults] = useState(
-    (window as any).__VIEW_CHECK_RESULTS__ as ICheckResultView
+    (window as any).__VIEW_CHECK_RESULTS__ as IViewData
   );
 
   const [showingRelation, setShowingRelation] = useState(searchParams.id);
@@ -40,11 +40,11 @@ const Page = () => {
   }
 
   return (
-    <RelationOverview
+    <RelationsWindow
       viewCheckResults={viewCheckResults}
       currentId={showingRelation}
       readOnly={true}
-    ></RelationOverview>
+    ></RelationsWindow>
   );
 };
 

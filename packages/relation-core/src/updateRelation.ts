@@ -9,11 +9,13 @@ export default async (options: IOptions) => {
   const relations: IRawRelation[] = rawRelations.map((relation) => {
     if (relation.id === options.id) {
       return mergeRelation(relation, {
-        fromRev: options.fromPath,
+        fromRev: options.fromRev,
+        fromBaseDir: options.fromBaseDir,
         fromPath: options.fromPath,
         fromRange: options.fromRange,
-        toRev: options.fromPath,
+        toRev: options.toRev,
         toPath: options.toPath,
+        toBaseDir: options.toBaseDir,
         toRange: options.toRange,
       });
     }

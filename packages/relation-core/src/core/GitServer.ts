@@ -16,9 +16,7 @@ export default class GitServer {
       return result;
     }
 
-    const simpleGitInstance = simpleGit(path.join(workingDirectory, baseDir));
-
-    result = (await simpleGitInstance.raw("rev-parse", revision)).trim();
+    result = await GitServer.parseRev(workingDirectory, revision, baseDir);
 
     this.revMap.set(key, result);
 
@@ -46,6 +44,14 @@ export default class GitServer {
     }
 
     this.showMap.set(key, result);
+
+    return result;
+  }
+
+  static async parseRev(workingDirectory, revision, baseDir) {
+    const simpleGitInstance = simpleGit(path.join(workingDirectory, baseDir));
+
+    const result = (await simpleGitInstance.raw("rev-parse", revision)).trim();
 
     return result;
   }

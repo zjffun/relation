@@ -1,6 +1,5 @@
 import React from "react";
 import { RelationTypeEnum } from "../../types";
-import RelationComponent from "./RelationsMain";
 
 import {
   ICheckResult,

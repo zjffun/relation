@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.json",
   "include": ["./src"],
   "compilerOptions": {
     "outDir": "dist",
@@ -6,6 +7,7 @@
     "module": "ESNext",
     "esModuleInterop": true,
     "sourceMap": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "resolveJsonModule": true
   }
 }

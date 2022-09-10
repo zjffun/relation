@@ -53,3 +53,15 @@ export interface IOriginalAndModifiedContentResult {
   toOriginalContent: string;
   toModifiedContent: string;
 }
+
+export interface ICheckResultView
+  extends ICheckResultBasic,
+    IRawRelationBasic {}
+
+export interface IViewData extends IRawRelationCommon, ICheckResultCommon {
+  id: number;
+  key: string;
+  checkResults: ICheckResultView[];
+  originalAndModifiedContent?: IOriginalAndModifiedContentResult;
+  dirty?: boolean;
+}

@@ -8,6 +8,11 @@ export default class GitServer {
   public revMap = new Map<string, string>();
 
   async parseRev(workingDirectory, revision, baseDir) {
+    // git show :0:path
+    if (revision === ":0") {
+      return ":0";
+    }
+
     const key = `${revision}:${baseDir}`;
 
     let result = this.revMap.get(key);
@@ -43,7 +48,9 @@ export default class GitServer {
       result = "";
     }
 
-    this.showMap.set(key, result);
+    if (parsedRevision !== ":0") {
+      this.showMap.set(key, result);
+    }
 
     return result;
   }

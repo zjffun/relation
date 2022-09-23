@@ -1,6 +1,6 @@
 import readRelation from "./core/readRelation.js";
 import writeRelation from "./core/writeRelation.js";
-import { createRelations } from "./mdx/createRelation.js";
+import { createRelations } from "./mdx/createRelations.js";
 import { IRawRelation } from "./types";
 
 export default async (options) => {

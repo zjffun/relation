@@ -1,10 +1,17 @@
+import remarkFrontmatter from "remark-frontmatter";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
 import { getBlocks } from "./getBlocks.js";
 
 export async function getRelationRanges(fromContent, toContent) {
-  const fromAst = await unified().use(remarkParse).parse(fromContent);
-  const toAst = await unified().use(remarkParse).parse(toContent);
+  const fromAst = await unified()
+    .use(remarkParse)
+    .use(remarkFrontmatter)
+    .parse(fromContent);
+  const toAst = await unified()
+    .use(remarkParse)
+    .use(remarkFrontmatter)
+    .parse(toContent);
 
   const fromBlocks = getBlocks(fromAst);
   const toBlocks = getBlocks(toAst);

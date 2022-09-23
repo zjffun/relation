@@ -1,5 +1,11 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import React, { FC, useEffect, useRef } from 'react';
+import React, {
+  FC,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import { IRelation } from '../types';
 import createDiffEditor from './createDiffEditor';
 import RelationSvg from './RelationSvg';
@@ -15,87 +21,111 @@ export interface MonacoDiffEditorRelationProps {
   relations: IRelation[];
   currentId?: string;
   options?: FC<any>;
+  onFromSave?: (editor: monaco.editor.ICodeEditor) => void;
+  onToSave?: (editor: monaco.editor.ICodeEditor) => void;
 }
 
-const MonacoDiffEditorRelation: FC<MonacoDiffEditorRelationProps> = ({
-  fromOriginal,
-  fromModified,
-  toOriginal,
-  toModified,
-  relations,
-  currentId,
-  options,
-}) => {
-  const fromDiffEditorElRef = useRef<HTMLDivElement>(null);
-  const toDiffEditorElRef = useRef<HTMLDivElement>(null);
-  const relationSvgElRef = useRef<SVGSVGElement>(null);
+const MonacoDiffEditorRelation = forwardRef<
+  { diffEditorRef?: any },
+  MonacoDiffEditorRelationProps
+>(
+  (
+    {
+      fromOriginal,
+      fromModified,
+      toOriginal,
+      toModified,
+      relations,
+      currentId,
+      options,
+      onFromSave,
+      onToSave,
+    },
+    ref
+  ) => {
+    const fromDiffEditorElRef = useRef<HTMLDivElement>(null);
+    const toDiffEditorElRef = useRef<HTMLDivElement>(null);
+    const relationSvgElRef = useRef<SVGSVGElement>(null);
 
-  const diffEditorRef = useRef<
-    [
-      monaco.editor.IStandaloneDiffEditor | null,
-      monaco.editor.IStandaloneDiffEditor | null
-    ]
-  >([null, null]);
+    const diffEditorRef = useRef<
+      [
+        monaco.editor.IStandaloneDiffEditor | null,
+        monaco.editor.IStandaloneDiffEditor | null
+      ]
+    >([null, null]);
 
-  useEffect(() => {
-    diffEditorRef.current[0] = createDiffEditor(fromDiffEditorElRef.current);
-    diffEditorRef.current[1] = createDiffEditor(toDiffEditorElRef.current);
-  }, []);
+    useImperativeHandle(
+      ref,
+      () => ({
+        diffEditorRef,
+      }),
+      []
+    );
 
-  useEffect(() => {
-    (async () => {
-      await setModelToDiffEditor(
-        diffEditorRef.current[0],
-        fromOriginal,
-        fromModified
-      );
+    useEffect(() => {
+      diffEditorRef.current[0] = createDiffEditor(fromDiffEditorElRef.current, {
+        saveHandler: onFromSave,
+      });
+      diffEditorRef.current[1] = createDiffEditor(toDiffEditorElRef.current, {
+        saveHandler: onToSave,
+      });
+    }, []);
 
-      await setModelToDiffEditor(
-        diffEditorRef.current[1],
-        toOriginal,
-        toModified
-      );
+    useEffect(() => {
+      (async () => {
+        await setModelToDiffEditor(
+          diffEditorRef.current[0],
+          fromOriginal,
+          fromModified
+        );
 
-      if (!relationSvgElRef.current) {
-        return;
-      }
+        await setModelToDiffEditor(
+          diffEditorRef.current[1],
+          toOriginal,
+          toModified
+        );
 
-      const monacoRelationView = new RelationSvg(
-        diffEditorRef.current[0]!.getModifiedEditor(),
-        diffEditorRef.current[1]!.getModifiedEditor(),
-        relations,
-        relationSvgElRef.current,
-        {
-          fromContainerDomNode: diffEditorRef.current[0]!.getContainerDomNode(),
-          toContainerDomNode: diffEditorRef.current[1]!.getContainerDomNode(),
-          options,
+        if (!relationSvgElRef.current) {
+          return;
         }
-      );
 
-      if (currentId) {
-        monacoRelationView.scrollToRelation(currentId);
-      }
-    })();
-  }, [fromOriginal, fromModified, toOriginal, toModified, relations]);
+        const monacoRelationView = new RelationSvg(
+          diffEditorRef.current[0]!.getModifiedEditor(),
+          diffEditorRef.current[1]!.getModifiedEditor(),
+          relations,
+          relationSvgElRef.current,
+          {
+            fromContainerDomNode: diffEditorRef.current[0]!.getContainerDomNode(),
+            toContainerDomNode: diffEditorRef.current[1]!.getContainerDomNode(),
+            options,
+          }
+        );
 
-  return (
-    <div className="MonacoDiffEditorRelation">
-      <div className="MonacoDiffEditorRelation__EditorList">
-        <div
-          className="MonacoDiffEditorRelation__EditorList__Item"
-          ref={fromDiffEditorElRef}
-        ></div>
-        <div
-          className="MonacoDiffEditorRelation__EditorList__Item"
-          ref={toDiffEditorElRef}
-        ></div>
+        if (currentId) {
+          monacoRelationView.scrollToRelation(currentId);
+        }
+      })();
+    }, [fromOriginal, fromModified, toOriginal, toModified, relations]);
+
+    return (
+      <div className="MonacoDiffEditorRelation">
+        <div className="MonacoDiffEditorRelation__EditorList">
+          <div
+            className="MonacoDiffEditorRelation__EditorList__Item"
+            ref={fromDiffEditorElRef}
+          ></div>
+          <div
+            className="MonacoDiffEditorRelation__EditorList__Item"
+            ref={toDiffEditorElRef}
+          ></div>
+        </div>
+        <svg
+          className="MonacoDiffEditorRelation__RelationSvg"
+          ref={relationSvgElRef}
+        ></svg>
       </div>
-      <svg
-        className="MonacoDiffEditorRelation__RelationSvg"
-        ref={relationSvgElRef}
-      ></svg>
-    </div>
-  );
-};
+    );
+  }
+);
 
 export default MonacoDiffEditorRelation;

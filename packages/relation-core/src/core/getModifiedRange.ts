@@ -16,17 +16,13 @@ export const getModifiedRange = (
 
     /**
      * currentStart
-     * start
+     *   start between currentStart(equal) and currentEnd
      * currentEnd
      */
     if (
       currentOriginalRange[0] <= originalRange[0] &&
-      currentOriginalRange[1] >= originalRange[0]
+      currentOriginalRange[1] > originalRange[0]
     ) {
-      if (start !== undefined) {
-        continue;
-      }
-
       if (!type) {
         start =
           currentModifiedRange[0] +
@@ -38,11 +34,11 @@ export const getModifiedRange = (
 
     /**
      * currentStart
-     * end
+     *   end between currentStart and currentEnd(equal)
      * currentEnd
      */
     if (
-      currentOriginalRange[0] <= originalRange[1] &&
+      currentOriginalRange[0] < originalRange[1] &&
       currentOriginalRange[1] >= originalRange[1]
     ) {
       if (!type) {

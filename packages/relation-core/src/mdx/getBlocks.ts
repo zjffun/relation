@@ -1,5 +1,7 @@
 import type { Root } from "mdast";
 
+const blockType = ["heading", "yaml"];
+
 export interface IBlock {
   start?: number;
   end?: number;
@@ -20,7 +22,7 @@ export function getBlocks(ast: Root) {
       startLine = children[i].position.start.line;
     }
 
-    if (children[i + 1].type !== "heading") {
+    if (!blockType.includes(children[i + 1].type)) {
       continue;
     }
 

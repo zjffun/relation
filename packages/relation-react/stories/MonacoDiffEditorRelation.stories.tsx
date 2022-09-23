@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import React from 'react';
+import React, { useRef } from 'react';
 import { getRelationByCheckResult, MonacoDiffEditorRelation } from '../src';
 import { MonacoDiffEditorRelationProps } from '../src/MonacoDiffEditorRelation';
 import {
@@ -24,11 +24,15 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<MonacoDiffEditorRelationProps> = args => (
-  <div style={{ height: '600px' }}>
-    <MonacoDiffEditorRelation {...args} />
-  </div>
-);
+const Template: Story<MonacoDiffEditorRelationProps> = args => {
+  const ref = useRef({});
+
+  return (
+    <div style={{ height: '600px' }}>
+      <MonacoDiffEditorRelation ref={ref} {...args} />
+    </div>
+  );
+};
 
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
 // https://storybook.js.org/docs/react/workflows/unit-testing
@@ -42,7 +46,13 @@ Default.args = {
   relations: checkResults.map((d: any) => {
     return getRelationByCheckResult(d);
   }),
-  options: data => {
+  options(data) {
     return <div onClick={() => console.log(data.id)}>test</div>;
+  },
+  onFromSave(editor) {
+    console.log(editor);
+  },
+  onToSave(editor) {
+    console.log(editor);
   },
 };

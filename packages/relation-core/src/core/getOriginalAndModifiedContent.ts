@@ -68,7 +68,7 @@ const getMergedRanges = async (
 
       const dirty = checkDirty({
         changes,
-        range: tempMergedRanges[i].range,
+        range: tempMergedRanges[i + 1].range,
       });
 
       if (dirty) {

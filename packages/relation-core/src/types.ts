@@ -54,9 +54,10 @@ export interface IOriginalAndModifiedContentResult {
   toModifiedContent: string;
 }
 
-export interface ICheckResultView
-  extends ICheckResultBasic,
-    IRawRelationBasic {}
+export interface ICheckResultView extends ICheckResultBasic, IRawRelationBasic {
+  fromOriginalRange: [number, number];
+  toOriginalRange: [number, number];
+}
 
 export interface IViewData extends IRawRelationCommon, ICheckResultCommon {
   id: number;

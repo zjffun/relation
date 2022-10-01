@@ -147,6 +147,12 @@ async function outputJson(resultGroupByKey) {
 
 async function getViewCheckResult(result) {
   const [key, checkResults] = result;
+
+  const originalAndModifiedContent = await getOriginalAndModifiedContent({
+    checkResults: checkResults as any,
+    relationsKey: key,
+  });
+
   const viewCheckResults = checkResults.map((checkResult) => {
     return pick(checkResult, [
       "id",
@@ -157,6 +163,8 @@ async function getViewCheckResult(result) {
       "dirty",
       "fromModifiedRange",
       "toModifiedRange",
+      "fromOriginalRange",
+      "toOriginalRange",
     ]);
   });
 
@@ -176,9 +184,6 @@ async function getViewCheckResult(result) {
       "currentFromRev",
       "currentToRev",
     ]),
-    originalAndModifiedContent: await getOriginalAndModifiedContent({
-      checkResults: checkResults as any,
-      relationsKey: key,
-    }),
+    originalAndModifiedContent,
   };
 }

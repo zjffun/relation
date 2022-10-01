@@ -1,5 +1,6 @@
 import { Change, diffLines } from "diff";
 import { fixChanges } from "./fixChanges.js";
+import { getContent } from "./getContent.js";
 import GitServer from "./GitServer.js";
 
 let singleton: ChangeServer;
@@ -28,23 +29,25 @@ export default class ChangeServer {
       return result;
     }
 
-    const content1 = await this.gitServer.show(
+    const content1 = await getContent({
       workingDirectory,
-      parsedRevision1,
-      baseDir,
-      filePath
-    );
+      rev: parsedRevision1,
+      fileBaseDir: baseDir,
+      filePath,
+    });
 
-    const content2 = await this.gitServer.show(
+    const content2 = await getContent({
       workingDirectory,
-      parsedRevision2,
-      baseDir,
-      filePath
-    );
+      rev: parsedRevision2,
+      fileBaseDir: baseDir,
+      filePath,
+    });
 
     result = fixChanges(diffLines(content1, content2));
 
-    this.fixedChangesMap.set(key, result);
+    if (parsedRevision1 !== undefined && parsedRevision2 !== undefined) {
+      this.fixedChangesMap.set(key, result);
+    }
 
     return result;
   }

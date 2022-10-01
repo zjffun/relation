@@ -22,17 +22,15 @@ export default async (options?: IOptions): Promise<IRawRelationWithDirty[]> => {
     );
   }
 
-  const gitServer = new GitServer();
-
   const relations: IRawRelationWithDirty[] = [];
   for (const rawRelation of filteredRawRelations) {
-    const fromParsedRev = await gitServer.parseRev(
+    const fromParsedRev = await GitServer.singleton().parseRev(
       workingDirectory,
       rawRelation.fromRev,
       rawRelation.fromBaseDir
     );
 
-    const fromParsedRevHead = await gitServer.parseRev(
+    const fromParsedRevHead = await GitServer.singleton().parseRev(
       workingDirectory,
       config.baseRev,
       rawRelation.fromBaseDir

@@ -3,6 +3,7 @@ import { join, split } from "split-split";
 import { ICheckResult, IOriginalAndModifiedContentResult } from "../types";
 import ChangeServer from "./ChangeServer.js";
 import { checkDirty } from "./checkDirty.js";
+import { getContent as getOriginalContent } from "./getContent.js";
 import GitServer from "./GitServer.js";
 import { groupByKey } from "./groupByKey.js";
 
@@ -22,6 +23,7 @@ const getContentByRange = (content, range) => {
   return result;
 };
 
+// TODO: move to getContent
 const getMergedRanges = async (
   rawRanges: {
     range;
@@ -86,6 +88,10 @@ const getMergedRanges = async (
   return mergedRanges;
 };
 
+const getRangeLineCount = (range) => {
+  return range[1] - range[0] + 1;
+};
+
 const getContent = async (
   ranges,
   {
@@ -93,10 +99,14 @@ const getContent = async (
     baseDir,
     path,
     baseOriginalContent,
-  }: { workingDirectory; baseDir; path; baseOriginalContent }
+    originalRangeName,
+  }: { workingDirectory; baseDir; path; baseOriginalContent; originalRangeName }
 ) => {
   const contents = [];
+  let lineNum = 1;
   let lastModifiedRange = [0, 0];
+
+  ranges.sort((a, b) => a.modifiedRange[0] - b.modifiedRange[0]);
 
   for (let i = 0; i < ranges.length; i++) {
     const range = ranges[i];
@@ -109,15 +119,15 @@ const getContent = async (
     );
 
     if (range.modifiedRange[0] - lastModifiedRange[1] > 1) {
-      contents.push(
-        getContentByRange(baseOriginalContent, [
-          lastModifiedRange[1] + 1,
-          range.modifiedRange[0] - 1,
-        ])
-      );
+      const tempRange = [lastModifiedRange[1] + 1, range.modifiedRange[0] - 1];
+      contents.push(getContentByRange(baseOriginalContent, tempRange));
+      lineNum += getRangeLineCount(tempRange);
     }
 
     contents.push(getContentByRange(content, range.range));
+    const tempLineNum = lineNum + getRangeLineCount(range.range);
+    range.checkResult[originalRangeName] = [lineNum, tempLineNum - 1];
+    lineNum = tempLineNum;
 
     lastModifiedRange = range.modifiedRange;
   }
@@ -132,9 +142,11 @@ const getContent = async (
       ])
     );
   }
+
   return contents.join("");
 };
 
+// add fromOriginalRange and toOriginalRange
 export const getOriginalAndModifiedContent = async (
   workingDirectory: string,
   baseRev: string,
@@ -146,90 +158,72 @@ export const getOriginalAndModifiedContent = async (
     checkResults
   ) as any;
 
-  const gitServer = new GitServer();
-
   for (const [key, fileCheckResults] of Object.entries(filesCheckResults)) {
     const checkResult = fileCheckResults[0];
 
-    const parsedFromBaseRev = await gitServer.parseRev(
+    const baseFromOriginalContent = await getOriginalContent({
       workingDirectory,
-      baseRev,
-      checkResult.fromBaseDir
-    );
+      rev: baseRev,
+      fileBaseDir: checkResult.fromBaseDir,
+      filePath: checkResult.fromPath,
+    });
 
-    const parsedToBaseRev = await gitServer.parseRev(
+    const baseToOriginalContent = await getOriginalContent({
       workingDirectory,
-      baseRev,
-      checkResult.toBaseDir
-    );
+      rev: baseRev,
+      fileBaseDir: checkResult.toBaseDir,
+      filePath: checkResult.toPath,
+    });
 
     let fromOriginalContent = "";
     let toOriginalContent = "";
-    const baseFromOriginalContent = await GitServer.singleton().show(
-      workingDirectory,
-      parsedFromBaseRev,
-      checkResult.fromBaseDir,
-      checkResult.fromPath
-    );
-    const baseToOriginalContent = await GitServer.singleton().show(
-      workingDirectory,
-      parsedToBaseRev,
-      checkResult.toBaseDir,
-      checkResult.toPath
-    );
 
     // fromOriginalContent
     {
       const baseDir = fileCheckResults[0].fromBaseDir;
       const path = fileCheckResults[0].fromPath;
-      const ranges = await getMergedRanges(
+
+      fromOriginalContent = await getContent(
         fileCheckResults.map((d) => {
           return {
             range: d.fromRange,
             modifiedRange: d.fromModifiedRange,
             rev: d.fromRev,
+            checkResult: d,
           };
         }),
         {
           workingDirectory,
           baseDir,
           path,
+          baseOriginalContent: baseFromOriginalContent,
+          originalRangeName: "fromOriginalRange",
         }
       );
-
-      fromOriginalContent = await getContent(ranges, {
-        workingDirectory,
-        baseDir,
-        path,
-        baseOriginalContent: baseFromOriginalContent,
-      });
     }
 
     // toOriginalContent
     {
       const baseDir = fileCheckResults[0].toBaseDir;
       const path = fileCheckResults[0].toPath;
-      const ranges = await getMergedRanges(
+
+      toOriginalContent = await getContent(
         fileCheckResults.map((d) => {
           return {
             range: d.toRange,
             modifiedRange: d.toModifiedRange,
             rev: d.toRev,
+            checkResult: d,
           };
         }),
         {
           workingDirectory,
           baseDir,
           path,
+          baseOriginalContent: baseToOriginalContent,
+          originalRangeName: "toOriginalRange",
         }
       );
-
-      toOriginalContent = await getContent(ranges, {
-        workingDirectory,
-        baseDir,
-        path,
-        baseOriginalContent: baseToOriginalContent,
-      });
     }
 
     obj[key] = {

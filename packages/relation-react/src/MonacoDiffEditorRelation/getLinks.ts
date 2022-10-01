@@ -8,8 +8,8 @@ export default ({
   fromContainerDomNode,
   toContainerDomNode,
 }: {
-  fromEditor: monaco.editor.IStandaloneCodeEditor;
-  toEditor: monaco.editor.IStandaloneCodeEditor;
+  fromEditor: monaco.editor.ICodeEditor;
+  toEditor: monaco.editor.ICodeEditor;
   relations: IRelation[];
   fromContainerDomNode?: HTMLElement;
   toContainerDomNode?: HTMLElement;

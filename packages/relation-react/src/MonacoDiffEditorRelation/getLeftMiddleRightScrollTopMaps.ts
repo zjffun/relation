@@ -6,8 +6,8 @@ const getLastLeftMiddleRightScrollTopMap = ({
   toEditor,
   leftMiddleRightScrollTopMaps,
 }: {
-  fromEditor: monaco.editor.IStandaloneCodeEditor;
-  toEditor: monaco.editor.IStandaloneCodeEditor;
+  fromEditor: monaco.editor.ICodeEditor;
+  toEditor: monaco.editor.ICodeEditor;
   leftMiddleRightScrollTopMaps: IScrollTopMap[];
 }): IScrollTopMap => {
   const fromLineTopEnd = fromEditor.getTopForLineNumber(
@@ -84,8 +84,8 @@ export default ({
   toEditor,
   relations,
 }: {
-  fromEditor: monaco.editor.IStandaloneCodeEditor;
-  toEditor: monaco.editor.IStandaloneCodeEditor;
+  fromEditor: monaco.editor.ICodeEditor;
+  toEditor: monaco.editor.ICodeEditor;
   relations: IRelation[];
 }) => {
   const leftMiddleRightScrollTopMaps: IScrollTopMap[] = [];

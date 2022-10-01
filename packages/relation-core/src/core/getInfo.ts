@@ -16,10 +16,6 @@ export function getInfo(options: IOptions) {
 
   const config = getConfig(cwd);
 
-  if (!config.baseRev) {
-    config.baseRev = "@";
-  }
-
   return {
     cwd,
     workingDirectory,

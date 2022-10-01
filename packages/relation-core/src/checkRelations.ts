@@ -28,11 +28,9 @@ export default async (
     );
   }
 
-  const gitServer = new GitServer();
-
   const relations: ICheckResult[] = [];
   for (const rawRelation of filteredRawRelations) {
-    const currentToRev = await gitServer.parseRev(
+    const currentToRev = await GitServer.singleton().parseRev(
       workingDirectory,
       config.baseRev,
       rawRelation.toBaseDir
@@ -50,7 +48,7 @@ export default async (
       rawRelation.toRange
     );
 
-    const currentFromRev = await gitServer.parseRev(
+    const currentFromRev = await GitServer.singleton().parseRev(
       workingDirectory,
       config.baseRev,
       rawRelation.fromBaseDir

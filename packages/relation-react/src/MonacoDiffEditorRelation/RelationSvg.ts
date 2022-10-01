@@ -23,8 +23,12 @@ const optionsWidth = 150;
 const optionsHeight = 24;
 
 export default class {
-  public fromEditor: monaco.editor.IStandaloneCodeEditor;
-  public toEditor: monaco.editor.IStandaloneCodeEditor;
+  public fromEditor: monaco.editor.IDiffEditor;
+  public toEditor: monaco.editor.IDiffEditor;
+  public fromOriginalEditor: monaco.editor.ICodeEditor;
+  public toOriginalEditor: monaco.editor.ICodeEditor;
+  public fromModifiedEditor: monaco.editor.ICodeEditor;
+  public toModifiedEditor: monaco.editor.ICodeEditor;
   public relations: IRelation[];
   public svgEl: SVGSVGElement;
   public fromContainerDomNode?: HTMLElement;
@@ -36,8 +40,8 @@ export default class {
   private linkEl: SVGSVGElement;
 
   constructor(
-    fromEditor: monaco.editor.IStandaloneCodeEditor,
-    toEditor: monaco.editor.IStandaloneCodeEditor,
+    fromEditor: monaco.editor.IDiffEditor,
+    toEditor: monaco.editor.IDiffEditor,
     relations: IRelation[],
     svgEl: SVGSVGElement,
     {
@@ -52,6 +56,10 @@ export default class {
   ) {
     this.fromEditor = fromEditor;
     this.toEditor = toEditor;
+    this.fromOriginalEditor = fromEditor.getOriginalEditor();
+    this.toOriginalEditor = toEditor.getOriginalEditor();
+    this.fromModifiedEditor = fromEditor.getModifiedEditor();
+    this.toModifiedEditor = toEditor.getModifiedEditor();
     this.relations = relations;
     this.svgEl = svgEl;
     this.linkEl = svgEl;
@@ -60,8 +68,8 @@ export default class {
     this.options = options;
 
     this.leftMiddleRightScrollTopMaps = getLeftMiddleRightScrollTopMaps({
-      fromEditor,
-      toEditor,
+      fromEditor: this.fromOriginalEditor,
+      toEditor: this.toOriginalEditor,
       relations,
     });
 
@@ -79,13 +87,13 @@ export default class {
       return;
     }
     const fromLine = relation.fromRange[0];
-    const leftTop = this.fromEditor.getTopForLineNumber(fromLine);
+    const leftTop = this.fromOriginalEditor.getTopForLineNumber(fromLine);
 
-    this.fromEditor.setScrollTop(leftTop);
+    this.fromOriginalEditor.setScrollTop(leftTop);
     const middleTop = this.getMiddleTopFromLeftTop(leftTop);
     this.middleTop = middleTop;
     const rightTop = this.getRightTopFromMiddleTop(middleTop);
-    this.toEditor.setScrollTop(rightTop);
+    this.toOriginalEditor.setScrollTop(rightTop);
   }
 
   public onDetailClick(event: any) {
@@ -152,26 +160,43 @@ export default class {
   }
 
   private syncEditor() {
-    (this.fromEditor as any).onMouseWheel((event: any) =>
+    (this.fromModifiedEditor as any).onMouseWheel((event: any) =>
       this.onMouseWheel(event)
     );
-    (this.toEditor as any).onMouseWheel((event: any) =>
+    (this.toModifiedEditor as any).onMouseWheel((event: any) =>
       this.onMouseWheel(event)
     );
   }
 
   private syncRelation() {
-    this.fromEditor.onDidScrollChange(() => this.onDidScrollChange());
-    this.toEditor.onDidScrollChange(() => this.onDidScrollChange());
+    this.fromOriginalEditor.onDidScrollChange(() => this.onDidScrollChange());
+    this.toOriginalEditor.onDidScrollChange(() => this.onDidScrollChange());
   }
 
   private initCreate() {
-    this.fromEditor.onDidChangeCursorSelection(() =>
+    this.fromModifiedEditor.onDidChangeCursorSelection(() =>
       this.onDidChangeCursorSelection()
     );
-    this.toEditor.onDidChangeCursorSelection(() =>
+    this.toModifiedEditor.onDidChangeCursorSelection(() =>
       this.onDidChangeCursorSelection()
     );
+
+    this.fromModifiedEditor.onDidChangeModelContent(() =>
+      this.onDidChangeModelContent()
+    );
+    this.toModifiedEditor.onDidChangeModelContent(() =>
+      this.onDidChangeModelContent()
+    );
+  }
+
+  private onDidChangeModelContent() {
+    this.leftMiddleRightScrollTopMaps = getLeftMiddleRightScrollTopMaps({
+      fromEditor: this.fromOriginalEditor,
+      toEditor: this.toOriginalEditor,
+      relations: this.relations,
+    });
+
+    this.renderLinks();
   }
 
   private onDidChangeCursorSelection() {
@@ -207,8 +232,8 @@ export default class {
 
     if (this.middleTop < 0) {
       this.middleTop = 0;
-      this.fromEditor.setScrollTop(0);
-      this.toEditor.setScrollTop(0);
+      this.fromOriginalEditor.setScrollTop(0);
+      this.toOriginalEditor.setScrollTop(0);
     }
 
     const current = this.leftMiddleRightScrollTopMaps.find(d => {
@@ -227,17 +252,17 @@ export default class {
 
       const rightScrollTop =
         current[2][0] + (current[2][1] - current[2][0]) * ratio;
-      this.fromEditor.setScrollTop(leftScrollTop);
-      this.toEditor.setScrollTop(rightScrollTop);
+      this.fromOriginalEditor.setScrollTop(leftScrollTop);
+      this.toOriginalEditor.setScrollTop(rightScrollTop);
     } else {
       const lastLeftMiddleRight = this.leftMiddleRightScrollTopMaps.at(-1);
       if (lastLeftMiddleRight) {
         this.middleTop = lastLeftMiddleRight[1][1];
-        this.fromEditor.setScrollTop(lastLeftMiddleRight[0][1]);
-        this.toEditor.setScrollTop(lastLeftMiddleRight[2][1]);
+        this.fromOriginalEditor.setScrollTop(lastLeftMiddleRight[0][1]);
+        this.toOriginalEditor.setScrollTop(lastLeftMiddleRight[2][1]);
       } else {
-        this.fromEditor.setScrollTop(this.middleTop);
-        this.toEditor.setScrollTop(this.middleTop);
+        this.fromOriginalEditor.setScrollTop(this.middleTop);
+        this.toOriginalEditor.setScrollTop(this.middleTop);
       }
     }
 
@@ -247,8 +272,8 @@ export default class {
 
   public renderLinks() {
     const links = getLinks({
-      fromEditor: this.fromEditor,
-      toEditor: this.toEditor,
+      fromEditor: this.fromOriginalEditor,
+      toEditor: this.toOriginalEditor,
       relations: this.relations,
       fromContainerDomNode: this.fromContainerDomNode,
       toContainerDomNode: this.toContainerDomNode,

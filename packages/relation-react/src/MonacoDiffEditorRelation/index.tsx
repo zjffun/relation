@@ -85,13 +85,17 @@ const MonacoDiffEditorRelation = forwardRef<
           toModified
         );
 
-        if (!relationSvgElRef.current) {
+        if (
+          !relationSvgElRef.current ||
+          !diffEditorRef.current[0] ||
+          !diffEditorRef.current[1]
+        ) {
           return;
         }
 
         const monacoRelationView = new RelationSvg(
-          diffEditorRef.current[0]!.getModifiedEditor(),
-          diffEditorRef.current[1]!.getModifiedEditor(),
+          diffEditorRef.current[0],
+          diffEditorRef.current[1],
           relations,
           relationSvgElRef.current,
           {

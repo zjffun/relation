@@ -104,7 +104,6 @@ const getContent = async (
 ) => {
   const contents = [];
   let lineNum = 1;
-  let lastModifiedRange = [0, 0];
 
   ranges.sort((a, b) => a.modifiedRange[0] - b.modifiedRange[0]);
 
@@ -118,29 +117,50 @@ const getContent = async (
       path
     );
 
-    if (range.modifiedRange[0] - lastModifiedRange[1] > 1) {
-      const tempRange = [lastModifiedRange[1] + 1, range.modifiedRange[0] - 1];
-      contents.push(getContentByRange(baseOriginalContent, tempRange));
+    /**
+     * --- lines ---
+     * first relation start
+     */
+    if (i === 0 && range.range[0] > 1) {
+      const tempRange = [1, range.range[0] - 1];
+      contents.push(getContentByRange(content, tempRange));
       lineNum += getRangeLineCount(tempRange);
     }
 
+    /**
+     * relation start
+     * --- lines ---
+     * relation end
+     */
     contents.push(getContentByRange(content, range.range));
     const tempLineNum = lineNum + getRangeLineCount(range.range);
     range.checkResult[originalRangeName] = [lineNum, tempLineNum - 1];
     lineNum = tempLineNum;
 
-    lastModifiedRange = range.modifiedRange;
-  }
+    /**
+     * relation end
+     * --- lines ---
+     * next relation start
+     */
+    if (i + 1 < ranges.length) {
+      const nextRange = ranges[i + 1];
 
-  const baseOriginalContentLineNum = getLineNum(baseOriginalContent);
+      const tempRange = [range.range[1] + 1, nextRange.range[0] - 1];
+      contents.push(getContentByRange(content, tempRange));
+      lineNum += getRangeLineCount(tempRange);
+    }
 
-  if (lastModifiedRange[1] < baseOriginalContentLineNum) {
-    contents.push(
-      getContentByRange(baseOriginalContent, [
-        lastModifiedRange[1] + 1,
-        baseOriginalContentLineNum,
-      ])
-    );
+    /**
+     * last relation end
+     * --- lines ---
+     */
+    if (i + 1 === ranges.length) {
+      const end = getLineNum(content);
+
+      const tempRange = [range.range[1] + 1, end];
+      contents.push(getContentByRange(content, tempRange));
+      lineNum += getRangeLineCount(tempRange);
+    }
   }
 
   return contents.join("");

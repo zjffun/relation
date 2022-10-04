@@ -1,16 +1,15 @@
 import { Meta, Story } from '@storybook/react';
 import React, { useRef } from 'react';
-import { getRelationByCheckResult, MonacoDiffEditorRelation } from '../src';
-import { MonacoDiffEditorRelationProps } from '../src/MonacoDiffEditorRelation';
-// TODO: mock data
+import { RelationEditor } from '../src';
+import { RelationEditorProps } from '../src/RelationEditor';
 import {
   checkResults,
   originalAndModifiedContent,
-} from './MonacoDiffEditorRelationData.json';
+} from './RelationEditorData.json';
 
 const meta: Meta = {
-  title: 'MonacoDiffEditorRelation',
-  component: MonacoDiffEditorRelation,
+  title: 'RelationEditor',
+  component: RelationEditor,
   argTypes: {
     children: {
       control: {
@@ -25,12 +24,12 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<MonacoDiffEditorRelationProps> = args => {
+const Template: Story<RelationEditorProps> = args => {
   const ref = useRef({});
 
   return (
     <div style={{ height: '600px' }}>
-      <MonacoDiffEditorRelation ref={ref} {...args} />
+      <RelationEditor ref={ref} {...args} />
     </div>
   );
 };
@@ -40,13 +39,8 @@ const Template: Story<MonacoDiffEditorRelationProps> = args => {
 export const Default = Template.bind({});
 
 Default.args = {
-  fromOriginal: originalAndModifiedContent.fromOriginalContent,
-  fromModified: originalAndModifiedContent.fromModifiedContent,
-  toOriginal: originalAndModifiedContent.toOriginalContent,
-  toModified: originalAndModifiedContent.toModifiedContent,
-  relations: checkResults.map((d: any) => {
-    return getRelationByCheckResult(d);
-  }),
+  checkResults: checkResults,
+  originalAndModifiedContent: originalAndModifiedContent,
   options(data) {
     return <div onClick={() => console.log(data.id)}>test</div>;
   },

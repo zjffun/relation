@@ -88,22 +88,6 @@ export default ({
   setOptions?: ISetOptions;
 }) => {
   const [openInfo, setOpenInfo] = useState(false);
-  const { checkResults } = viewCheckResults;
-
-  const relation: any = [];
-
-  checkResults.forEach((record) => {
-    let type = RelationTypeEnum.relate;
-    if (record.dirty) {
-      type = RelationTypeEnum.dirty;
-    }
-
-    relation.push([
-      record.fromModifiedRange,
-      record.toModifiedRange,
-      { id: record.id, type },
-    ]);
-  });
 
   return (
     <main

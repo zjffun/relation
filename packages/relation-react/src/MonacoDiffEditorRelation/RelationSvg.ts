@@ -81,6 +81,16 @@ export default class {
     this.renderLinks();
   }
 
+  public setRelations(relations: IRelation[]) {
+    this.relations = relations;
+
+    this.leftMiddleRightScrollTopMaps = getLeftMiddleRightScrollTopMaps({
+      fromEditor: this.fromOriginalEditor,
+      toEditor: this.toOriginalEditor,
+      relations: this.relations,
+    });
+  }
+
   public scrollToRelation(id: string) {
     const relation = this.relations.find(relation => relation.id === id);
     if (!relation) {
@@ -287,7 +297,7 @@ export default class {
 
     select(this.linkEl)
       .selectAll('.relation-link')
-      .data(links)
+      .data(links, (d: any) => d.id)
       .join(
         enter => {
           const group = enter.append('g').attr('class', 'relation-link');
@@ -333,10 +343,10 @@ export default class {
 
           (customOptionsDiv as any).rc(this?.options);
 
-          return enter;
+          return group;
         },
         update => {
-          // console.log("update", update);
+          // console.log('update', update);
           update.select('path').attr('d', rangeLinkHorizontalGen);
 
           update
@@ -347,8 +357,8 @@ export default class {
           return update;
         },
         exit => {
-          // console.log("exit", exit);
-          exit.remove();
+          // console.log('exit', exit);
+          return exit.remove();
         }
       );
   }

@@ -1,5 +1,6 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
+// TODO: set model value
 export default async (
   diffEditor: monaco.editor.IStandaloneDiffEditor | null,
   original: string,

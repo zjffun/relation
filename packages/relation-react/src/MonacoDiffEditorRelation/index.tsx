@@ -54,6 +54,8 @@ const MonacoDiffEditorRelation = forwardRef<
       ]
     >([null, null]);
 
+    const monacoRelationView = useRef<any>(null);
+
     useImperativeHandle(
       ref,
       () => ({
@@ -69,6 +71,30 @@ const MonacoDiffEditorRelation = forwardRef<
       diffEditorRef.current[1] = createDiffEditor(toDiffEditorElRef.current, {
         saveHandler: onToSave,
       });
+
+      if (
+        !relationSvgElRef.current ||
+        !diffEditorRef.current[0] ||
+        !diffEditorRef.current[1]
+      ) {
+        return;
+      }
+
+      monacoRelationView.current = new RelationSvg(
+        diffEditorRef.current[0],
+        diffEditorRef.current[1],
+        relations,
+        relationSvgElRef.current,
+        {
+          fromContainerDomNode: diffEditorRef.current[0]!.getContainerDomNode(),
+          toContainerDomNode: diffEditorRef.current[1]!.getContainerDomNode(),
+          options,
+        }
+      );
+
+      if (currentId) {
+        monacoRelationView.current.scrollToRelation(currentId);
+      }
     }, []);
 
     useEffect(() => {
@@ -85,29 +111,7 @@ const MonacoDiffEditorRelation = forwardRef<
           toModified
         );
 
-        if (
-          !relationSvgElRef.current ||
-          !diffEditorRef.current[0] ||
-          !diffEditorRef.current[1]
-        ) {
-          return;
-        }
-
-        const monacoRelationView = new RelationSvg(
-          diffEditorRef.current[0],
-          diffEditorRef.current[1],
-          relations,
-          relationSvgElRef.current,
-          {
-            fromContainerDomNode: diffEditorRef.current[0]!.getContainerDomNode(),
-            toContainerDomNode: diffEditorRef.current[1]!.getContainerDomNode(),
-            options,
-          }
-        );
-
-        if (currentId) {
-          monacoRelationView.scrollToRelation(currentId);
-        }
+        monacoRelationView.current.setRelations(relations);
       })();
     }, [fromOriginal, fromModified, toOriginal, toModified, relations]);
 

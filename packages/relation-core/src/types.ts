@@ -48,9 +48,9 @@ export interface IOptions extends Partial<IRawRelation> {
 }
 
 export interface IOriginalAndModifiedContentResult {
-  fromOriginalContent: string;
+  fromOriginalContents: { [key: string]: string };
   fromModifiedContent: string;
-  toOriginalContent: string;
+  toOriginalContents: { [key: string]: string };
   toModifiedContent: string;
 }
 

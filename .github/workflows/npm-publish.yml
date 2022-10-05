@@ -1,7 +1,8 @@
 name: npm publish
 on:
-  branches:
-    - "releases/**"
+  push:
+    branches:
+      - "releases/**"
   # `created` and `published` not work in GitHub browser UI
   # See: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
   # release:

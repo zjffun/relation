@@ -1,6 +1,6 @@
 {
   "name": "relation2-react",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/relation2-react.esm.js",
@@ -50,7 +50,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
-    "relation2-core": "0.0.19",
+    "relation2-core": "0.0.20",
     "rollup-plugin-postcss": "^4.0.2",
     "sass-loader": "^13.0.2",
     "size-limit": "^8.0.1",

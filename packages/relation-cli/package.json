@@ -1,6 +1,6 @@
 {
   "name": "relation2-cli",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "type": "module",
   "bin": "./dist/index.js",
   "repository": "git@github.com:zjffun/relation.git",
@@ -22,8 +22,8 @@
     "diff": "^5.0.0",
     "fs-extra": "^10.1.0",
     "nanoid": "^4.0.0",
-    "relation2-core": "0.0.16",
-    "relation2-page": "0.0.16",
+    "relation2-core": "0.0.17",
+    "relation2-page": "0.0.17",
     "remark-parse": "^10.0.1",
     "simple-git": "^3.10.0",
     "stringify-json-script-content": "^0.0.2",

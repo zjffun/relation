@@ -19,9 +19,7 @@ export default function(
   const result = { ...relation };
 
   for (const k of keys) {
-    if (newRelation[k]) {
-      result[k] = newRelation[k];
-    }
+    result[k] = newRelation[k];
   }
 
   return result;

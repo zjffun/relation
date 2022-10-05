@@ -1,16 +1,11 @@
 import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
-import {
-  ICheckResult,
-  IOriginalAndModifiedContentResult,
-} from "relation2-core";
+import { ICheckResult } from "relation2-core";
 import RelationDetail from "./relationView/RelationDetail";
 
 import "./style.scss";
 
 const checkResults = (window as any).checkResults as ICheckResult[];
-const originalAndModifiedContents = (window as any)
-  .originalAndModifiedContents as IOriginalAndModifiedContentResult;
 
 let searchParams = (window as any).relationSearchParams;
 
@@ -27,15 +22,15 @@ const Page = ({ checkResults }: { checkResults: ICheckResult[] }) => {
 
   const checkResult = checkResults.find((d) => d.id === showingRelation);
 
-  if (checkResult) {
-    return (
-      <RelationDetail
-        originalAndModifiedContents={originalAndModifiedContents}
-        checkResult={checkResult}
-        currentId={showingRelation}
-      ></RelationDetail>
-    );
-  }
+  // if (checkResult) {
+  //   return (
+  //     <RelationDetail
+  //       originalAndModifiedContents={originalAndModifiedContents}
+  //       checkResult={checkResult}
+  //       currentId={showingRelation}
+  //     ></RelationDetail>
+  //   );
+  // }
 
   return <>Not Find {showingRelation}</>;
 };

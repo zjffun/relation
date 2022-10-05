@@ -4,11 +4,7 @@ import pick from "lodash/pick.js";
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import {
-  checkRelations,
-  getOriginalAndModifiedContent,
-  groupByKey,
-} from "relation2-core";
+import { groupByKey, RelationServer } from "relation2-core";
 import stringifyJsonScriptContent from "stringify-json-script-content";
 import baseDirname from "../baseDirname.js";
 
@@ -32,22 +28,30 @@ export default function(program: Command) {
         }
       }
 
-      const checkResults = await checkRelations({
-        from,
+      const relationServer = new RelationServer();
+
+      const relations = await relationServer.filter((relation) => {
+        return (
+          path.join(
+            relationServer.workingDirectory,
+            relation.fromBaseDir,
+            relation.fromPath
+          ) === from
+        );
       });
 
-      const resultGroupByKey = groupByKey(checkResults);
+      const resultGroupByKey = groupByKey(relations);
 
       if (opts.output === "html") {
-        await outputHtml(resultGroupByKey);
+        await outputHtml(resultGroupByKey, relationServer);
         return;
       }
 
-      await outputJson(resultGroupByKey);
+      await outputJson(resultGroupByKey, relationServer);
     });
 }
 
-async function outputHtml(resultGroupByKey) {
+async function outputHtml(resultGroupByKey, relationServer) {
   const resultPath = path.join(process.cwd(), "relation-check-result");
 
   fse.emptyDirSync(resultPath);
@@ -55,7 +59,7 @@ async function outputHtml(resultGroupByKey) {
   const results = [];
 
   for (const result of Object.entries(resultGroupByKey)) {
-    const data = await getViewCheckResult(result);
+    const data = await getViewCheckResult(result, relationServer);
 
     results.push({
       key: data.key,
@@ -100,7 +104,7 @@ async function outputHtml(resultGroupByKey) {
   );
 }
 
-async function outputJson(resultGroupByKey) {
+async function outputJson(resultGroupByKey, relationServer) {
   const resultPath = path.join(process.cwd(), "relation-check-result");
 
   fse.emptyDirSync(resultPath);
@@ -121,7 +125,7 @@ async function outputJson(resultGroupByKey) {
   fse.mkdirSync(previewsPath);
 
   for (const result of Object.entries(resultGroupByKey)) {
-    const data = await getViewCheckResult(result);
+    const data = await getViewCheckResult(result, relationServer);
 
     results.push({
       key: data.key,
@@ -145,26 +149,24 @@ async function outputJson(resultGroupByKey) {
   );
 }
 
-async function getViewCheckResult(result) {
+async function getViewCheckResult(result, relationServer) {
   const [key, checkResults] = result;
 
-  const originalAndModifiedContent = await getOriginalAndModifiedContent({
-    checkResults: checkResults as any,
-    relationsKey: key,
-  });
+  const fileContents = await relationServer.getFileContentsByKey(key);
 
   const viewCheckResults = checkResults.map((checkResult) => {
     return pick(checkResult, [
       "id",
-      "fromRange",
-      "toRange",
+
       "fromRev",
+      "fromBaseDir",
+      "fromPath",
+      "fromRange",
+
       "toRev",
-      "dirty",
-      "fromModifiedRange",
-      "toModifiedRange",
-      "fromOriginalRange",
-      "toOriginalRange",
+      "toBaseDir",
+      "toPath",
+      "toRange",
     ]);
   });
 
@@ -184,6 +186,6 @@ async function getViewCheckResult(result) {
       "currentFromRev",
       "currentToRev",
     ]),
-    originalAndModifiedContent,
+    fileContents,
   };
 }

@@ -21,10 +21,7 @@
     "dist",
     "src"
   ],
-  "dependencies": {
-    "relation2-core": "0.0.15",
-    "relation2-react": "0.0.15"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "monaco-editor": "*",
     "react": ">=16"
@@ -54,6 +51,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
+    "relation2-core": "0.0.15",
     "rollup-plugin-postcss": "^4.0.2",
     "sass-loader": "^13.0.2",
     "size-limit": "^8.0.1",

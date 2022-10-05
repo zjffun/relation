@@ -1,10 +1,7 @@
 import { readFileSync } from "node:fs";
-import { IOptions, IRawRelation } from "../types.js";
-import { getInfo } from "./getInfo.js";
+import { IRawRelation } from "../types.js";
 
-export default (options: IOptions) => {
-  const { relationFilePath } = getInfo(options);
-
+export default (relationFilePath: string) => {
   const relationBuffer = readFileSync(relationFilePath);
   const rawRelations: IRawRelation[] = JSON.parse(relationBuffer.toString());
 

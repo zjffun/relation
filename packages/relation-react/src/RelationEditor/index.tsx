@@ -1,9 +1,11 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React, { FC, forwardRef, useEffect, useState } from 'react';
 import {
+  getFileContentKey,
   ICheckResultView,
-  IOriginalAndModifiedContentResult,
-} from 'relation2-core';
+  IFileContents,
+  PartTypeEnum,
+} from '../bundled';
 import { join, split } from 'split-split';
 import getRelationByCheckResult from '../getRelationByCheckResult';
 import MonacoDiffEditorRelation from '../MonacoDiffEditorRelation';
@@ -12,7 +14,7 @@ import setModelToDiffEditor from '../MonacoDiffEditorRelation/setModelToDiffEdit
 import { IRelation } from '../types';
 
 export interface RelationEditorProps {
-  originalAndModifiedContent: IOriginalAndModifiedContentResult;
+  fileContents: IFileContents;
   checkResults: ICheckResultView[];
   currentId?: string;
   options?: FC<any>;
@@ -49,17 +51,15 @@ const getRangeLineCount = (range: [number, number]) => {
 
 const getContent = async ({
   rangeInfos,
-  originalContents,
   modifiedContent,
   originalRangeName,
 }: {
   rangeInfos: {
     modifiedRange: [number, number];
-    rev: string;
+    content: string;
     range: [number, number];
     checkResult: any;
   }[];
-  originalContents: { [key: string]: string };
   modifiedContent: string;
   originalRangeName: string;
 }) => {
@@ -71,7 +71,7 @@ const getContent = async ({
   for (let i = 0; i < rangeInfos.length; i++) {
     const range = rangeInfos[i];
 
-    const content = originalContents[range.rev];
+    const content = range.content;
 
     /**
      * --- lines ---
@@ -127,21 +127,39 @@ const getContent = async ({
   return contents.join('');
 };
 
+const baseRev = '';
+
 const RelationEditor = forwardRef<{ diffEditorRef?: any }, RelationEditorProps>(
   (
-    {
-      originalAndModifiedContent,
-      checkResults,
-      currentId,
-      options,
-      onFromSave,
-      onToSave,
-    },
+    { fileContents, checkResults, currentId, options, onFromSave, onToSave },
     ref
   ) => {
     const [fromOriginal, setFromOriginal] = useState('');
     const [toOriginal, setToOriginal] = useState('');
     const [relations, setRelations] = useState<IRelation[]>([]);
+
+    let fromModifiedContent = '';
+
+    let toModifiedContent = '';
+
+    try {
+      fromModifiedContent =
+        fileContents[
+          getFileContentKey(
+            { ...checkResults[0], fromRev: baseRev },
+            PartTypeEnum.FROM
+          )
+        ] || '';
+      toModifiedContent =
+        fileContents[
+          getFileContentKey(
+            { ...checkResults[0], toRev: baseRev },
+            PartTypeEnum.TO
+          )
+        ] || '';
+    } catch (error) {
+      console.error(error);
+    }
 
     useEffect(() => {
       (async () => {
@@ -154,10 +172,8 @@ const RelationEditor = forwardRef<{ diffEditorRef?: any }, RelationEditorProps>(
           if (checkResult.fromRev !== lastFromRev) {
             await setModelToDiffEditor(
               fromDiffEditor,
-              originalAndModifiedContent.fromOriginalContents[
-                checkResult.fromRev
-              ],
-              originalAndModifiedContent.fromModifiedContent
+              fileContents[getFileContentKey(checkResult, PartTypeEnum.FROM)],
+              fromModifiedContent
             );
             lastFromRev = checkResult.fromRev;
           }
@@ -174,8 +190,8 @@ const RelationEditor = forwardRef<{ diffEditorRef?: any }, RelationEditorProps>(
           if (checkResult.toRev !== lastToRev) {
             await setModelToDiffEditor(
               toDiffEditor,
-              originalAndModifiedContent.toOriginalContents[checkResult.toRev],
-              originalAndModifiedContent.toModifiedContent
+              fileContents[getFileContentKey(checkResult, PartTypeEnum.TO)],
+              toModifiedContent
             );
             lastToRev = checkResult.toRev;
           }
@@ -194,12 +210,12 @@ const RelationEditor = forwardRef<{ diffEditorRef?: any }, RelationEditorProps>(
           await getContent({
             rangeInfos: checkResults.map(checkResult => ({
               modifiedRange: checkResult.fromModifiedRange,
-              rev: checkResult.fromRev,
+              content:
+                fileContents[getFileContentKey(checkResult, PartTypeEnum.FROM)],
               range: checkResult.fromRange,
               checkResult,
             })),
-            originalContents: originalAndModifiedContent.fromOriginalContents,
-            modifiedContent: originalAndModifiedContent.fromModifiedContent,
+            modifiedContent: fromModifiedContent,
             originalRangeName: 'fromOriginalRange',
           })
         );
@@ -208,12 +224,12 @@ const RelationEditor = forwardRef<{ diffEditorRef?: any }, RelationEditorProps>(
           await getContent({
             rangeInfos: checkResults.map(checkResult => ({
               modifiedRange: checkResult.toModifiedRange,
-              rev: checkResult.toRev,
+              content:
+                fileContents[getFileContentKey(checkResult, PartTypeEnum.TO)],
               range: checkResult.toRange,
               checkResult,
             })),
-            originalContents: originalAndModifiedContent.toOriginalContents,
-            modifiedContent: originalAndModifiedContent.toModifiedContent,
+            modifiedContent: toModifiedContent,
             originalRangeName: 'toOriginalRange',
           })
         );
@@ -224,15 +240,15 @@ const RelationEditor = forwardRef<{ diffEditorRef?: any }, RelationEditorProps>(
           )
         );
       })();
-    }, [originalAndModifiedContent, checkResults]);
+    }, [fileContents, checkResults]);
 
     return (
       <MonacoDiffEditorRelation
         ref={ref}
         fromOriginal={fromOriginal}
-        fromModified={originalAndModifiedContent.fromModifiedContent}
+        fromModified={fromModifiedContent}
         toOriginal={toOriginal}
-        toModified={originalAndModifiedContent.toModifiedContent}
+        toModified={toModifiedContent}
         relations={relations}
         currentId={currentId}
         options={options}

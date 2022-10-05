@@ -1,18 +1,13 @@
 import React from "react";
 import { RelationTypeEnum } from "../../types";
 
-import {
-  ICheckResult,
-  IOriginalAndModifiedContentResult,
-} from "relation2-core";
+import { ICheckResult } from "relation2-core";
 import "./RelationDetail.scss";
 
 export default ({
   checkResult,
   currentId,
-  originalAndModifiedContents,
 }: {
-  originalAndModifiedContents: IOriginalAndModifiedContentResult;
   checkResult: ICheckResult;
   currentId?: string;
 }) => {

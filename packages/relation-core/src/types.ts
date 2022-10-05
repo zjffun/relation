@@ -21,6 +21,11 @@ export enum LineRelationTypeEnum {
   MODIFIED = "MODIFIED",
 }
 
+export enum PartTypeEnum {
+  FROM = "from",
+  TO = "to",
+}
+
 export interface ILineRelation {
   originalRange: [number, number];
   modifiedRange: [number, number];
@@ -47,13 +52,6 @@ export interface IOptions extends Partial<IRawRelation> {
   cwd?: string;
 }
 
-export interface IOriginalAndModifiedContentResult {
-  fromOriginalContents: { [key: string]: string };
-  fromModifiedContent: string;
-  toOriginalContents: { [key: string]: string };
-  toModifiedContent: string;
-}
-
 export interface ICheckResultView extends ICheckResultBasic, IRawRelationBasic {
   fromOriginalRange: [number, number];
   toOriginalRange: [number, number];
@@ -63,6 +61,10 @@ export interface IViewData extends IRawRelationCommon, ICheckResultCommon {
   id: number;
   key: string;
   checkResults: ICheckResultView[];
-  originalAndModifiedContent?: IOriginalAndModifiedContentResult;
+  fileContents: IFileContents;
   dirty?: boolean;
+}
+
+export interface IFileContents {
+  [key: string]: string;
 }

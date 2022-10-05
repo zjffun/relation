@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { updateRelation } from "relation2-core";
+import { RelationServer } from "relation2-core";
 
 const getRange = (value, dummyPrevious) => {
   if (!value) {
@@ -19,7 +19,7 @@ const getRange = (value, dummyPrevious) => {
   }
 };
 
-export default function (program: Command) {
+export default function(program: Command) {
   program
     .command("update")
     .option("--id <string>")
@@ -30,6 +30,7 @@ export default function (program: Command) {
     .option("--srcRange <string>", "startLine,endLine", getRange)
     .option("--range <string>", "startLine,endLine", getRange)
     .action((opts) => {
-      updateRelation(opts);
+      const relationServer = new RelationServer();
+      relationServer.updateById(opts.id, opts);
     });
 }

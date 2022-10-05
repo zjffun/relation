@@ -1,14 +1,16 @@
 import * as path from "node:path";
 import { simpleGit } from "simple-git";
 import getDirnameBasename from "../core/getDirnameBasename.js";
-import { getInfo } from "../core/getInfo.js";
 import { nanoid } from "../core/nanoid.js";
-import { IOptions } from "../types.js";
 import { getRelationRanges } from "./getRelationRanges.js";
 
-export async function createRelations(options: IOptions) {
-  const { workingDirectory } = getInfo(options);
-
+export async function createRelations(options: {
+  workingDirectory: string;
+  fromRev: string;
+  fromPath: string;
+  toRev: string;
+  toPath: string;
+}) {
   const [fromDir, fromFile] = getDirnameBasename(options.fromPath);
   const [toDir, toFile] = getDirnameBasename(options.toPath);
 
@@ -30,8 +32,8 @@ export async function createRelations(options: IOptions) {
   const fromRootDir = await fromSimpleGit.revparse(["--show-toplevel"]);
   const toRootDir = await toSimpleGit.revparse(["--show-toplevel"]);
 
-  const fromBaseDir = path.relative(workingDirectory, fromRootDir);
-  const toBaseDir = path.relative(workingDirectory, toRootDir);
+  const fromBaseDir = path.relative(options.workingDirectory, fromRootDir);
+  const toBaseDir = path.relative(options.workingDirectory, toRootDir);
 
   const fromPath = path.relative(fromRootDir, options.fromPath);
   const toPath = path.relative(toRootDir, options.toPath);

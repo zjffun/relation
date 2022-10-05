@@ -1,4 +1,4 @@
-import { ICheckResultView } from 'relation2-core';
+import { ICheckResultView } from './bundled';
 import { IRelation, RelationTypeEnum } from './types';
 
 export default (checkResult: ICheckResultView): IRelation => {

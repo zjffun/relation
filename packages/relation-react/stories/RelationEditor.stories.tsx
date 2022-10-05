@@ -2,10 +2,7 @@ import { Meta, Story } from '@storybook/react';
 import React, { useRef } from 'react';
 import { RelationEditor } from '../src';
 import { RelationEditorProps } from '../src/RelationEditor';
-import {
-  checkResults,
-  originalAndModifiedContent,
-} from './RelationEditorData.json';
+import { checkResults, fileContents } from './RelationEditorData.json';
 
 const meta: Meta = {
   title: 'RelationEditor',
@@ -39,8 +36,8 @@ const Template: Story<RelationEditorProps> = args => {
 export const Default = Template.bind({});
 
 Default.args = {
-  checkResults: checkResults,
-  originalAndModifiedContent: originalAndModifiedContent,
+  checkResults,
+  fileContents,
   options(data) {
     return <div onClick={() => console.log(data.id)}>test</div>;
   },

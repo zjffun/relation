@@ -1,11 +1,8 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { IViewData } from "relation2-core";
-import { ISetOptions, RelationTypeEnum } from "../../types";
-import {
-  getRelationByCheckResult,
-  MonacoDiffEditorRelation,
-} from "relation2-react";
+import { RelationEditor } from "relation2-react";
+import { ISetOptions } from "../../types";
 
 import "./RelationsWindow.scss";
 
@@ -123,24 +120,11 @@ export default ({
         </ul>
       </header>
       <section className={"relation-overview__relations"}>
-        <MonacoDiffEditorRelation
-          fromOriginal={
-            viewCheckResults.originalAndModifiedContent.fromOriginalContent
-          }
-          fromModified={
-            viewCheckResults.originalAndModifiedContent.fromModifiedContent
-          }
-          toOriginal={
-            viewCheckResults.originalAndModifiedContent.toOriginalContent
-          }
-          toModified={
-            viewCheckResults.originalAndModifiedContent.toModifiedContent
-          }
-          relations={viewCheckResults.checkResults.map((d: any) => {
-            return getRelationByCheckResult(d);
-          })}
+        <RelationEditor
+          fileContents={viewCheckResults.fileContents}
+          checkResults={viewCheckResults.checkResults}
           currentId={currentId}
-        ></MonacoDiffEditorRelation>
+        ></RelationEditor>
       </section>
     </main>
   );

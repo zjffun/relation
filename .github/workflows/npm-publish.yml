@@ -1,7 +1,11 @@
-name: Node.js Package
+name: npm publish
 on:
-  release:
-    types: [published]
+  branches:
+    - "releases/**"
+  # `created` and `published` not work in GitHub browser UI
+  # See: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
+  # release:
+  #   types: [created]
 jobs:
   build:
     runs-on: ubuntu-latest

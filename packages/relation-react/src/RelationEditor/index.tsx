@@ -187,6 +187,23 @@ const RelationEditor = forwardRef<{ diffEditorRef?: any }, RelationEditorProps>(
             )?.equivalentLineNumber || 0,
           ];
 
+          let dirty = false;
+
+          const changes = fromDiffEditor?.getLineChanges() || [];
+          for (const change of changes) {
+            if (
+              !(
+                change.originalEndLineNumber < checkResult.fromRange[0] ||
+                change.originalStartLineNumber > checkResult.fromRange[1]
+              )
+            ) {
+              dirty = true;
+              break;
+            }
+          }
+
+          checkResult.dirty = dirty;
+
           if (checkResult.toRev !== lastToRev) {
             await setModelToDiffEditor(
               toDiffEditor,

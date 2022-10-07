@@ -16,6 +16,7 @@ export default (
     diffWordWrap: 'on',
     renderSideBySide: false,
     renderOverviewRuler: false,
+    theme: 'vs-dark',
   });
 
   if (saveHandler) {

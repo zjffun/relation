@@ -134,17 +134,7 @@ export default class {
   updateById(id, info: Partial<IRawRelation>) {
     const relations = this.map((relation) => {
       if (relation.id === id) {
-        return mergeRelation(relation, {
-          id: info.id,
-          fromRev: info.fromRev,
-          fromBaseDir: info.fromBaseDir,
-          fromPath: info.fromPath,
-          fromRange: info.fromRange,
-          toRev: info.toRev,
-          toPath: info.toPath,
-          toBaseDir: info.toBaseDir,
-          toRange: info.toRange,
-        });
+        return mergeRelation(relation, info);
       }
       return relation;
     });

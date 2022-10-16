@@ -1,8 +1,4 @@
-$add: lightgreen;
-$remove: lightcoral;
-$change: mediumpurple;
-$relate: lightskyblue;
-$dirty: mediumvioletred;
+@import './RelationSvg.scss';
 
 :root {
   --block-operation-display: block;
@@ -61,29 +57,6 @@ $dirty: mediumvioletred;
       }
     }
 
-    rect,
-    path {
-      stroke: gray;
-    }
-
-    .remove {
-      fill: $remove;
-    }
-
-    .add {
-      fill: $add;
-    }
-
-    .change {
-      fill: $change;
-    }
-
-    .relate {
-      fill: $relate;
-    }
-
-    .dirty {
-      fill: $dirty;
-    }
+    @include relationSvg;
   }
 }

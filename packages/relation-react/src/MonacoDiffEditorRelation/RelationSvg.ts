@@ -106,26 +106,6 @@ export default class {
     this.toOriginalEditor.setScrollTop(rightTop);
   }
 
-  public onDetailClick(event: any) {
-    document.dispatchEvent(
-      new CustomEvent('relationDetailButtonClick', {
-        detail: {
-          id: event.target.getAttribute('relation-id'),
-        },
-      })
-    );
-  }
-
-  public onDeleteClick(event: any) {
-    document.dispatchEvent(
-      new CustomEvent('relationDeleteButtonClick', {
-        detail: {
-          id: event.target.getAttribute('relation-id'),
-        },
-      })
-    );
-  }
-
   public getMiddleTopFromLeftTop(leftTop: number): number {
     const current = this.leftMiddleRightScrollTopMaps.find(d => {
       if (d[0][0] <= leftTop && d[0][1] >= leftTop) {
@@ -322,20 +302,6 @@ export default class {
           const optionsBody = options.append('xhtml:body');
 
           optionsBody.attr('class', 'relation-options');
-
-          optionsBody
-            .append('button')
-            .text('detail')
-            .attr('class', 'relation-options__detail')
-            .attr('relation-id', (d: any) => d.id)
-            .on('click', this.onDetailClick);
-
-          optionsBody
-            .append('button')
-            .text('delete')
-            .attr('class', 'relation-options__delete')
-            .attr('relation-id', (d: any) => d.id)
-            .on('click', this.onDeleteClick);
 
           const customOptionsDiv = optionsBody
             .append('div')

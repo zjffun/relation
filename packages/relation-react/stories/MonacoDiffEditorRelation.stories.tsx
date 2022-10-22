@@ -1,12 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import React, { useRef } from 'react';
-import { getRelationByCheckResult, MonacoDiffEditorRelation } from '../src';
+import { MonacoDiffEditorRelation } from '../src';
 import { MonacoDiffEditorRelationProps } from '../src/MonacoDiffEditorRelation';
-// TODO: mock data
-import {
-  checkResults,
-  originalAndModifiedContent,
-} from './MonacoDiffEditorRelationData.json';
 
 const meta: Meta = {
   title: 'MonacoDiffEditorRelation',
@@ -40,13 +35,11 @@ const Template: Story<MonacoDiffEditorRelationProps> = args => {
 export const Default = Template.bind({});
 
 Default.args = {
-  fromOriginal: originalAndModifiedContent.fromOriginalContent,
-  fromModified: originalAndModifiedContent.fromModifiedContent,
-  toOriginal: originalAndModifiedContent.toOriginalContent,
-  toModified: originalAndModifiedContent.toModifiedContent,
-  relations: checkResults.map((d: any) => {
-    return getRelationByCheckResult(d);
-  }),
+  fromOriginal: '1\n2\n3\n',
+  fromModified: '1\n2\n3\n',
+  toOriginal: '1\n2\n3\n',
+  toModified: '1\n2\n3\n',
+  relations: [],
   options(data) {
     return <div onClick={() => console.log(data.id)}>test</div>;
   },
@@ -57,3 +50,23 @@ Default.args = {
     console.log(editor);
   },
 };
+
+/*
+TODO: fix scroll without original
+Default.args = {
+  fromOriginal: '',
+  fromModified: '1\n2\n3\n',
+  toOriginal: '',
+  toModified: '1\n2\n3\n',
+  relations: [],
+  options(data) {
+    return <div onClick={() => console.log(data.id)}>test</div>;
+  },
+  onFromSave(editor) {
+    console.log(editor);
+  },
+  onToSave(editor) {
+    console.log(editor);
+  },
+};
+ */

@@ -14,6 +14,10 @@ import setModelToDiffEditor from '../MonacoDiffEditorRelation/setModelToDiffEdit
 import { IRelation } from '../types';
 
 export interface RelationEditorProps {
+  fromPath: string;
+  fromBaseDir: string;
+  toPath: string;
+  toBaseDir: string;
   fileContents: IFileContents;
   checkResults: ICheckResultView[];
   currentId?: string;
@@ -66,6 +70,10 @@ const getContent = async ({
   const contents = [];
   let lineNum = 1;
 
+  if (rangeInfos.length === 0) {
+    return modifiedContent;
+  }
+
   rangeInfos.sort((a, b) => a.modifiedRange[0] - b.modifiedRange[0]);
 
   for (let i = 0; i < rangeInfos.length; i++) {
@@ -108,7 +116,6 @@ const getContent = async ({
       ];
       contents.push(getContentByRange(modifiedContent, tempRange));
       lineNum += getRangeLineCount(tempRange);
-      // console.log(getContentByRange(modifiedContent, tempRange), tempRange);
     }
 
     /**
@@ -131,7 +138,18 @@ const baseRev = '';
 
 const RelationEditor = forwardRef<{ diffEditorRef?: any }, RelationEditorProps>(
   (
-    { fileContents, checkResults, currentId, options, onFromSave, onToSave },
+    {
+      fromPath,
+      fromBaseDir,
+      toPath,
+      toBaseDir,
+      fileContents,
+      checkResults,
+      currentId,
+      options,
+      onFromSave,
+      onToSave,
+    },
     ref
   ) => {
     const [fromOriginal, setFromOriginal] = useState('');
@@ -146,14 +164,14 @@ const RelationEditor = forwardRef<{ diffEditorRef?: any }, RelationEditorProps>(
       fromModifiedContent =
         fileContents[
           getFileContentKey(
-            { ...checkResults[0], fromRev: baseRev },
+            { fromPath, fromBaseDir, fromRev: baseRev },
             PartTypeEnum.FROM
           )
         ] || '';
       toModifiedContent =
         fileContents[
           getFileContentKey(
-            { ...checkResults[0], toRev: baseRev },
+            { toPath, toBaseDir, toRev: baseRev },
             PartTypeEnum.TO
           )
         ] || '';

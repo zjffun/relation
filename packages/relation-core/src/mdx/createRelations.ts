@@ -1,7 +1,7 @@
 import * as path from "node:path";
 import { simpleGit } from "simple-git";
 import getDirnameBasename from "../core/getDirnameBasename.js";
-import { nanoid } from "../core/nanoid.js";
+import { relationId } from "../core/relationId.js";
 import { getRelationRanges } from "./getRelationRanges.js";
 
 export async function createRelations(options: {
@@ -42,7 +42,7 @@ export async function createRelations(options: {
 
   const relations = relationRanges.map(({ fromRange, toRange }) => {
     return {
-      id: nanoid(),
+      id: relationId(),
       fromRev: parsedFromRev,
       fromPath,
       fromBaseDir,

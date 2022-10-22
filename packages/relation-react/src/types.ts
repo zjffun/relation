@@ -11,6 +11,7 @@ export enum RelationTypeEnum {
   change = 'change',
   relate = 'relate',
   dirty = 'dirty',
+  temp = 'temp',
 }
 
 export type IScrollTopMap = [

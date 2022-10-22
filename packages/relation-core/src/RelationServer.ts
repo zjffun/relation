@@ -1,15 +1,15 @@
+import fse from "fs-extra";
 import * as path from "node:path";
 import simpleGit from "simple-git";
 import getDirnameBasename from "./core/getDirnameBasename.js";
 import { getFileContents } from "./core/getFileContents.js";
 import { getKey } from "./core/getKey.js";
 import mergeRelation from "./core/mergeRelation.js";
-import { nanoid } from "./core/nanoid.js";
+import { relationId } from "./core/relationId.js";
 import readRelation from "./core/readRelation.js";
 import writeRelation from "./core/writeRelation.js";
 import { createRelations } from "./mdx/createRelations.js";
 import { IFileContents, IRawRelation } from "./types.js";
-
 export default class {
   cwd: string;
   workingDirectory: string;
@@ -25,6 +25,31 @@ export default class {
       ".relation",
       "relation.json"
     );
+  }
+
+  checkIsInit() {
+    if (!fse.existsSync(this.relationFilePath)) {
+      return false;
+    }
+
+    try {
+      const relations = this.read();
+      if (Array.isArray(relations)) {
+        return true;
+      }
+    } catch {
+      // do nothing
+    }
+
+    return false;
+  }
+
+  init() {
+    if (!this.checkIsInit()) {
+      fse.ensureFileSync(this.relationFilePath);
+      fse.writeFileSync(this.relationFilePath, "[]");
+      return true;
+    }
   }
 
   read() {
@@ -78,7 +103,7 @@ export default class {
     const toPath = path.relative(toRootDir, info.toPath);
 
     const relation: IRawRelation = {
-      id: nanoid(),
+      id: relationId(),
       fromRev: parsedFromRev,
       fromPath,
       fromBaseDir,
@@ -122,6 +147,12 @@ export default class {
     const relations = this.filter(
       (relation) => getKey(relation) === relationsKey
     );
+    const fileContents = await this.getFileContentsByRelations(relations);
+
+    return fileContents;
+  }
+
+  async getFileContentsByRelations(relations: IRawRelation[]) {
     const fileContents = await getFileContents(
       this.workingDirectory,
       undefined,

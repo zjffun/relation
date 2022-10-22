@@ -1,15 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import React, { useRef } from 'react';
-import {
-  CreateMode,
-  getRelationByCheckResult,
-  MonacoDiffEditorRelation,
-} from '../src';
+import { CreateMode, MonacoDiffEditorRelation } from '../src';
 import { CreateModeProps } from '../src/CreateMode';
-import {
-  checkResults,
-  originalAndModifiedContent,
-} from './MonacoDiffEditorRelationData.json';
 
 const meta: Meta = {
   title: 'CreateMode',
@@ -40,13 +32,11 @@ const Template: Story<CreateModeProps> = args => {
         <MonacoDiffEditorRelation
           ref={ref}
           {...{
-            fromOriginal: originalAndModifiedContent.fromOriginalContent,
-            fromModified: originalAndModifiedContent.fromModifiedContent,
-            toOriginal: originalAndModifiedContent.toOriginalContent,
-            toModified: originalAndModifiedContent.toModifiedContent,
-            relations: checkResults.map((d: any) => {
-              return getRelationByCheckResult(d);
-            }),
+            fromOriginal: '1\n2\n3\n',
+            fromModified: '1\n2\n3\n',
+            toOriginal: '1\n2\n3\n',
+            toModified: '1\n2\n3\n',
+            relations: [],
             options(data) {
               return <div onClick={() => console.log(data.id)}>test</div>;
             },

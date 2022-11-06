@@ -1,15 +1,13 @@
 import { Command } from "commander";
 import fse from "fs-extra";
 import pick from "lodash/pick.js";
-import crypto from "node:crypto";
-import fs from "node:fs";
 import path from "node:path";
-import { groupByKey, RelationServer } from "relation2-core";
+import { groupByKey, RelationServer, sha1 } from "relation2-core";
 import stringifyJsonScriptContent from "stringify-json-script-content";
 import baseDirname from "../baseDirname.js";
 
 const pkgInfo = JSON.parse(
-  fs.readFileSync(path.resolve(baseDirname, "..", "package.json")).toString()
+  fse.readFileSync(path.resolve(baseDirname, "..", "package.json")).toString()
 );
 
 export default function(program: Command) {
@@ -34,43 +32,40 @@ export default function(program: Command) {
         return (
           path.join(
             relationServer.workingDirectory,
-            relation.fromBaseDir,
+            relation.fromGitWorkingDirectory,
             relation.fromPath
           ) === from
         );
       });
 
-      const resultGroupByKey = groupByKey(relations);
+      const relationsGroupByKey = groupByKey(relations);
 
       if (opts.output === "html") {
-        await outputHtml(resultGroupByKey, relationServer);
+        await outputHtml(relationsGroupByKey, relationServer);
         return;
       }
 
-      await outputJson(resultGroupByKey, relationServer);
+      await outputJson(relationsGroupByKey, relationServer);
     });
 }
 
-async function outputHtml(resultGroupByKey, relationServer) {
+async function outputHtml(relationsGroupByKey, relationServer: RelationServer) {
   const resultPath = path.join(process.cwd(), "relation-check-result");
 
   fse.emptyDirSync(resultPath);
 
   const results = [];
 
-  for (const result of Object.entries(resultGroupByKey)) {
-    const data = await getViewCheckResult(result, relationServer);
+  for (const [key, relations] of Object.entries(relationsGroupByKey)) {
+    const data = await getViewData(relations, relationServer);
+    const id = sha1(data);
 
     results.push({
-      key: data.key,
-      id: data.id,
+      key: key,
+      id,
     });
 
-    const escapedViewCheckResultsJSONString = stringifyJsonScriptContent(
-      data,
-      null,
-      2
-    );
+    const escapedViewDataJSONString = stringifyJsonScriptContent(data, null, 2);
 
     const html = `
     <!DOCTYPE html>
@@ -78,22 +73,22 @@ async function outputHtml(resultGroupByKey, relationServer) {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>${data.id} - Relation</title>
+      <title>${id} - Relation</title>
     </head>
     <body>
       <div id="root">
       </div>
-      <script id="viewCheckResultsText" type="application/json">
-        ${escapedViewCheckResultsJSONString}
+      <script id="viewDataText" type="application/json">
+        ${escapedViewDataJSONString}
       </script>
       <script>
-        window.__VIEW_CHECK_RESULTS__ = JSON.parse(document.getElementById('viewCheckResultsText').textContent);
+        window.__VIEW_DATA__ = JSON.parse(document.getElementById('viewDataText').textContent);
       </script>
       <script src="https://cdn.jsdelivr.net/npm/relation2-page@${pkgInfo.version}/dist/relationPreviewView.js"></script>
     </body>
     </html>`;
 
-    fse.writeFileSync(path.join(resultPath, `${data.id}.html`), html);
+    fse.writeFileSync(path.join(resultPath, `${id}.html`), html);
   }
 
   const resultsJSONString = JSON.stringify(Array.from(results), null, 2);
@@ -104,7 +99,7 @@ async function outputHtml(resultGroupByKey, relationServer) {
   );
 }
 
-async function outputJson(resultGroupByKey, relationServer) {
+async function outputJson(resultGroupByKey, relationServer: RelationServer) {
   const resultPath = path.join(process.cwd(), "relation-check-result");
 
   fse.emptyDirSync(resultPath);
@@ -124,21 +119,18 @@ async function outputJson(resultGroupByKey, relationServer) {
 
   fse.mkdirSync(previewsPath);
 
-  for (const result of Object.entries(resultGroupByKey)) {
-    const data = await getViewCheckResult(result, relationServer);
+  for (const [key, relations] of Object.entries(resultGroupByKey)) {
+    const data = await getViewData(relations, relationServer);
+    const id = sha1(data);
 
     results.push({
-      key: data.key,
-      id: data.id,
-      dirty: data.checkResults.some((checkResult) => checkResult.dirty),
+      key: key,
+      id,
     });
 
     const dataJSONString = JSON.stringify(data, null, 2);
 
-    fse.writeFileSync(
-      path.join(previewsPath, `${data.id}.json`),
-      dataJSONString
-    );
+    fse.writeFileSync(path.join(previewsPath, `${id}.json`), dataJSONString);
   }
 
   const resultsJSONString = JSON.stringify(Array.from(results), null, 2);
@@ -149,43 +141,10 @@ async function outputJson(resultGroupByKey, relationServer) {
   );
 }
 
-async function getViewCheckResult(result, relationServer) {
-  const [key, checkResults] = result;
+async function getViewData(relations, relationServer: RelationServer) {
+  const relationsWithContents = await relationServer.getRelationsWithContentsByRelations(
+    relations
+  );
 
-  const fileContents = await relationServer.getFileContentsByKey(key);
-
-  const viewCheckResults = checkResults.map((checkResult) => {
-    return pick(checkResult, [
-      "id",
-
-      "fromRev",
-      "fromBaseDir",
-      "fromPath",
-      "fromRange",
-
-      "toRev",
-      "toBaseDir",
-      "toPath",
-      "toRange",
-    ]);
-  });
-
-  return {
-    key,
-    id: crypto
-      .createHash("sha1")
-      .update(JSON.stringify(checkResults))
-      .digest("hex"),
-    checkResults: viewCheckResults,
-    dirty: result.dirty,
-    ...pick(checkResults[0], [
-      "fromPath",
-      "fromBaseDir",
-      "toPath",
-      "toBaseDir",
-      "currentFromRev",
-      "currentToRev",
-    ]),
-    fileContents,
-  };
+  return relationsWithContents;
 }

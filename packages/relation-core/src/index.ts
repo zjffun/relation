@@ -1,7 +1,7 @@
 export * from "./core/getContent.js";
-export * from "./core/getFileContentKey.js";
 export * from "./core/getInfo.js";
 export * from "./core/getKey.js";
+export * from "./core/sha1.js";
 export { default as GitServer } from "./core/GitServer.js";
 export * from "./core/groupByKey.js";
 export { default as readRelation } from "./core/readRelation.js";

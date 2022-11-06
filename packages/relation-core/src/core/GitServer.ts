@@ -25,7 +25,12 @@ export default class GitServer {
     return result;
   }
 
-  async show(workingDirectory, parsedRevision, baseDir, filePath) {
+  async show(
+    workingDirectory,
+    parsedRevision,
+    gitWorkingDirectory = "",
+    filePath
+  ) {
     const key = `${parsedRevision}:${filePath}`;
 
     let result = this.showMap.get(key);
@@ -34,7 +39,9 @@ export default class GitServer {
       return result;
     }
 
-    const simpleGitInstance = simpleGit(path.join(workingDirectory, baseDir));
+    const simpleGitInstance = simpleGit(
+      path.join(workingDirectory, gitWorkingDirectory)
+    );
 
     try {
       result = await simpleGitInstance.show([

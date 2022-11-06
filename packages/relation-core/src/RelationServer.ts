@@ -2,14 +2,17 @@ import fse from "fs-extra";
 import * as path from "node:path";
 import simpleGit from "simple-git";
 import getDirnameBasename from "./core/getDirnameBasename.js";
-import { getFileContents } from "./core/getFileContents.js";
 import { getKey } from "./core/getKey.js";
+import { getRelationsWithContents } from "./core/getRelationsWithContents.js";
+import GitServer from "./core/GitServer.js";
 import mergeRelation from "./core/mergeRelation.js";
-import { relationId } from "./core/relationId.js";
 import readRelation from "./core/readRelation.js";
+import { relationId } from "./core/relationId.js";
+import { sha1 } from "./core/sha1.js";
 import writeRelation from "./core/writeRelation.js";
 import { createRelations } from "./mdx/createRelations.js";
-import { IFileContents, IRawRelation } from "./types.js";
+import { IRawRelation, IRelationsWithContents } from "./types.js";
+
 export default class {
   cwd: string;
   workingDirectory: string;
@@ -74,45 +77,93 @@ export default class {
     return newRelations;
   }
 
+  async getGitWorkingDirectory(filePath: string) {
+    const [dirname] = getDirnameBasename(filePath);
+    const git = simpleGit(dirname);
+    const rootDir = await git.revparse(["--show-toplevel"]);
+    const gitWorkingDirectory = path.relative(this.workingDirectory, rootDir);
+
+    return gitWorkingDirectory;
+  }
+
+  async parseRev(rev: string, gitWorkingDirectory: string) {
+    const parsedRev = await GitServer.parseRev(
+      this.workingDirectory,
+      rev,
+      gitWorkingDirectory
+    );
+    return parsedRev;
+  }
+
+  addContent(content: string) {
+    const rev = sha1(content);
+
+    const filePath = path.join(this.workingDirectory, "contents", rev);
+
+    if (!fse.existsSync(filePath)) {
+      fse.ensureFileSync(filePath);
+      fse.writeFileSync(filePath, content);
+    }
+
+    return rev;
+  }
+
   async create(info: {
-    fromRev: string;
     fromPath: string;
     fromRange: [number, number];
-    toRev: string;
     toPath: string;
     toRange: [number, number];
+    fromGitRev?: string;
+    toGitRev?: string;
+    fromContent?: string;
+    toContent?: string;
   }) {
-    const [fromDir] = getDirnameBasename(info.fromPath);
-    const [toDir] = getDirnameBasename(info.toPath);
-
-    const fromSimpleGit = simpleGit(fromDir);
-    const toSimpleGit = simpleGit(toDir);
-
-    const parsedFromRev = (
-      await fromSimpleGit.raw("rev-parse", info.fromRev)
-    ).trim();
-    const parsedToRev = (await toSimpleGit.raw("rev-parse", info.toRev)).trim();
-
-    const fromRootDir = await fromSimpleGit.revparse(["--show-toplevel"]);
-    const toRootDir = await toSimpleGit.revparse(["--show-toplevel"]);
-
-    const fromBaseDir = path.relative(this.workingDirectory, fromRootDir);
-    const toBaseDir = path.relative(this.workingDirectory, toRootDir);
-
-    const fromPath = path.relative(fromRootDir, info.fromPath);
-    const toPath = path.relative(toRootDir, info.toPath);
+    const fromPath = path.relative(this.workingDirectory, info.fromPath);
+    const toPath = path.relative(this.workingDirectory, info.toPath);
 
     const relation: IRawRelation = {
       id: relationId(),
-      fromRev: parsedFromRev,
-      fromPath,
-      fromBaseDir,
       fromRange: info.fromRange,
-      toRev: parsedToRev,
-      toPath,
-      toBaseDir,
       toRange: info.toRange,
+      fromPath,
+      toPath,
     };
+
+    if (info.fromGitRev) {
+      const fromGitWorkingDirectory = await this.getGitWorkingDirectory(
+        info.fromPath
+      );
+
+      if (fromGitWorkingDirectory) {
+        relation.fromGitWorkingDirectory = fromGitWorkingDirectory;
+      }
+
+      relation.fromGitRev = await this.parseRev(
+        info.fromGitRev,
+        fromGitWorkingDirectory
+      );
+    } else {
+      const contentRev = this.addContent(info.fromContent ?? "");
+      relation.fromContentRev = contentRev;
+    }
+
+    if (info.toGitRev) {
+      const toGitWorkingDirectory = await this.getGitWorkingDirectory(
+        info.toPath
+      );
+
+      if (toGitWorkingDirectory) {
+        relation.toGitWorkingDirectory = toGitWorkingDirectory;
+      }
+
+      relation.toGitRev = await this.parseRev(
+        info.toGitRev,
+        toGitWorkingDirectory
+      );
+    } else {
+      const contentRev = this.addContent(info.toContent ?? "");
+      relation.toContentRev = contentRev;
+    }
 
     return relation;
   }
@@ -143,23 +194,27 @@ export default class {
     return relations;
   }
 
-  async getFileContentsByKey(relationsKey: string): Promise<IFileContents> {
+  async getRelationsWithContentsByKey(
+    relationsKey: string
+  ): Promise<IRelationsWithContents> {
     const relations = this.filter(
       (relation) => getKey(relation) === relationsKey
     );
-    const fileContents = await this.getFileContentsByRelations(relations);
 
-    return fileContents;
-  }
-
-  async getFileContentsByRelations(relations: IRawRelation[]) {
-    const fileContents = await getFileContents(
-      this.workingDirectory,
-      undefined,
+    const relationsWithContents = await this.getRelationsWithContentsByRelations(
       relations
     );
 
-    return fileContents;
+    return relationsWithContents;
+  }
+
+  async getRelationsWithContentsByRelations(relations: IRawRelation[]) {
+    const relationsWithContents = await getRelationsWithContents(
+      this.workingDirectory,
+      relations
+    );
+
+    return relationsWithContents;
   }
 
   updateById(id, info: Partial<IRawRelation>) {
@@ -171,5 +226,15 @@ export default class {
     });
 
     this.write(relations);
+  }
+
+  getFileRelativePath(filePath: string) {
+    const relativePath = path.relative(this.workingDirectory, filePath);
+    return relativePath;
+  }
+
+  getFileAbsolutePath(relationPath: string) {
+    const absolutePath = path.join(this.workingDirectory, relationPath);
+    return absolutePath;
   }
 }

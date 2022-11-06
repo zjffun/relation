@@ -5,6 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Karma Chrome",
+      "port": 9333,
+      "request": "attach",
+      "type": "chrome"
+    },
+    {
       "name": "Launch Chrome",
       "request": "launch",
       "type": "chrome",

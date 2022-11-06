@@ -13,7 +13,7 @@ import setModelToDiffEditor from './setModelToDiffEditor';
 
 import './index.scss';
 
-export interface MonacoDiffEditorRelationProps {
+export interface IMonacoDiffEditorRelationProps {
   fromOriginal: string;
   fromModified: string;
   toOriginal: string;
@@ -25,9 +25,13 @@ export interface MonacoDiffEditorRelationProps {
   onToSave?: (editor: monaco.editor.ICodeEditor) => void;
 }
 
+export interface IMonacoDiffEditorRelationRef {
+  diffEditorRef?: any;
+}
+
 const MonacoDiffEditorRelation = forwardRef<
-  { diffEditorRef?: any },
-  MonacoDiffEditorRelationProps
+  IMonacoDiffEditorRelationRef,
+  IMonacoDiffEditorRelationProps
 >(
   (
     {
@@ -61,7 +65,7 @@ const MonacoDiffEditorRelation = forwardRef<
       () => ({
         diffEditorRef,
       }),
-      []
+      [diffEditorRef]
     );
 
     useEffect(() => {

@@ -1,19 +1,28 @@
 export interface IRawRelationCommon {
-  fromPath: string;
-  fromBaseDir: string;
-  toPath: string;
-  toBaseDir: string;
+  fromContentRev?: string;
+  toContentRev?: string;
+  fromGitRev?: string;
+  toGitRev?: string;
+  fromGitWorkingDirectory?: string;
+  toGitWorkingDirectory?: string;
 }
 
 export interface IRawRelationBasic {
-  id?: string;
+  id: string;
   fromRange: [number, number];
   toRange: [number, number];
-  fromRev: string;
-  toRev: string;
+  fromPath: string;
+  toPath: string;
 }
 
 export interface IRawRelation extends IRawRelationCommon, IRawRelationBasic {}
+
+export interface IRawRelationWithContentInfo extends IRawRelation {
+  _originalFromContentRev: string;
+  _originalToContentRev: string;
+  _modifiedFromContentRev: string;
+  _modifiedToContentRev: string;
+}
 
 export enum LineRelationTypeEnum {
   ADDED = "ADDED",
@@ -32,39 +41,27 @@ export interface ILineRelation {
   type?: LineRelationTypeEnum;
 }
 
-export interface ICheckResultCommon {
-  currentFromRev: string;
-  currentToRev: string;
-}
-
 export interface ICheckResultBasic {
   dirty: boolean;
   fromModifiedRange: [number, number];
   toModifiedRange: [number, number];
+  fromOriginalRange: [number, number];
+  toOriginalRange: [number, number];
 }
 
 export interface ICheckResult
   extends ICheckResultBasic,
-    ICheckResultCommon,
-    IRawRelation {}
+    IRawRelationWithContentInfo {}
 
 export interface IOptions extends Partial<IRawRelation> {
   cwd?: string;
 }
 
-export interface ICheckResultView extends ICheckResultBasic, IRawRelationBasic {
-  fromOriginalRange: [number, number];
-  toOriginalRange: [number, number];
-}
-
-export interface IViewData extends IRawRelationCommon, ICheckResultCommon {
-  id: number;
-  key: string;
-  checkResults: ICheckResultView[];
-  fileContents: IFileContents;
-  dirty?: boolean;
-}
-
-export interface IFileContents {
+export interface IContents {
   [key: string]: string;
+}
+
+export interface IRelationsWithContents {
+  relationsWithContentInfo: IRawRelationWithContentInfo[];
+  contents: IContents;
 }

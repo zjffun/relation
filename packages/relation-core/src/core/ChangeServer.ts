@@ -29,14 +29,14 @@ export default class ChangeServer {
       return result;
     }
 
-    const content1 = await getContent({
+    const [, content1] = await getContent({
       workingDirectory,
       rev: parsedRevision1,
       fileBaseDir: baseDir,
       filePath,
     });
 
-    const content2 = await getContent({
+    const [, content2] = await getContent({
       workingDirectory,
       rev: parsedRevision2,
       fileBaseDir: baseDir,

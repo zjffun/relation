@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { IViewData } from "relation2-core";
+import { IRelationsWithContents } from "relation2-core";
 import RelationsWindow from "./relationView/RelationsWindow";
 
 import "./style.scss";
@@ -16,8 +16,8 @@ if (!searchParams) {
 }
 
 const Page = () => {
-  const [viewCheckResults, setviewCheckResults] = useState(
-    (window as any).__VIEW_CHECK_RESULTS__ as IViewData
+  const [relationsWithContents, setRelationsWithContents] = useState(
+    (window as any).__VIEW_DATA__ as IRelationsWithContents
   );
 
   const [showingRelation, setShowingRelation] = useState(searchParams.id);
@@ -27,7 +27,7 @@ const Page = () => {
       fetch(`./previews/${searchParams.checkResultViewId}.json`)
         .then((d) => d.json())
         .then((d) => {
-          setviewCheckResults(d);
+          setRelationsWithContents(d);
         })
         .catch((e) => {
           console.error(e);
@@ -35,13 +35,13 @@ const Page = () => {
     }
   }, []);
 
-  if (!viewCheckResults) {
+  if (!relationsWithContents) {
     return null;
   }
 
   return (
     <RelationsWindow
-      viewCheckResults={viewCheckResults}
+      relationsWithContents={relationsWithContents}
       currentId={showingRelation}
       readOnly={true}
     ></RelationsWindow>

@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { IViewData } from "relation2-core";
 
 import "./style.scss";
 
 const Page = () => {
-  const [viewCheckResults, setViewCheckResults] = useState(
-    (window as any).checkResults as IViewData[]
-  );
+  const [viewData, setViewData] = useState<any>([]);
 
   useEffect(() => {
     if ((window as any).relationLoadData) {
       fetch("./check-results-data.json")
         .then((d) => d.json())
         .then((d) => {
-          setViewCheckResults(d);
+          setViewData(d);
         })
         .catch((e) => {
           console.error(e);
@@ -22,13 +19,13 @@ const Page = () => {
     }
   }, []);
 
-  if (!viewCheckResults) {
+  if (!viewData) {
     return null;
   }
 
   return (
     <ul className="file-check-result-list">
-      {viewCheckResults.map(({ id, key, checkResults, dirty }) => {
+      {viewData.map(({ id, key, checkResults, dirty }) => {
         return (
           <li key={key}>
             <details>

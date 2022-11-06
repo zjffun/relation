@@ -5,10 +5,10 @@ export const getFileContentKey = (
   partType: PartTypeEnum
 ) => {
   if (partType === PartTypeEnum.TO) {
-    const rev = relation.toRev ?? "";
-    return `${rev}:${relation.toBaseDir}:${relation.toPath}`;
+    const rev = relation.toContentRev ?? relation.toGitRev ?? "";
+    return `${rev}:${relation.toPath}`;
   }
 
-  const rev = relation.fromRev ?? "";
-  return `${rev}:${relation.fromBaseDir}:${relation.fromPath}`;
+  const rev = relation.toContentRev ?? relation.toGitRev ?? "";
+  return `${rev}:${relation.fromPath}`;
 };

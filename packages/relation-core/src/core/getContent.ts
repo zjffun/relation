@@ -1,29 +1,36 @@
-import * as fs from "node:fs";
+import fse from "fs-extra";
 import * as path from "node:path";
 import GitServer from "./GitServer.js";
+import { sha1 } from "./sha1.js";
 
-export const getContent = async ({
-  workingDirectory,
-  rev,
-  fileBaseDir,
-  filePath,
-}) => {
-  if (!rev) {
-    return fs
-      .readFileSync(path.join(workingDirectory, fileBaseDir, filePath))
-      .toString();
+export const getContent = async (info) => {
+  const {
+    workingDirectory,
+    path: filePath,
+    contentRev,
+    gitRev,
+    gitWorkingDirectory,
+  } = info;
+
+  if (gitRev) {
+    const content = await GitServer.singleton().show(
+      workingDirectory,
+      gitRev,
+      gitWorkingDirectory,
+      filePath
+    );
+    return [sha1(content), content];
   }
 
-  const parsedBaseRev = await GitServer.singleton().parseRev(
-    workingDirectory,
-    rev,
-    fileBaseDir
-  );
+  if (contentRev) {
+    const content = fse
+      .readFileSync(path.join(workingDirectory, "contents", contentRev))
+      .toString();
+    return [contentRev, content];
+  }
 
-  return GitServer.singleton().show(
-    workingDirectory,
-    parsedBaseRev,
-    fileBaseDir,
-    filePath
-  );
+  const content = fse
+    .readFileSync(path.join(workingDirectory, filePath), "utf8")
+    .toString();
+  return [sha1(content), content];
 };

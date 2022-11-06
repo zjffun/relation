@@ -1,6 +1,7 @@
 export {
-  ICheckResultView,
-  IFileContents,
+  IRelationsWithContents,
+  IRawRelationWithContentInfo,
+  IContents,
   PartTypeEnum,
 } from '../../relation-core/dist/types';
 

@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
-import { IViewData } from "relation2-core";
+import { IRelationsWithContents } from "relation2-core";
 import { RelationEditor } from "relation2-react";
 import { ISetOptions } from "../../types";
 
@@ -74,12 +74,12 @@ const CreateMode = () => {
 };
 
 export default ({
-  viewCheckResults,
+  relationsWithContents,
   currentId,
   readOnly,
   setOptions,
 }: {
-  viewCheckResults: IViewData;
+  relationsWithContents: IRelationsWithContents;
   currentId?: string;
   readOnly?: boolean;
   setOptions?: ISetOptions;
@@ -103,7 +103,7 @@ export default ({
                   return (
                     <>
                       <dt key={i}>{key}</dt>
-                      <dd key={i}>{viewCheckResults[key]}</dd>
+                      <dd key={i}>{relationsWithContents[key]}</dd>
                     </>
                   );
                 })}
@@ -121,8 +121,10 @@ export default ({
       </header>
       <section className={"relation-overview__relations"}>
         <RelationEditor
-          fileContents={viewCheckResults.fileContents}
-          checkResults={viewCheckResults.checkResults}
+          contents={relationsWithContents.contents}
+          relationsWithContentInfo={
+            relationsWithContents.relationsWithContentInfo
+          }
           currentId={currentId}
         ></RelationEditor>
       </section>

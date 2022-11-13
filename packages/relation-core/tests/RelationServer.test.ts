@@ -68,7 +68,7 @@ describe("RelationServer", () => {
   });
 
   describe("getRelationsWithContentsByKey method", () => {
-    it.only("Should work", async () => {
+    it("Should work", async () => {
       const relationServer = new RelationServer(relationTestRepoPath);
 
       const relation = await relationServer.create({

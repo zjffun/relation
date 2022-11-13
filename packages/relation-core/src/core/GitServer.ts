@@ -7,24 +7,6 @@ export default class GitServer {
   public showMap = new Map<string, string>();
   public revMap = new Map<string, string>();
 
-  async parseRev(workingDirectory, revision, baseDir) {
-    const key = `${revision}:${baseDir}`;
-
-    let result = this.revMap.get(key);
-
-    if (result !== undefined) {
-      return result;
-    }
-
-    result = await GitServer.parseRev(workingDirectory, revision, baseDir);
-
-    if (result !== undefined) {
-      this.revMap.set(`${result}:${baseDir}`, result);
-    }
-
-    return result;
-  }
-
   async show(
     workingDirectory,
     parsedRevision,
@@ -59,12 +41,12 @@ export default class GitServer {
     return result;
   }
 
-  static async parseRev(workingDirectory, revision, baseDir) {
+  static async parseRev(revision, absoluteGitWorkingDirectory) {
     if (revision === undefined) {
       return revision;
     }
 
-    const simpleGitInstance = simpleGit(path.join(workingDirectory, baseDir));
+    const simpleGitInstance = simpleGit(absoluteGitWorkingDirectory);
 
     const result = (await simpleGitInstance.raw("rev-parse", revision)).trim();
 

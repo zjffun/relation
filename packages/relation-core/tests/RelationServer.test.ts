@@ -3,6 +3,8 @@ import path from "path";
 import { getKey } from "../src/core/getKey.js";
 import RelationServer from "../src/RelationServer.js";
 import {
+  minimumFromPath,
+  minimumToPath,
   relationTestRepoPath,
   resetTestRepo,
   writeTestFile,
@@ -17,26 +19,27 @@ describe("RelationServer", () => {
     it("Should work when using content", async () => {
       const relationServer = new RelationServer(relationTestRepoPath);
 
+      writeTestFile(
+        minimumFromPath,
+        "updated one\nupdated two\n updated three\n"
+      );
+      writeTestFile(minimumToPath, "更新一\n更新二\n更新三\n");
+
       const relation = await relationServer.create({
-        fromPath: path.join(
-          relationTestRepoPath,
-          "RelationServer-create-test1"
-        ),
+        fromAbsolutePath: path.join(relationTestRepoPath, minimumFromPath),
         fromRange: [1, 2],
-        toPath: path.join(relationTestRepoPath, "RelationServer-create-test2"),
+        toAbsolutePath: path.join(relationTestRepoPath, minimumToPath),
         toRange: [2, 3],
-        fromContent: "fromContent\nfromContent\nfromContent\n",
-        toContent: "toContent\ntoContent\ntoContent\n",
       });
 
-      expect(relation).to.be.eql({
+      expect(relation).to.deep.own.include({
         id: relation.id,
         fromRange: [1, 2],
         toRange: [2, 3],
-        fromPath: "RelationServer-create-test1",
-        toPath: "RelationServer-create-test2",
-        fromContentRev: "5bc52a57d603524c5b44d8589a8a0370bbdbb5a1",
-        toContentRev: "11d8e7b6d67e8dbc2c0a0b60a30f64a45bdaadc7",
+        fromPath: minimumFromPath,
+        toPath: minimumToPath,
+        fromContentRev: "787167ec5306e2aaa2be40092d01e4942290828b",
+        toContentRev: "c18f56f7c0ba1818c5bce5ccef7b30527ac52dc4",
       });
     });
 
@@ -44,61 +47,50 @@ describe("RelationServer", () => {
       const relationServer = new RelationServer(relationTestRepoPath);
 
       const relation = await relationServer.create({
-        fromPath: path.join(relationTestRepoPath, "markdown/README.md"),
+        fromAbsolutePath: path.join(relationTestRepoPath, minimumFromPath),
         fromRange: [1, 2],
-        toPath: path.join(relationTestRepoPath, "markdown/README.zh-CN.md"),
+        toAbsolutePath: path.join(relationTestRepoPath, minimumToPath),
         toRange: [2, 3],
-        fromGitRev: "HEAD",
-        toGitRev: "HEAD",
       });
 
-      expect(relation).to.be.eql({
+      expect(relation).to.deep.own.include({
         id: relation.id,
         fromRange: [1, 2],
         toRange: [2, 3],
-        fromPath: "markdown/README.md",
-        toPath: "markdown/README.zh-CN.md",
+        fromPath: minimumFromPath,
+        toPath: minimumToPath,
         fromGitRev: relation.fromGitRev,
         toGitRev: relation.toGitRev,
+        fromGitWorkingDirectory: "",
+        toGitWorkingDirectory: "",
       });
     });
   });
 
   describe("getRelationsWithContentsByKey method", () => {
-    it("Should work", async () => {
+    it.only("Should work", async () => {
       const relationServer = new RelationServer(relationTestRepoPath);
 
-      const content = "fromContent\nfromContent\nfromContent\n";
-      const fullPath = writeTestFile(
-        "RelationServer-getRelationsWithContentsByKey-test1",
-        content
-      );
-
       const relation = await relationServer.create({
-        fromPath: fullPath,
-        fromContent: content,
+        fromAbsolutePath: path.join(relationTestRepoPath, minimumFromPath),
         fromRange: [1, 2],
-
-        toPath: path.join(relationTestRepoPath, "markdown/README.zh-CN.md"),
-        toGitRev: "HEAD",
+        toAbsolutePath: path.join(relationTestRepoPath, minimumToPath),
         toRange: [2, 3],
       });
 
-      relationServer.write([relation]);
+      relationServer.write([relation as any]);
 
       const {
         relationsWithContentInfo,
         contents,
-      } = await relationServer.getRelationsWithContentsByKey(getKey(relation));
-
-      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
-      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
-      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
-      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
-
-      expect(contents["5bc52a57d603524c5b44d8589a8a0370bbdbb5a1"]).to.be.eql(
-        content
+      } = await relationServer.getRelationsWithContentsByKey(
+        getKey(relation as any)
       );
+
+      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
+      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
+      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
+      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
     });
   });
 });

@@ -1,44 +1,29 @@
 import {
   IContents,
-  IRawRelation,
   IRawRelationWithContentInfo,
-  IRelationsWithContents,
+  IRelationsWithContents
 } from "../types.js";
-import { getContent } from "./getContent.js";
+import Relation from "./Relation.js";
+import { sha1 } from "./sha1.js";
 
 export const getRelationsWithContents = async (
-  workingDirectory: string,
-  relations: IRawRelation[]
+  relations: Relation[]
 ): Promise<IRelationsWithContents> => {
   const contents: IContents = {};
   const relationsWithContentInfo: IRawRelationWithContentInfo[] = [];
 
   for (const relation of relations) {
-    const [originalFromContentRev, originalFromContent] = await getContent({
-      workingDirectory,
-      path: relation.fromPath,
-      contentRev: relation.fromContentRev,
-      gitRev: relation.fromGitRev,
-      gitWorkingDirectory: relation.fromGitWorkingDirectory,
-    });
+    const originalFromContent = await relation.getFromOriginalContent();
+    const originalFromContentRev = sha1(originalFromContent);
 
-    const [originalToContentRev, originalToContent] = await getContent({
-      workingDirectory,
-      path: relation.toPath,
-      contentRev: relation.toContentRev,
-      gitRev: relation.toGitRev,
-      gitWorkingDirectory: relation.toGitWorkingDirectory,
-    });
+    const originalToContent = await relation.getToOriginalContent();
+    const originalToContentRev = sha1(originalToContent);
 
-    const [modifiedFromContentRev, modifiedFromContent] = await getContent({
-      workingDirectory,
-      path: relation.fromPath,
-    });
+    const modifiedFromContent = await relation.fromCurrentContent;
+    const modifiedFromContentRev = sha1(modifiedFromContent);
 
-    const [modifiedToContentRev, modifiedToContent] = await getContent({
-      workingDirectory,
-      path: relation.toPath,
-    });
+    const modifiedToContent = await relation.toCurrentContent;
+    const modifiedToContentRev = sha1(modifiedToContent);
 
     relationsWithContentInfo.push({
       ...relation,

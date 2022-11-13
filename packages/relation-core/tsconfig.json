@@ -4,6 +4,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "moduleResolution": "Node",
+    "target": "ES5",
     "module": "ESNext",
     "esModuleInterop": true,
     "sourceMap": true,

@@ -1,4 +1,4 @@
-export * from "./core/getContent.js";
+export * from "./core/getContentWithRev.js";
 export * from "./core/getInfo.js";
 export * from "./core/getKey.js";
 export * from "./core/sha1.js";

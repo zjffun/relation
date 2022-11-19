@@ -6,7 +6,7 @@ export { default as CreateRelations } from './CreateRelations/index';
 export { default as getRelation } from './getRelation';
 
 export * from './RelationEditor/getRelationsWithModifiedRange';
-export * from './RelationEditor/getRelationsWithOriginalContent';
+export * from './RelationEditor/getRelationsWithOriginalContents';
 export * from './RelationEditor/index';
 export * from './MonacoDiffEditorRelation/index';
 export * from './UpdateRelation/index';

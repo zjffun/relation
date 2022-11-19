@@ -1,6 +1,6 @@
 import { join, split } from 'split-split';
-import { IContents } from '../bundled';
-import { IRelationWithModifiedRange } from './getRelationsWithModifiedRange';
+import { IViewerContents } from '../bundled';
+import { IViewerRelationWithModifiedRange } from './getRelationsWithModifiedRange';
 
 const getLineNum = (content: string) => {
   return content.split('\n').length;
@@ -110,7 +110,7 @@ const getContentAndRanges = ({
 };
 
 export interface IRelationWithOriginalContentInfo
-  extends IRelationWithModifiedRange {
+  extends IViewerRelationWithModifiedRange {
   fromOriginalContentRev: string;
   toOriginalContentRev: string;
   fromOriginalRange: [number, number];
@@ -119,27 +119,26 @@ export interface IRelationWithOriginalContentInfo
 
 export default function({
   relationsWithModifiedRange,
-  contents,
+  viewerContents,
+  fromModifiedContent,
+  toModifiedContent,
 }: {
-  relationsWithModifiedRange: IRelationWithModifiedRange[];
-  contents: IContents;
-}): [IRelationWithOriginalContentInfo[], IContents] {
+  relationsWithModifiedRange: IViewerRelationWithModifiedRange[];
+  viewerContents: IViewerContents;
+  fromModifiedContent: string;
+  toModifiedContent: string;
+}): [IRelationWithOriginalContentInfo[], IViewerContents] {
   const relationsWithOriginalContentInfo: IRelationWithOriginalContentInfo[] = [];
 
   if (!relationsWithModifiedRange.length) {
-    return [relationsWithOriginalContentInfo, contents];
+    return [relationsWithOriginalContentInfo, viewerContents];
   }
-
-  const fromModifiedContent =
-    contents[relationsWithModifiedRange[0]._modifiedFromContentRev];
-  const toModifiedContent =
-    contents[relationsWithModifiedRange[0]._modifiedToContentRev];
 
   const [fromOriginalContent, fromOriginalRanges] = getContentAndRanges({
     rangeInfos: relationsWithModifiedRange.map(d => ({
       id: d.id,
       modifiedRange: d.fromModifiedRange,
-      content: contents[d._originalFromContentRev],
+      content: viewerContents[d.originalFromViewerContentRev],
       range: d.fromRange,
     })),
     modifiedContent: fromModifiedContent,
@@ -149,7 +148,7 @@ export default function({
     rangeInfos: relationsWithModifiedRange.map(d => ({
       id: d.id,
       modifiedRange: d.toModifiedRange,
-      content: contents[d._originalToContentRev],
+      content: viewerContents[d.originalToViewerContentRev],
       range: d.toRange,
     })),
     modifiedContent: toModifiedContent,
@@ -168,7 +167,7 @@ export default function({
   return [
     relationsWithOriginalContentInfo,
     {
-      ...contents,
+      ...viewerContents,
       fromOriginalContentRev: fromOriginalContent,
       toOriginalContentRev: toOriginalContent,
     },

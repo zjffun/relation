@@ -8,8 +8,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const relationTestRepoPath = join(__dirname, "../../../test-repo");
 
 export const minimumFromPath = "minimum/fromTest.md";
-
 export const minimumToPath = "minimum/toTest.md";
+
+export const markdownFromPath = "markdown/README.md";
+export const markdownToPath = "markdown/README.zh-CN.md";
 
 export const minimumFromContent = fse
   .readFileSync(join(relationTestRepoPath, minimumFromPath), "utf-8")

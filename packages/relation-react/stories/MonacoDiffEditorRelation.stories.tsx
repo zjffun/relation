@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import React, { useRef } from 'react';
 import { MonacoDiffEditorRelation } from '../src';
-import { MonacoDiffEditorRelationProps } from '../src/MonacoDiffEditorRelation';
+import { IMonacoDiffEditorRelationProps } from '../src/MonacoDiffEditorRelation';
 
 const meta: Meta = {
   title: 'MonacoDiffEditorRelation',
@@ -20,7 +20,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<MonacoDiffEditorRelationProps> = args => {
+const Template: Story<IMonacoDiffEditorRelationProps> = args => {
   const ref = useRef({});
 
   return (

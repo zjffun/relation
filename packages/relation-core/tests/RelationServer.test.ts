@@ -1,8 +1,9 @@
 import { expect } from "chai";
-import path from "path";
-import { getKey } from "../src/core/getKey.js";
+import * as path from "node:path";
 import RelationServer from "../src/RelationServer.js";
 import {
+  markdownFromPath,
+  markdownToPath,
   minimumFromPath,
   minimumToPath,
   relationTestRepoPath,
@@ -15,8 +16,54 @@ describe("RelationServer", () => {
     resetTestRepo();
   });
 
-  describe("create method", () => {
-    it("Should work when using content", async () => {
+  describe("checkIsInit", () => {
+    it("should work", async () => {
+      const relationServer = new RelationServer(relationTestRepoPath);
+      expect(relationServer.checkIsInit()).to.be.true;
+    });
+  });
+
+  describe("init", () => {
+    it("should work", async () => {
+      const tempDirPath = path.join(relationTestRepoPath, "temp");
+      const relationServer = new RelationServer(tempDirPath);
+
+      expect(relationServer.init()).to.be.true;
+    });
+  });
+
+  describe("read", () => {
+    it("should work", async () => {
+      const relationServer = new RelationServer(relationTestRepoPath);
+
+      expect(relationServer.read()).to.be.an("array");
+    });
+  });
+
+  describe("write", () => {
+    it("should work", async () => {
+      const relationServer = new RelationServer(relationTestRepoPath);
+      relationServer.write([]);
+
+      expect(relationServer.read()).to.be.eql([]);
+    });
+  });
+
+  describe("createMarkdownRelations", async () => {
+    it("should work", async () => {
+      const relationServer = new RelationServer(relationTestRepoPath);
+
+      const relations = await relationServer.createMarkdownRelations({
+        fromAbsolutePath: path.join(relationTestRepoPath, markdownFromPath),
+        toAbsolutePath: path.join(relationTestRepoPath, markdownToPath),
+      });
+
+      expect(relations).to.be.an("array");
+    });
+  });
+
+  describe("create", () => {
+    it("should work when using content", async () => {
       const relationServer = new RelationServer(relationTestRepoPath);
 
       writeTestFile(
@@ -43,7 +90,7 @@ describe("RelationServer", () => {
       });
     });
 
-    it("Should work when using git", async () => {
+    it("should work when using git", async () => {
       const relationServer = new RelationServer(relationTestRepoPath);
 
       const relation = await relationServer.create({
@@ -61,36 +108,72 @@ describe("RelationServer", () => {
         toPath: minimumToPath,
         fromGitRev: relation.fromGitRev,
         toGitRev: relation.toGitRev,
-        fromGitWorkingDirectory: "",
-        toGitWorkingDirectory: "",
+        fromGitWorkingDirectory: undefined,
+        toGitWorkingDirectory: undefined,
       });
     });
   });
 
-  describe("getRelationsWithContentsByKey method", () => {
-    it("Should work", async () => {
+  describe("filter", () => {
+    it("should work", async () => {
       const relationServer = new RelationServer(relationTestRepoPath);
-
-      const relation = await relationServer.create({
-        fromAbsolutePath: path.join(relationTestRepoPath, minimumFromPath),
-        fromRange: [1, 2],
-        toAbsolutePath: path.join(relationTestRepoPath, minimumToPath),
-        toRange: [2, 3],
+      const id = "9c0tjeuc6e";
+      const relations = relationServer.filter((relation) => {
+        return relation.id === id;
       });
 
-      relationServer.write([relation as any]);
+      expect(relations[0]).to.deep.own.include({
+        id: id,
+        fromPath: "./markdown/README.md",
+        toPath: "./markdown/README.zh-CN.md",
+        fromRange: [1, 4],
+        toRange: [1, 4],
+        fromGitRev: "768b50b1c1d8da264596bc5c06dd1563ebd59dc3",
+        toGitRev: "768b50b1c1d8da264596bc5c06dd1563ebd59dc3",
+      });
+    });
+  });
 
-      const {
-        relationsWithContentInfo,
-        contents,
-      } = await relationServer.getRelationsWithContentsByKey(
-        getKey(relation as any)
-      );
+  describe("updateById", () => {
+    it("should work", async () => {
+      const relationServer = new RelationServer(relationTestRepoPath);
 
-      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
-      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
-      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
-      expect(relationsWithContentInfo[0]._modifiedFromContentRev).to.be.exist;
+      const id = "9c0tjeuc6e";
+
+      await relationServer.updateById(id, {
+        fromRange: [5, 5],
+        toRange: [6, 6],
+      });
+
+      const relations = relationServer.filter((relation) => {
+        return relation.id === id;
+      });
+
+      expect(relations[0]).to.deep.own.include({
+        id: id,
+        fromPath: "./markdown/README.md",
+        toPath: "./markdown/README.zh-CN.md",
+        fromRange: [5, 5],
+        toRange: [6, 6],
+        fromGitRev: "768b50b1c1d8da264596bc5c06dd1563ebd59dc3",
+        toGitRev: "768b50b1c1d8da264596bc5c06dd1563ebd59dc3",
+      });
+    });
+  });
+
+  describe("getRelationViewerData", () => {
+    it("should work", async () => {
+      const relationServer = new RelationServer(relationTestRepoPath);
+
+      const relationViewerData = await relationServer.getRelationViewerData({
+        fromPath: markdownFromPath,
+        toPath: markdownToPath,
+      });
+
+      expect(relationViewerData?.fromPath).to.be.eq(markdownFromPath);
+      expect(relationViewerData?.toPath).to.be.eq(markdownToPath);
+      expect(relationViewerData?.fromModifiedContent).to.be.a("string");
+      expect(relationViewerData?.toModifiedContent).to.be.a("string");
     });
   });
 });

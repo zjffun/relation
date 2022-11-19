@@ -1,8 +1,5 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import {
-  IRawRelationWithContentInfo,
-  IRelationsWithContents,
-} from '../bundled';
+import { IViewerContents, IViewerRelation } from '../bundled';
 
 function createDiffEditor(domElement: HTMLElement) {
   // document.body.appendChild(domElement);
@@ -44,18 +41,26 @@ async function setDiffEditorValue(
   });
 }
 
-export interface IRelationWithModifiedRange
-  extends IRawRelationWithContentInfo {
+export interface IViewerRelationWithModifiedRange extends IViewerRelation {
   fromModifiedRange: [number, number];
   toModifiedRange: [number, number];
   dirty: boolean;
 }
 
-export default async function(relationsWithContents: IRelationsWithContents) {
-  const { relationsWithContentInfo, contents } = relationsWithContents;
-  const relationsWithModifiedRange: IRelationWithModifiedRange[] = [];
+export default async function({
+  viewerRelations,
+  viewerContents,
+  fromModifiedContent,
+  toModifiedContent,
+}: {
+  viewerRelations: IViewerRelation[];
+  viewerContents: IViewerContents;
+  fromModifiedContent: string;
+  toModifiedContent: string;
+}) {
+  const relationsWithModifiedRange: IViewerRelationWithModifiedRange[] = [];
 
-  if (!relationsWithContentInfo.length) {
+  if (!viewerRelations.length) {
     return relationsWithModifiedRange;
   }
 
@@ -64,27 +69,22 @@ export default async function(relationsWithContents: IRelationsWithContents) {
   let lastFromRev = '';
   let lastToRev = '';
 
-  const fromModifiedContent =
-    contents[relationsWithContentInfo[0]._modifiedFromContentRev];
-  const toModifiedContent =
-    contents[relationsWithContentInfo[0]._modifiedToContentRev];
-
-  for (const relationWithContentInfo of relationsWithContentInfo) {
-    if (relationWithContentInfo._originalFromContentRev !== lastFromRev) {
+  for (const viewerRelation of viewerRelations) {
+    if (viewerRelation.originalFromViewerContentRev !== lastFromRev) {
       await setDiffEditorValue(
         fromDiffEditor,
-        contents[relationWithContentInfo._originalFromContentRev],
+        viewerContents[viewerRelation.originalFromViewerContentRev],
         fromModifiedContent
       );
-      lastFromRev = relationWithContentInfo._originalFromContentRev;
+      lastFromRev = viewerRelation.originalFromViewerContentRev;
     }
 
     const fromModifiedRange: [number, number] = [
       fromDiffEditor?.getDiffLineInformationForOriginal(
-        relationWithContentInfo.fromRange[0]
+        viewerRelation.fromRange[0]
       )?.equivalentLineNumber || 0,
       fromDiffEditor?.getDiffLineInformationForOriginal(
-        relationWithContentInfo.fromRange[1]
+        viewerRelation.fromRange[1]
       )?.equivalentLineNumber || 0,
     ];
 
@@ -94,8 +94,8 @@ export default async function(relationsWithContents: IRelationsWithContents) {
     for (const change of changes) {
       if (
         !(
-          change.originalEndLineNumber < relationWithContentInfo.fromRange[0] ||
-          change.originalStartLineNumber > relationWithContentInfo.fromRange[1]
+          change.originalEndLineNumber < viewerRelation.fromRange[0] ||
+          change.originalStartLineNumber > viewerRelation.fromRange[1]
         )
       ) {
         dirty = true;
@@ -103,26 +103,24 @@ export default async function(relationsWithContents: IRelationsWithContents) {
       }
     }
 
-    if (relationWithContentInfo._originalToContentRev !== lastToRev) {
+    if (viewerRelation.originalToViewerContentRev !== lastToRev) {
       await setDiffEditorValue(
         toDiffEditor,
-        contents[relationWithContentInfo._originalToContentRev],
+        viewerContents[viewerRelation.originalToViewerContentRev],
         toModifiedContent
       );
-      lastToRev = relationWithContentInfo._originalToContentRev;
+      lastToRev = viewerRelation.originalToViewerContentRev;
     }
 
     const toModifiedRange: [number, number] = [
-      toDiffEditor?.getDiffLineInformationForOriginal(
-        relationWithContentInfo.toRange[0]
-      )?.equivalentLineNumber || 0,
-      toDiffEditor?.getDiffLineInformationForOriginal(
-        relationWithContentInfo.toRange[1]
-      )?.equivalentLineNumber || 0,
+      toDiffEditor?.getDiffLineInformationForOriginal(viewerRelation.toRange[0])
+        ?.equivalentLineNumber || 0,
+      toDiffEditor?.getDiffLineInformationForOriginal(viewerRelation.toRange[1])
+        ?.equivalentLineNumber || 0,
     ];
 
     relationsWithModifiedRange.push({
-      ...relationWithContentInfo,
+      ...viewerRelation,
       fromModifiedRange,
       toModifiedRange,
       dirty,

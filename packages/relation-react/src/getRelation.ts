@@ -1,17 +1,17 @@
-import { IRelationWithOriginalContentInfo } from './RelationEditor/getRelationsWithOriginalContent';
+import { IRelationWithOriginalContentInfo } from './RelationEditor/getRelationsWithOriginalContents';
 import { IRelation, RelationTypeEnum } from './types';
 
 export default (
-  relationsWithModifiedRange: IRelationWithOriginalContentInfo
+  relationsWithOriginalRange: IRelationWithOriginalContentInfo
 ): IRelation => {
   let type = RelationTypeEnum.relate;
-  if (relationsWithModifiedRange.dirty) {
+  if (relationsWithOriginalRange.dirty) {
     type = RelationTypeEnum.dirty;
   }
   return {
-    id: relationsWithModifiedRange.id,
-    fromRange: relationsWithModifiedRange.fromOriginalRange,
-    toRange: relationsWithModifiedRange.toOriginalRange,
+    id: relationsWithOriginalRange.id,
+    fromRange: relationsWithOriginalRange.fromOriginalRange,
+    toRange: relationsWithOriginalRange.toOriginalRange,
     type,
   };
 };

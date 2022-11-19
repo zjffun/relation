@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { IRawRelationWithContentInfo, RelationEditor } from '../../src/index';
+import { IRelationViewerData, RelationEditor } from '../../src/index';
 
 describe('RelationEditor', () => {
   describe('RelationEditor', () => {
@@ -9,42 +9,42 @@ describe('RelationEditor', () => {
       rootEl.id = 'root-test';
       document.body.appendChild(rootEl);
 
-      const contents = {
-        _originalFromContentRev: 'test1\ntest2\n',
+      const viewerContents = {
+        originalFromViewerContentRev: 'test1\ntest2\n',
         _modifiedFromContentRev: 'test1\nadd\ntest2\n',
-        _originalToContentRev: 'test1\nwill-delete\ntest2\n',
+        originalToViewerContentRev: 'test1\nwill-delete\ntest2\n',
         _modifiedToContentRev: 'test1\ntest2\n',
       };
-      const relationsWithContentInfo: IRawRelationWithContentInfo[] = [
-        {
-          id: 'second',
-          fromPath: 'fromPath',
-          toPath: 'toPath',
-          fromRange: [3, 4],
-          toRange: [3, 4],
-          _originalFromContentRev: '_originalFromContentRev',
-          _modifiedFromContentRev: '_modifiedFromContentRev',
-          _originalToContentRev: '_originalToContentRev',
-          _modifiedToContentRev: '_modifiedToContentRev',
-        },
-        {
-          id: 'first',
-          fromPath: 'fromPath',
-          toPath: 'toPath',
-          fromRange: [1, 2],
-          toRange: [1, 2],
-          _originalFromContentRev: '_originalFromContentRev',
-          _modifiedFromContentRev: '_modifiedFromContentRev',
-          _originalToContentRev: '_originalToContentRev',
-          _modifiedToContentRev: '_modifiedToContentRev',
-        },
-      ];
+
+      const relationViewerData: IRelationViewerData = {
+        fromPath: 'fromPath',
+        toPath: 'toPath',
+        fromModifiedContent: viewerContents._modifiedFromContentRev,
+        toModifiedContent: viewerContents._modifiedToContentRev,
+        viewerRelations: [
+          {
+            id: 'second',
+            fromRange: [3, 4],
+            toRange: [3, 4],
+            originalFromViewerContentRev: 'originalFromViewerContentRev',
+            originalToViewerContentRev: 'originalToViewerContentRev',
+          },
+          {
+            id: 'first',
+            fromRange: [1, 2],
+            toRange: [1, 2],
+            originalFromViewerContentRev: 'originalFromViewerContentRev',
+            originalToViewerContentRev: 'originalToViewerContentRev',
+          },
+        ],
+
+        viewerContents,
+      };
 
       createRoot(rootEl).render(
         <div style={{ width: '100%', height: '500px' }}>
           <RelationEditor
-            contents={contents}
-            relationsWithContentInfo={relationsWithContentInfo}
+            relationViewerData={relationViewerData}
             options={(data: any) => {
               return (
                 <button className="button-test" data-id={data.id}>

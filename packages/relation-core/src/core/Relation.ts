@@ -1,7 +1,9 @@
 import fse from "fs-extra";
 import * as path from "node:path";
 import simpleGit from "simple-git";
-import { IRawRelation } from "../types.js";
+import { IRawRelation, IViewerContents, IViewerRelation } from "../types.js";
+import ChangeServer from "./ChangeServer.js";
+import { checkDirty } from "./checkDirty.js";
 import getDirnameBasename from "./getDirnameBasename.js";
 import GitServer from "./GitServer.js";
 import { sha1 } from "./sha1.js";
@@ -65,8 +67,8 @@ class Relation {
   }
 
   get fromAbsolutePath() {
-    const currentFromAbsolutePath = this.getAbsolutePath(this.fromPath);
-    return currentFromAbsolutePath;
+    const absolutePath = this.getAbsolutePath(this.fromPath);
+    return absolutePath;
   }
 
   set fromAbsolutePath(absolutePath: string) {
@@ -75,8 +77,8 @@ class Relation {
   }
 
   get toAbsolutePath() {
-    const currentToAbsolutePath = this.getAbsolutePath(this.toPath);
-    return currentToAbsolutePath;
+    const absolutePath = this.getAbsolutePath(this.toPath);
+    return absolutePath;
   }
 
   set toAbsolutePath(absolutePath: string) {
@@ -84,13 +86,31 @@ class Relation {
     this.toGitWorkingDirectory = undefined;
   }
 
+  get fromGitWorkingDirectoryString() {
+    if (!this.fromGitWorkingDirectory) {
+      return "";
+    }
+
+    return this.fromGitWorkingDirectory;
+  }
+
+  get toGitWorkingDirectoryString() {
+    if (!this.toGitWorkingDirectory) {
+      return "";
+    }
+
+    return this.toGitWorkingDirectory;
+  }
+
   get fromAbsoluteGitWorkingDirectory() {
-    const absolutePath = this.getAbsolutePath(this.fromGitWorkingDirectory);
+    const absolutePath = this.getAbsolutePath(
+      this.fromGitWorkingDirectoryString
+    );
     return absolutePath;
   }
 
   get toAbsoluteGitWorkingDirectory() {
-    const absolutePath = this.getAbsolutePath(this.toGitWorkingDirectory);
+    const absolutePath = this.getAbsolutePath(this.toGitWorkingDirectoryString);
     return absolutePath;
   }
 
@@ -213,12 +233,16 @@ class Relation {
     const rev = this.addContent(content);
 
     this.fromContentRev = rev;
+    this.fromGitRev = undefined;
+    this.fromGitWorkingDirectory = undefined;
   }
 
   setToContent(content: string) {
     const rev = this.addContent(content);
 
     this.toContentRev = rev;
+    this.fromGitRev = undefined;
+    this.fromGitWorkingDirectory = undefined;
   }
 
   async setFromGitInfo({ rev }) {
@@ -226,9 +250,8 @@ class Relation {
       this.fromAbsolutePath
     );
 
-    this.fromGitWorkingDirectory = this.getRelativePath(
-      absoluteGitWorkingDirectory
-    );
+    this.fromGitWorkingDirectory =
+      this.getRelativePath(absoluteGitWorkingDirectory) || undefined;
 
     this.fromGitRev = await this.parseRev(rev, absoluteGitWorkingDirectory);
 
@@ -240,9 +263,8 @@ class Relation {
       this.toAbsolutePath
     );
 
-    this.toGitWorkingDirectory = this.getRelativePath(
-      absoluteGitWorkingDirectory
-    );
+    this.toGitWorkingDirectory =
+      this.getRelativePath(absoluteGitWorkingDirectory) || undefined;
 
     this.toGitRev = await this.parseRev(rev, absoluteGitWorkingDirectory);
 
@@ -276,6 +298,97 @@ class Relation {
     }
 
     return rev;
+  }
+
+  toJSON(): IRawRelation {
+    const obj = {
+      id: this.id,
+      fromPath: this.fromPath,
+      toPath: this.toPath,
+      fromRange: this.fromRange,
+      toRange: this.toRange,
+      fromGitRev: this.fromGitRev,
+      toGitRev: this.toGitRev,
+      fromGitWorkingDirectory: this.fromGitWorkingDirectory,
+      toGitWorkingDirectory: this.toGitWorkingDirectory,
+      fromContentRev: this.fromContentRev,
+      toContentRev: this.toContentRev,
+    };
+
+    return obj;
+  }
+
+  async autoSetFromRev({ gitRev }: { gitRev?: string } = {}) {
+    const currentGitRev = gitRev || "@";
+    const gitContent = await this.getFromGitContent(currentGitRev);
+    const currentContent = this.fromCurrentContent;
+
+    const changes = ChangeServer.singleton().getFixedChanges(
+      gitContent,
+      currentContent
+    );
+
+    const dirty = checkDirty({
+      changes: changes,
+      range: this.fromRange,
+    });
+
+    if (dirty) {
+      this.setFromContent(currentContent);
+    } else {
+      await this.setFromGitInfo({ rev: currentGitRev });
+    }
+  }
+
+  async autoSetToRev({ gitRev }: { gitRev?: string } = {}) {
+    const currentGitRev = gitRev || "@";
+    const gitHeadContent = await this.getToGitContent(currentGitRev);
+    const currentContent = this.toCurrentContent;
+
+    const changes = ChangeServer.singleton().getFixedChanges(
+      gitHeadContent,
+      currentContent
+    );
+
+    const dirty = checkDirty({
+      changes: changes,
+      range: this.toRange,
+    });
+
+    if (dirty) {
+      this.setToContent(currentContent);
+    } else {
+      await this.setToGitInfo({ rev: currentGitRev });
+    }
+  }
+
+  async getViewerRelationAndContents(): Promise<
+    [IViewerRelation, IViewerContents]
+  > {
+    const originalFromViewerContent = await this.getFromOriginalContent();
+    const originalToViewerContent = await this.getToOriginalContent();
+    const originalFromViewerContentRev = sha1(originalFromViewerContent);
+    const originalToViewerContentRev = sha1(originalToViewerContent);
+
+    return [
+      {
+        id: this.id,
+        fromRange: this.fromRange,
+        toRange: this.toRange,
+        fromGitRev: this.fromGitRev,
+        toGitRev: this.toGitRev,
+        fromGitWorkingDirectory: this.fromGitWorkingDirectory,
+        toGitWorkingDirectory: this.toGitWorkingDirectory,
+        fromContentRev: this.fromContentRev,
+        toContentRev: this.toContentRev,
+        originalFromViewerContentRev,
+        originalToViewerContentRev,
+      },
+      {
+        [originalFromViewerContentRev]: originalFromViewerContent,
+        [originalToViewerContentRev]: originalToViewerContent,
+      },
+    ];
   }
 }
 

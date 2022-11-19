@@ -17,13 +17,6 @@ export interface IRawRelationBasic {
 
 export interface IRawRelation extends IRawRelationCommon, IRawRelationBasic {}
 
-export interface IRawRelationWithContentInfo extends IRawRelation {
-  _originalFromContentRev: string;
-  _originalToContentRev: string;
-  _modifiedFromContentRev: string;
-  _modifiedToContentRev: string;
-}
-
 export enum LineRelationTypeEnum {
   ADDED = "ADDED",
   REMOVED = "REMOVED",
@@ -41,27 +34,27 @@ export interface ILineRelation {
   type?: LineRelationTypeEnum;
 }
 
-export interface ICheckResultBasic {
-  dirty: boolean;
-  fromModifiedRange: [number, number];
-  toModifiedRange: [number, number];
-  fromOriginalRange: [number, number];
-  toOriginalRange: [number, number];
-}
-
-export interface ICheckResult
-  extends ICheckResultBasic,
-    IRawRelationWithContentInfo {}
-
-export interface IOptions extends Partial<IRawRelation> {
-  cwd?: string;
-}
-
-export interface IContents {
+export interface IViewerContents {
   [key: string]: string;
 }
 
-export interface IRelationsWithContents {
-  relationsWithContentInfo: IRawRelationWithContentInfo[];
-  contents: IContents;
+export interface IViewerRelation extends IRawRelationCommon {
+  id: string;
+  fromRange: [number, number];
+  toRange: [number, number];
+  originalFromViewerContentRev: string;
+  originalToViewerContentRev: string;
+}
+
+export interface IRelationViewerData {
+  fromPath: string;
+  toPath: string;
+  fromModifiedContent: string;
+  toModifiedContent: string;
+  viewerRelations: IViewerRelation[];
+  viewerContents: IViewerContents;
+}
+
+export interface IOptions extends Partial<IRawRelation> {
+  cwd?: string;
 }

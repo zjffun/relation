@@ -1,58 +1,40 @@
-import * as path from "node:path";
-import { simpleGit } from "simple-git";
-import getDirnameBasename from "../core/getDirnameBasename.js";
-import { relationId } from "../core/relationId.js";
+import Relation from "../core/Relation.js";
 import { getRelationRanges } from "./getRelationRanges.js";
 
-export async function createRelations(options: {
+export default async function(options: {
   workingDirectory: string;
-  fromRev: string;
-  fromPath: string;
-  toRev: string;
-  toPath: string;
+  fromAbsolutePath: string;
+  toAbsolutePath: string;
 }) {
-  const [fromDir, fromFile] = getDirnameBasename(options.fromPath);
-  const [toDir, toFile] = getDirnameBasename(options.toPath);
+  const baseRelation = new Relation({
+    workingDirectory: options.workingDirectory,
+  });
 
-  const fromSimpleGit = simpleGit(fromDir);
-  const toSimpleGit = simpleGit(toDir);
+  baseRelation.fromAbsolutePath = options.fromAbsolutePath;
+  baseRelation.toAbsolutePath = options.toAbsolutePath;
 
-  const fromContent = await fromSimpleGit.show([
-    `${options.fromRev}:./${fromFile}`,
-  ]);
-  const toContent = await toSimpleGit.show([`${options.toRev}:./${toFile}`]);
-
-  const parsedFromRev = (
-    await fromSimpleGit.raw("rev-parse", options.fromRev)
-  ).trim();
-  const parsedToRev = (
-    await toSimpleGit.raw("rev-parse", options.toRev)
-  ).trim();
-
-  const fromRootDir = await fromSimpleGit.revparse(["--show-toplevel"]);
-  const toRootDir = await toSimpleGit.revparse(["--show-toplevel"]);
-
-  const fromBaseDir = path.relative(options.workingDirectory, fromRootDir);
-  const toBaseDir = path.relative(options.workingDirectory, toRootDir);
-
-  const fromPath = path.relative(fromRootDir, options.fromPath);
-  const toPath = path.relative(toRootDir, options.toPath);
+  const fromContent = baseRelation.fromCurrentContent;
+  const toContent = baseRelation.toCurrentContent;
 
   const relationRanges = await getRelationRanges(fromContent, toContent);
 
-  const relations = relationRanges.map(({ fromRange, toRange }) => {
-    return {
-      id: relationId(),
-      fromRev: parsedFromRev,
-      fromPath,
-      fromBaseDir,
-      fromRange,
-      toRev: parsedToRev,
-      toPath,
-      toBaseDir,
-      toRange,
-    };
-  });
+  const relations: Relation[] = [];
+
+  for (const relationRange of relationRanges) {
+    const relation = new Relation({
+      workingDirectory: options.workingDirectory,
+      fromPath: baseRelation.fromPath,
+      toPath: baseRelation.toPath,
+      fromRange: relationRange.fromRange,
+      toRange: relationRange.toRange,
+    });
+
+    await relation.autoSetFromRev();
+
+    await relation.autoSetToRev();
+
+    relations.push(relation);
+  }
 
   return relations;
 }

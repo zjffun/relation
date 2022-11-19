@@ -7,20 +7,19 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { IContents, IRawRelationWithContentInfo } from '../bundled';
+import { IRelationViewerData } from '../bundled';
 import getRelation from '../getRelation';
 import MonacoDiffEditorRelation, {
   IMonacoDiffEditorRelationRef,
 } from '../MonacoDiffEditorRelation';
 import { IRelation } from '../types';
 import getRelationsWithModifiedRange from './getRelationsWithModifiedRange';
-import getRelationsWithOriginalContent, {
+import getRelationsWithOriginalContents, {
   IRelationWithOriginalContentInfo,
-} from './getRelationsWithOriginalContent';
+} from './getRelationsWithOriginalContents';
 
 export interface RelationEditorProps {
-  contents: IContents;
-  relationsWithContentInfo: IRawRelationWithContentInfo[];
+  relationViewerData: IRelationViewerData;
   currentId?: string;
   options?: FC<any>;
   onFromSave?: (editor: monaco.editor.ICodeEditor) => void;
@@ -32,17 +31,18 @@ export interface IRelationEditorRef extends IMonacoDiffEditorRelationRef {
 }
 
 const RelationEditor = forwardRef<IRelationEditorRef, RelationEditorProps>(
-  (
-    {
-      contents,
-      relationsWithContentInfo,
-      currentId,
-      options,
-      onFromSave,
-      onToSave,
-    },
-    ref
-  ) => {
+  ({ relationViewerData, currentId, options, onFromSave, onToSave }, ref) => {
+    if (!relationViewerData) {
+      return null;
+    }
+
+    const {
+      viewerContents,
+      viewerRelations,
+      fromModifiedContent,
+      toModifiedContent,
+    } = relationViewerData;
+
     const diffEditorRef = useRef<IMonacoDiffEditorRelationRef>(null);
     const [fromOriginal, setFromOriginal] = useState('');
     const [toOriginal, setToOriginal] = useState('');
@@ -51,18 +51,6 @@ const RelationEditor = forwardRef<IRelationEditorRef, RelationEditorProps>(
       relationsWithOriginalContent,
       setRelationsWithOriginalContent,
     ] = useState<IRelationWithOriginalContentInfo[]>([]);
-
-    let fromModifiedContent = '';
-    let toModifiedContent = '';
-
-    try {
-      fromModifiedContent =
-        contents[relationsWithContentInfo[0]._modifiedFromContentRev] || '';
-      toModifiedContent =
-        contents[relationsWithContentInfo[0]._modifiedToContentRev] || '';
-    } catch (error) {
-      console.error(error);
-    }
 
     useImperativeHandle(
       ref,
@@ -75,17 +63,18 @@ const RelationEditor = forwardRef<IRelationEditorRef, RelationEditorProps>(
 
     useEffect(() => {
       (async () => {
-        const relationsWithModifiedRange = await getRelationsWithModifiedRange({
-          relationsWithContentInfo,
-          contents,
-        });
+        const relationsWithModifiedRange = await getRelationsWithModifiedRange(
+          relationViewerData
+        );
 
         const [
           relationsWithOriginalContent,
           contentsAndOriginalContents,
-        ] = getRelationsWithOriginalContent({
+        ] = getRelationsWithOriginalContents({
           relationsWithModifiedRange,
-          contents,
+          viewerContents,
+          fromModifiedContent,
+          toModifiedContent,
         });
 
         setFromOriginal(contentsAndOriginalContents.fromOriginalContentRev);
@@ -97,7 +86,7 @@ const RelationEditor = forwardRef<IRelationEditorRef, RelationEditorProps>(
 
         setRelations(relations);
       })();
-    }, [contents, relationsWithContentInfo]);
+    }, [viewerContents, viewerRelations]);
 
     return (
       <MonacoDiffEditorRelation

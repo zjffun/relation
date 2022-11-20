@@ -11,7 +11,6 @@ const config: Configuration | any = {
     bundle: "./src/index.tsx",
     form: "./src/form.tsx",
     relationPreviewView: "./src/relationPreviewView.tsx",
-    relationDetailView: "./src/relationDetailView.tsx",
   },
   module: {
     rules: [
@@ -64,21 +63,6 @@ const config: Configuration | any = {
         </html>
       `,
       chunks: ["relationPreviewView"],
-    }),
-    // check-result relationDetailView
-    new HtmlWebpackPlugin({
-      filename: "relation-detail-view.html",
-      templateContent: `
-        <html>
-          <body>
-            <div id="root"></div>
-            <script>
-              window.relationLoadData = true;
-            </script>
-          </body>
-        </html>
-      `,
-      chunks: ["relationDetailView"],
     }),
     // form
     new HtmlWebpackPlugin({

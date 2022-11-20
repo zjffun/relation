@@ -1,4 +1,5 @@
 import Relation from "../core/Relation.js";
+import { relationId } from "../core/relationId.js";
 import { getRelationRanges } from "./getRelationRanges.js";
 
 export default async function(options: {
@@ -22,6 +23,7 @@ export default async function(options: {
 
   for (const relationRange of relationRanges) {
     const relation = new Relation({
+      id: relationId(),
       workingDirectory: options.workingDirectory,
       fromPath: baseRelation.fromPath,
       toPath: baseRelation.toPath,

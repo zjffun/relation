@@ -37,12 +37,12 @@ export interface ICommonRef {
 
 const options = [
   {
-    label: 'HEAD',
-    rev: 'HEAD',
-  },
-  {
     label: 'Current content',
     rev: '',
+  },
+  {
+    label: 'HEAD',
+    rev: 'HEAD',
   },
 ];
 

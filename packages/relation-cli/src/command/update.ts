@@ -23,14 +23,18 @@ export default function(program: Command) {
   program
     .command("update")
     .option("--id <string>")
-    .option("--srcRev <string>", "source reversion", "HEAD")
-    .option("--rev <string>", "reversion", "HEAD")
-    .option("--srcPath <string>", "", "")
-    .option("--path <string>", "", "")
-    .option("--srcRange <string>", "startLine,endLine", getRange)
-    .option("--range <string>", "startLine,endLine", getRange)
+    .option("--fromPath <string>", "", "")
+    .option("--toPath <string>", "", "")
+    .option("--fromRange <string>", "startLine,endLine", getRange)
+    .option("--toRange <string>", "startLine,endLine", getRange)
     .action((opts) => {
       const relationServer = new RelationServer();
-      relationServer.updateById(opts.id, opts);
+      relationServer.updateById(opts.id, (relation) => {
+        relation.fromPath = opts.fromPath;
+        relation.toPath = opts.toPath;
+        relation.fromRange = opts.fromRange;
+        relation.toRange = opts.toRange;
+        return relation;
+      });
     });
 }

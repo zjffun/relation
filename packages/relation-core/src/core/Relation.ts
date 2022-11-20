@@ -19,8 +19,8 @@ export enum RelationRevType {
 
 class Relation {
   public id = undefined;
-  public fromRange = undefined;
-  public toRange = undefined;
+  public fromRange: [number, number] = undefined;
+  public toRange: [number, number] = undefined;
   public fromPath = undefined;
   public toPath = undefined;
   public fromContentRev = undefined;
@@ -241,8 +241,8 @@ class Relation {
     const rev = this.addContent(content);
 
     this.toContentRev = rev;
-    this.fromGitRev = undefined;
-    this.fromGitWorkingDirectory = undefined;
+    this.toGitRev = undefined;
+    this.toGitWorkingDirectory = undefined;
   }
 
   async setFromGitInfo({ rev }) {

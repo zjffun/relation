@@ -140,9 +140,10 @@ describe("RelationServer", () => {
 
       const id = "9c0tjeuc6e";
 
-      await relationServer.updateById(id, {
-        fromRange: [5, 5],
-        toRange: [6, 6],
+      await relationServer.updateById(id, (relation) => {
+        relation.fromRange = [5, 5];
+        relation.toRange = [6, 6];
+        return relation;
       });
 
       const relations = relationServer.filter((relation) => {

@@ -1,19 +1,9 @@
 import { Command } from "commander";
-import fse from "fs-extra";
-import { getInfo } from "relation2-core";
+import { RelationServer } from "relation2-core";
 
-const { readFileSync, writeFileSync, ensureFileSync } = fse;
-
-export default function (program: Command) {
+export default function(program: Command) {
   program.command("init").action((options) => {
-    const { relationFilePath } = getInfo(options);
-
-    ensureFileSync(relationFilePath);
-
-    const relationBuffer = readFileSync(relationFilePath);
-
-    if (!relationBuffer.toString()) {
-      writeFileSync(relationFilePath, "[]");
-    }
+    const relationServer = new RelationServer();
+    relationServer.init();
   });
 }

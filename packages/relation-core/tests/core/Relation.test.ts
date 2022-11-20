@@ -9,6 +9,7 @@ import {
   minimumToPath,
   relationTestRepoPath,
   resetTestRepo,
+  writeTestFile,
 } from "../common.js";
 
 describe("Relation", () => {
@@ -228,6 +229,22 @@ describe("Relation", () => {
 
       expect(relation.fromGitRev).to.be.a("string");
     });
+
+    it("content mode should work", async () => {
+      writeTestFile(minimumFromPath, "a\nb\nc\n");
+
+      const relation = new Relation({
+        workingDirectory: relationTestRepoPath,
+        fromPath: minimumFromPath,
+        toPath: minimumToPath,
+        fromRange: [1, 2],
+      });
+
+      await relation.autoSetFromRev();
+
+      expect(relation.fromGitRev).to.be.undefined;
+      expect(relation.fromContentRev).to.be.a("string");
+    });
   });
 
   describe("autoSetToRev", () => {
@@ -242,6 +259,22 @@ describe("Relation", () => {
       await relation.autoSetToRev();
 
       expect(relation.toGitRev).to.be.a("string");
+    });
+
+    it("content mode should work", async () => {
+      writeTestFile(minimumToPath, "a\nb\nc\n");
+
+      const relation = new Relation({
+        workingDirectory: relationTestRepoPath,
+        fromPath: minimumFromPath,
+        toPath: minimumToPath,
+        toRange: [1, 2],
+      });
+
+      await relation.autoSetToRev();
+
+      expect(relation.toGitRev).to.be.undefined;
+      expect(relation.toContentRev).to.be.a("string");
     });
   });
 

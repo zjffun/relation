@@ -115,16 +115,22 @@ export default class {
     return relations;
   }
 
-  updateById(id, info: Partial<IRawRelation>) {
+  async updateById(
+    id,
+    update: (relation: Relation) => Promise<Relation> | Relation
+  ) {
     const relations = this.read();
+    const newRelations = [];
 
-    relations.forEach((relation) => {
+    for (const relation of relations) {
       if (relation.id === id) {
-        Object.assign(relation, info);
+        newRelations.push(await update(relation));
+        continue;
       }
-    });
+      newRelations.push(relation);
+    }
 
-    this.write(relations);
+    this.write(newRelations);
   }
 
   async getRelationViewerData({ fromPath, toPath }) {

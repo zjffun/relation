@@ -13,21 +13,21 @@ import './index.scss';
 
 export interface UpdateRelationOption {
   label: string;
-  rev: string;
+  value: string;
   content: string;
   range?: [number, number];
 }
 
 export interface UpdateRelationProps {
-  fromRev: string;
+  fromOptionValue: string;
   fromRange: [number, number];
-  toRev: string;
+  toOptionValue: string;
   toRange: [number, number];
   fromOptions: UpdateRelationOption[];
   toOptions: UpdateRelationOption[];
-  onFromRevChange?: (rev: string) => void;
+  onFromOptionValueChange?: (rev: string) => void;
   onFromRangeChange?: (range: [number, number]) => void;
-  onToRevChange?: (rev: string) => void;
+  onToOptionValueChange?: (rev: string) => void;
   onToRangeChange?: (editor: [number, number]) => void;
 }
 
@@ -38,15 +38,15 @@ export interface UpdateRelationRef {
 const UpdateRelation = forwardRef<UpdateRelationRef, UpdateRelationProps>(
   (
     {
-      fromRev,
+      fromOptionValue,
       fromRange,
-      toRev,
+      toOptionValue,
       toRange,
       fromOptions,
       toOptions,
-      onFromRevChange,
+      onFromOptionValueChange,
       onFromRangeChange,
-      onToRevChange,
+      onToOptionValueChange,
       onToRangeChange,
     },
     ref
@@ -80,15 +80,15 @@ const UpdateRelation = forwardRef<UpdateRelationRef, UpdateRelationProps>(
 
     useEffect(() => {
       fromEditorRef.current?.setValue(
-        fromOptions.find(o => o.rev === fromRev)?.content || ''
+        fromOptions.find(o => o.value === fromOptionValue)?.content || ''
       );
-    }, [fromRev]);
+    }, [fromOptionValue]);
 
     useEffect(() => {
       toEditorRef.current?.setValue(
-        toOptions.find(o => o.rev === toRev)?.content || ''
+        toOptions.find(o => o.value === toOptionValue)?.content || ''
       );
-    }, [toRev]);
+    }, [toOptionValue]);
 
     useEffect(() => {
       if (!relationSvgElRef.current) return;
@@ -135,20 +135,20 @@ const UpdateRelation = forwardRef<UpdateRelationRef, UpdateRelationProps>(
         <div className="UpdateRelation__FormContainer">
           <div className="UpdateRelation__Form">
             <div className="UpdateRelation__Form__Item">
-              Revision:
+              Content:
               <ul className="UpdateRelation__Options">
                 {fromOptions.map(option => {
                   return (
-                    <li key={option.rev}>
+                    <li key={option.value}>
                       <label>
                         <input
                           type="radio"
                           onChange={() => {
-                            onFromRevChange?.(option.rev);
+                            onFromOptionValueChange?.(option.value);
                           }}
-                          name="fromRev"
-                          value={option.rev}
-                          checked={fromRev === option.rev}
+                          name="fromOptionValue"
+                          value={option.value}
+                          checked={fromOptionValue === option.value}
                         />
                         {option.label}
                       </label>
@@ -178,20 +178,20 @@ const UpdateRelation = forwardRef<UpdateRelationRef, UpdateRelationProps>(
           </div>
           <div className="UpdateRelation__Form">
             <div className="UpdateRelation__Form__Item">
-              Revision:
+              Content:
               <ul className="UpdateRelation__Options">
                 {toOptions.map(option => {
                   return (
-                    <li key={option.rev}>
+                    <li key={option.value}>
                       <label>
                         <input
                           type="radio"
                           onChange={() => {
-                            onToRevChange?.(option.rev);
+                            onToOptionValueChange?.(option.value);
                           }}
-                          name="toRev"
-                          value={option.rev}
-                          checked={toRev === option.rev}
+                          name="toOptionValue"
+                          value={option.value}
+                          checked={toOptionValue === option.value}
                         />
                         {option.label}
                       </label>

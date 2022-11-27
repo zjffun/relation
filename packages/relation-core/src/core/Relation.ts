@@ -151,6 +151,7 @@ class Relation {
       rev,
       absoluteGitWorkingDirectory,
       relativeGitPath: path.relative(absoluteGitWorkingDirectory, absolutePath),
+      safe: true,
     });
 
     return content;
@@ -165,6 +166,7 @@ class Relation {
       rev,
       absoluteGitWorkingDirectory,
       relativeGitPath: path.relative(absoluteGitWorkingDirectory, absolutePath),
+      safe: true,
     });
 
     return content;
@@ -176,13 +178,14 @@ class Relation {
         rev: this.fromGitRev,
         absoluteGitWorkingDirectory: this.fromAbsoluteGitWorkingDirectory,
         relativeGitPath: this.fromRelativeGitPath,
+        safe: true,
       });
 
       return content;
     }
 
     if (this.fromRevType === RelationRevType.content) {
-      const content = this.getContent(this.fromContentRev);
+      const content = this.getContentSafe(this.fromContentRev);
       return content;
     }
   }
@@ -193,29 +196,64 @@ class Relation {
         rev: this.toGitRev,
         absoluteGitWorkingDirectory: this.toAbsoluteGitWorkingDirectory,
         relativeGitPath: this.toRelativeGitPath,
+        safe: true,
       });
 
       return content;
     }
 
     if (this.toRevType === RelationRevType.content) {
-      const content = this.getContent(this.toContentRev);
+      const content = this.getContentSafe(this.toContentRev);
       return content;
     }
   }
 
   getContent(contentRev: string) {
     const content = fse
-      .readFileSync(path.join(this.workingDirectory, "contents", contentRev))
+      .readFileSync(
+        path.join(this.workingDirectory, ".relation", "contents", contentRev)
+      )
       .toString();
 
     return content;
   }
 
-  async getGitContent({ absoluteGitWorkingDirectory, rev, relativeGitPath }) {
-    const simpleGitInstance = simpleGit(absoluteGitWorkingDirectory);
+  getContentSafe(contentRev: string) {
+    let content = "";
 
-    const content = await simpleGitInstance.show([`${rev}:${relativeGitPath}`]);
+    try {
+      content = this.getContent(contentRev);
+    } catch (error) {
+      console.error(error);
+    }
+
+    return content;
+  }
+
+  async getGitContent({
+    absoluteGitWorkingDirectory,
+    rev,
+    relativeGitPath,
+    safe,
+  }: {
+    absoluteGitWorkingDirectory: string;
+    rev: string;
+    relativeGitPath: string;
+    safe?: boolean;
+  }) {
+    let content = "";
+
+    try {
+      const simpleGitInstance = simpleGit(absoluteGitWorkingDirectory);
+      content = await simpleGitInstance.show([`${rev}:${relativeGitPath}`]);
+    } catch (error) {
+      if (!safe) {
+        throw error;
+      }
+
+      console.error(error);
+    }
+
     return content;
   }
 
@@ -290,7 +328,12 @@ class Relation {
   addContent(content: string) {
     const rev = sha1(content);
 
-    const filePath = path.join(this.workingDirectory, "contents", rev);
+    const filePath = path.join(
+      this.workingDirectory,
+      ".relation",
+      "contents",
+      rev
+    );
 
     if (!fse.existsSync(filePath)) {
       fse.ensureFileSync(filePath);

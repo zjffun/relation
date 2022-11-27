@@ -28,31 +28,26 @@ export default class {
   }
 
   checkIsInit() {
-    if (!fse.existsSync(this.relationFilePath)) {
-      return false;
-    }
-
-    try {
-      const relations = this.read();
-      if (Array.isArray(relations)) {
-        return true;
-      }
-    } catch {
-      // do nothing
+    if (fse.existsSync(this.relationFilePath)) {
+      return true;
     }
 
     return false;
   }
 
   init() {
-    if (!this.checkIsInit()) {
-      fse.ensureFileSync(this.relationFilePath);
-      fse.writeFileSync(this.relationFilePath, "[]");
+    if (this.checkIsInit()) {
       return true;
     }
+
+    fse.ensureFileSync(this.relationFilePath);
+    fse.writeFileSync(this.relationFilePath, "[]");
+    return true;
   }
 
   read() {
+    this.init();
+
     const relationBuffer = fse.readFileSync(this.relationFilePath);
     const rawRelations: IRawRelation[] = JSON.parse(relationBuffer.toString());
 

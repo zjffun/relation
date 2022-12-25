@@ -19,10 +19,15 @@ export default function(program: Command) {
     .action(async (opts) => {
       const relationServer = new RelationServer();
 
-      const relationViewerData = await relationServer.getRelationViewerData({
-        fromPath: opts.from,
-        toPath: opts.to,
-      });
+      const relations = this.filter(
+        (relation) =>
+          relation.fromAbsolutePath === relation.getAbsolutePath(opts.from) &&
+          relation.toAbsolutePath === relation.getAbsolutePath(opts.to)
+      );
+
+      const relationViewerData = await relationServer.getRelationViewerData(
+        relations
+      );
 
       if (opts.output === "html") {
         await outputHtml(relationViewerData);

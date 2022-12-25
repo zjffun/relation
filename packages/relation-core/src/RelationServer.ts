@@ -128,14 +128,8 @@ export default class {
     this.write(newRelations);
   }
 
-  async getRelationViewerData({ fromPath, toPath }) {
-    const relations = this.filter(
-      (relation) =>
-        relation.fromAbsolutePath === relation.getAbsolutePath(fromPath) &&
-        relation.toAbsolutePath === relation.getAbsolutePath(toPath)
-    );
-
-    if (!relations.length) {
+  async getRelationViewerData(relations?: Relation[]) {
+    if (!Array.isArray(relations)) {
       return;
     }
 
@@ -156,8 +150,8 @@ export default class {
     }
 
     const relationViewerData: IRelationViewerData = {
-      fromPath,
-      toPath,
+      fromPath: relations[0].fromPath,
+      toPath: relations[0].toPath,
       fromModifiedContent,
       toModifiedContent,
       viewerRelations: viewerRelations,

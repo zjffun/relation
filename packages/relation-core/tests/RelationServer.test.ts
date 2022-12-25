@@ -166,10 +166,16 @@ describe("RelationServer", () => {
     it("should work", async () => {
       const relationServer = new RelationServer(relationTestRepoPath);
 
-      const relationViewerData = await relationServer.getRelationViewerData({
-        fromPath: markdownFromPath,
-        toPath: markdownToPath,
-      });
+      const relations = relationServer.filter(
+        (relation) =>
+          relation.fromAbsolutePath ===
+            relation.getAbsolutePath(markdownFromPath) &&
+          relation.toAbsolutePath === relation.getAbsolutePath(markdownToPath)
+      );
+
+      const relationViewerData = await relationServer.getRelationViewerData(
+        relations
+      );
 
       expect(relationViewerData?.fromPath).to.be.eq(markdownFromPath);
       expect(relationViewerData?.toPath).to.be.eq(markdownToPath);

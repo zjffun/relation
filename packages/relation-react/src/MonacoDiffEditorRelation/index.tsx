@@ -69,12 +69,22 @@ const MonacoDiffEditorRelation = forwardRef<
     );
 
     useEffect(() => {
-      diffEditorRef.current[0] = createDiffEditor(fromDiffEditorElRef.current, {
-        saveHandler: onFromSave,
-      });
-      diffEditorRef.current[1] = createDiffEditor(toDiffEditorElRef.current, {
-        saveHandler: onToSave,
-      });
+      // Will created double in `<React.StrictMode>`, if not check.
+      if (!diffEditorRef.current[0]) {
+        diffEditorRef.current[0] = createDiffEditor(
+          fromDiffEditorElRef.current,
+          {
+            saveHandler: onFromSave,
+          }
+        );
+      }
+
+      // Will created double in `<React.StrictMode>`, if not check.
+      if (!diffEditorRef.current[1]) {
+        diffEditorRef.current[1] = createDiffEditor(toDiffEditorElRef.current, {
+          saveHandler: onToSave,
+        });
+      }
 
       if (
         !relationSvgElRef.current ||

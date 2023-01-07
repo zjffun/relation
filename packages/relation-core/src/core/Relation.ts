@@ -313,8 +313,11 @@ class Relation {
     const [dirname] = getDirnameBasename(filePath);
     const git = simpleGit(dirname);
     const rootDir = await git.revparse(["--show-toplevel"]);
+    const realDirname = await fse.realpath(dirname);
+    const relative = path.relative(realDirname, rootDir);
+    const absoluteGitWorkingDirectory = path.join(dirname, relative);
 
-    return rootDir;
+    return absoluteGitWorkingDirectory;
   }
 
   async parseRev(rev: string, absoluteGitWorkingDirectory: string) {

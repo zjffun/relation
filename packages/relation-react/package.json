@@ -91,5 +91,10 @@
       "path": "dist/relation2-react.esm.js",
       "limit": "10 KB"
     }
-  ]
+  ],
+  "jest": {
+    "testPathIgnorePatterns": [
+      "karma-tests"
+    ]
+  }
 }

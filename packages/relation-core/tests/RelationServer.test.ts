@@ -124,8 +124,8 @@ describe("RelationServer", () => {
 
       expect(relations[0]).to.deep.own.include({
         id: id,
-        fromPath: "./markdown/README.md",
-        toPath: "./markdown/README.zh-CN.md",
+        fromPath: "markdown/README.md",
+        toPath: "markdown/README.zh-CN.md",
         fromRange: [1, 4],
         toRange: [1, 4],
         fromGitRev: "768b50b1c1d8da264596bc5c06dd1563ebd59dc3",
@@ -152,8 +152,8 @@ describe("RelationServer", () => {
 
       expect(relations[0]).to.deep.own.include({
         id: id,
-        fromPath: "./markdown/README.md",
-        toPath: "./markdown/README.zh-CN.md",
+        fromPath: "markdown/README.md",
+        toPath: "markdown/README.zh-CN.md",
         fromRange: [5, 5],
         toRange: [6, 6],
         fromGitRev: "768b50b1c1d8da264596bc5c06dd1563ebd59dc3",

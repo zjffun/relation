@@ -2,7 +2,7 @@ name: npm publish
 on:
   push:
     branches:
-      - "releases/**"
+      - "dev-temp"
   # `created` and `published` not work in GitHub browser UI
   # See: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
   # release:
@@ -19,8 +19,8 @@ jobs:
         with:
           node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
-      - run: cd test-repo && git fetch --all
-      - run: yarn install
-      - run: yarn run publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: cd test-repo && git fetch --all && git log --stat 768b50b1c1d8da264596bc5c06dd1563ebd59dc3 
+      # - run: yarn install
+      # - run: yarn run publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

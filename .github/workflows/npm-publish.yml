@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
-      - run: cd test-repo && git fetch --all && git log --stat
+      - run: cd test-repo && git fetch --unshallow && git log --stat
       # - run: yarn install
       # - run: yarn run publish
       #   env:

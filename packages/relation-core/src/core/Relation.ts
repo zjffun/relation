@@ -142,6 +142,23 @@ class Relation {
     return content;
   }
 
+  async getFromDirty() {
+    const originalContent = await this.getFromOriginalContent();
+    const currentContent = this.fromCurrentContent;
+
+    const changes = ChangeServer.singleton().getFixedChanges(
+      originalContent,
+      currentContent
+    );
+
+    const dirty = checkDirty({
+      changes: changes,
+      range: this.fromRange,
+    });
+
+    return dirty;
+  }
+
   async getFromGitContent(rev: string) {
     const absolutePath = this.fromAbsolutePath;
     const absoluteGitWorkingDirectory = await this.getAbsoluteGitWorkingDirectory(

@@ -2,7 +2,10 @@
   "name": "relation2-core",
   "version": "0.0.23",
   "type": "module",
-  "exports": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./dist/*": "./dist/*"
+  },
   "repository": "git@github.com:zjffun/relation.git",
   "author": "Jufeng Zhang <zjffun@gmail.com>",
   "license": "MIT",

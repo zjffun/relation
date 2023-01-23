@@ -40,6 +40,7 @@
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "^6.5.10",
     "@storybook/testing-library": "^0.0.13",
+    "@types/d3": "^7.4.0",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
     "babel-loader": "^8.2.5",
@@ -96,5 +97,8 @@
     "testPathIgnorePatterns": [
       "karma-tests"
     ]
+  },
+  "dependencies": {
+    "d3": "^7.8.2"
   }
 }

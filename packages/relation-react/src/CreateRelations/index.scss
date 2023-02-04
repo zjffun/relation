@@ -54,6 +54,7 @@
 
     .relation-link__options {
       pointer-events: initial;
+      display: var(--relation-link__options-display, block);
       .relation-options {
         padding: 0;
         margin: 0;

@@ -2,7 +2,7 @@
 
 :root {
   --block-operation-display: block;
-  --flex-operation-display: flex;
+  --relation-link__options-display: block;
 }
 
 .MonacoDiffEditorRelation {
@@ -37,12 +37,12 @@
     .relation-link {
       &__options {
         pointer-events: all;
+        display: var(--relation-link__options-display, block);
       }
     }
 
     .relation-options {
       display: flex;
-      display: var(--flex-operation-display);
 
       margin: 0;
       width: 100%;

@@ -1,11 +1,11 @@
 import { select, selection } from 'd3-selection';
 import { linkHorizontal } from 'd3-shape';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { createElement, FC } from 'react';
+import { createRoot } from 'react-dom/client';
 import { IRelation, IScrollTopMap } from '../types';
 import getLeftMiddleRightScrollTopMaps from './getLeftMiddleRightScrollTopMaps';
 import getLinks from './getLinks';
-import { createElement, FC } from 'react';
-import { createRoot } from 'react-dom/client';
 
 (selection.prototype as any).rc = function(reactComponent: any) {
   if (!reactComponent) {
@@ -97,11 +97,13 @@ export default class {
       return;
     }
     const fromLine = relation.fromRange[0];
-    const leftTop = this.fromOriginalEditor.getTopForLineNumber(fromLine);
 
+    const leftTop = this.fromOriginalEditor.getTopForLineNumber(fromLine);
     this.fromOriginalEditor.setScrollTop(leftTop);
+
     const middleTop = this.getMiddleTopFromLeftTop(leftTop);
     this.middleTop = middleTop;
+
     const rightTop = this.getRightTopFromMiddleTop(middleTop);
     this.toOriginalEditor.setScrollTop(rightTop);
   }

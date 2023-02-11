@@ -92,6 +92,20 @@ export default async function({
 
     const changes = fromDiffEditor?.getLineChanges() || [];
     for (const change of changes) {
+      // add
+      if (change.originalEndLineNumber === 0) {
+        if (
+          change.originalStartLineNumber >= viewerRelation.fromRange[0] &&
+          change.originalStartLineNumber < viewerRelation.fromRange[1]
+        ) {
+          dirty = true;
+          break;
+        }
+
+        continue;
+      }
+
+      // delete or modify
       if (
         !(
           change.originalEndLineNumber < viewerRelation.fromRange[0] ||

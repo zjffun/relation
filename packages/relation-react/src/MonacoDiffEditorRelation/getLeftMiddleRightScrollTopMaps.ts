@@ -61,7 +61,7 @@ const getGapLeftMiddleRightScrollTopMap = ({
       lastMiddleTopStart +
       Math.max(
         fromLineTopStart - lastFromLineTopStart,
-        toLineTopStart - lastFromLineTopStart
+        toLineTopStart - lastToLineTopStart
       );
     return [
       [lastFromLineTopStart, fromLineTopStart],

@@ -22,6 +22,7 @@ export default ({
   const {
     width: fromEditorWidth,
     left: fromEditorLeft,
+    height: fromEditorHeight,
   } = currentFromContainerDomNode!.getBoundingClientRect();
   const fromLeft = 0;
   const fromRight = fromEditorWidth;
@@ -30,6 +31,7 @@ export default ({
   const {
     width: toEditorWidth,
     left: toEditorLeft,
+    height: toEditorHeight,
   } = currentToContainerDomNode!.getBoundingClientRect();
   const toLeft = toEditorLeft - fromEditorLeft;
   const toRight = toLeft + toEditorWidth;
@@ -56,6 +58,17 @@ export default ({
     }
     const toLine1TopSubScrollTop = toLineTopStart - toScrollTop;
     const toLine2TopSubScrollTop = toLineTopEnd - toScrollTop;
+
+    // ignore relations out of view
+    if (fromLine2TopSubScrollTop < 0 && toLine2TopSubScrollTop < 0) {
+      return;
+    }
+    if (
+      fromLine1TopSubScrollTop > fromEditorHeight &&
+      toLine1TopSubScrollTop > toEditorHeight
+    ) {
+      return;
+    }
 
     links.push({
       source: [

@@ -46,7 +46,7 @@ describe('RelationEditor', () => {
       expect(relations[0].toOriginalRange).toEqual([1, 3]);
     });
 
-    fit('order should correct', async () => {
+    it('order should correct', async () => {
       const viewerContents = {
         originalFromViewerContentRev: 'test1\ntest2\ntest3\ntest4\n',
         _modifiedFromContentRev: 'test1\ntest2\ntest3\ntest4\n',

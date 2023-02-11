@@ -23,6 +23,7 @@ describe('RelationEditor', () => {
 
       expect(relationsWithModifiedRange[0].fromModifiedRange).toEqual([1, 3]);
       expect(relationsWithModifiedRange[0].toModifiedRange).toEqual([1, 2]);
+      expect(relationsWithModifiedRange[0].dirty).toEqual(true);
     });
   });
 });

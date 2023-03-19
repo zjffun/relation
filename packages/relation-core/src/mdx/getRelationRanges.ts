@@ -3,7 +3,15 @@ import remarkParse from "remark-parse";
 import { unified } from "unified";
 import { getBlocks } from "./getBlocks.js";
 
-export async function getRelationRanges(fromContent, toContent) {
+export async function getRelationRanges(
+  fromContent,
+  toContent
+): Promise<
+  {
+    fromRange: [number, number];
+    toRange: [number, number];
+  }[]
+> {
   const fromAst = await unified()
     .use(remarkParse)
     .use(remarkFrontmatter)

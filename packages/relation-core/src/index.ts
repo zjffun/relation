@@ -4,6 +4,6 @@ export { default as Relation } from "./core/Relation.js";
 export * from "./core/relationId.js";
 export * from "./core/sha1.js";
 export * from "./mdx/createRelations.js";
-export * from "./mdx/getRelationRanges";
+export * from "./mdx/getRelationRanges.js";
 export { default as RelationServer } from "./RelationServer.js";
 export * from "./types.js";

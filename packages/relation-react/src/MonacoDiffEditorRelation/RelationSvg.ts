@@ -1,5 +1,6 @@
 import { select, selection } from 'd3-selection';
 import { linkHorizontal } from 'd3-shape';
+import { throttle } from 'lodash-es';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { createElement, FC } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -173,15 +174,12 @@ export default class {
       this.onDidChangeCursorSelection()
     );
 
-    this.fromModifiedEditor.onDidChangeModelContent(() =>
-      this.onDidChangeModelContent()
-    );
-    this.toModifiedEditor.onDidChangeModelContent(() =>
-      this.onDidChangeModelContent()
-    );
+    const throttledResize = throttle(() => this.resize(), 1000);
+    this.fromModifiedEditor.onDidChangeModelContent(throttledResize);
+    this.toModifiedEditor.onDidChangeModelContent(throttledResize);
   }
 
-  private onDidChangeModelContent() {
+  public resize() {
     this.leftMiddleRightScrollTopMaps = getLeftMiddleRightScrollTopMaps({
       fromEditor: this.fromOriginalEditor,
       toEditor: this.toOriginalEditor,

@@ -10,6 +10,7 @@ import { IRelation } from '../types';
 import createDiffEditor from './createDiffEditor';
 import RelationSvg from './RelationSvg';
 import setModelToDiffEditor from './setModelToDiffEditor';
+import { throttle } from 'lodash-es';
 
 import './index.scss';
 
@@ -67,6 +68,28 @@ const MonacoDiffEditorRelation = forwardRef<
       }),
       [diffEditorRef]
     );
+
+    useEffect(() => {
+      const resize = throttle(() => {
+        if (diffEditorRef.current[0]) {
+          diffEditorRef.current[0].layout();
+        }
+
+        if (diffEditorRef.current[1]) {
+          diffEditorRef.current[1].layout();
+        }
+
+        if (monacoRelationView.current) {
+          monacoRelationView.current.resize();
+        }
+      }, 500);
+
+      window.addEventListener('resize', resize);
+
+      return () => {
+        window.removeEventListener('resize', resize);
+      };
+    }, []);
 
     useEffect(() => {
       // Will created double in `<React.StrictMode>`, if not check.

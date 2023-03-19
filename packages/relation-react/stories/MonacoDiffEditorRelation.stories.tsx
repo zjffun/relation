@@ -24,7 +24,7 @@ const Template: Story<IMonacoDiffEditorRelationProps> = args => {
   const ref = useRef({});
 
   return (
-    <div style={{ height: '600px' }}>
+    <div style={{ height: 'calc(100vh - 100px)' }}>
       <MonacoDiffEditorRelation ref={ref} {...args} />
     </div>
   );

@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node_version }}
+      - run: cd test-repo && git fetch --unshallow
       - name: Install dependencies
         run: yarn install
       - name: Run tests

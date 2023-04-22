@@ -78,7 +78,12 @@ module.exports = function(config) {
       resolve: {
         extensions: ['.ts', '.tsx', '.js'],
       },
-      plugins: [new MonacoWebpackPlugin()],
+      plugins: [
+        new MonacoWebpackPlugin({
+          languages: ['markdown'],
+          features: ['contextmenu'],
+        }),
+      ],
     },
 
     // test results reporter to use

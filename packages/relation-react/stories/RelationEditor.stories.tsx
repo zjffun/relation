@@ -2,14 +2,7 @@ import { Meta, Story } from '@storybook/react';
 import React, { useRef } from 'react';
 import { RelationEditor } from '../src';
 import { RelationEditorProps } from '../src/RelationEditor';
-import {
-  fromPath,
-  fromBaseDir,
-  toPath,
-  toBaseDir,
-  checkResults,
-  fileContents,
-} from './RelationEditorData.json';
+import relationViewerData from './RelationEditorData.json';
 
 const meta: Meta = {
   title: 'RelationEditor',
@@ -43,12 +36,7 @@ const Template: Story<RelationEditorProps> = args => {
 export const Default = Template.bind({});
 
 Default.args = {
-  fromPath,
-  fromBaseDir,
-  toPath,
-  toBaseDir,
-  checkResults,
-  fileContents,
+  relationViewerData,
   options(data) {
     return <div onClick={() => console.log(data.id)}>test</div>;
   },

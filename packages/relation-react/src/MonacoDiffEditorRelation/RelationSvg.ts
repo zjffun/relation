@@ -1,6 +1,7 @@
 import { select, selection } from 'd3-selection';
 import { linkHorizontal } from 'd3-shape';
 import { throttle } from 'lodash-es';
+import { log } from 'loglevel';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { createElement, FC } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -231,6 +232,12 @@ export default class {
         return true;
       }
       return false;
+    });
+
+    log('RelationSvg.ts:onMouseWheel', {
+      'event.deltaY': event.deltaY,
+      'this.middleTop': this.middleTop,
+      current,
     });
 
     if (current) {

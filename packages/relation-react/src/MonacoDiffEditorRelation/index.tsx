@@ -117,17 +117,20 @@ const MonacoDiffEditorRelation = forwardRef<
         return;
       }
 
-      monacoRelationView.current = new RelationSvg(
-        diffEditorRef.current[0],
-        diffEditorRef.current[1],
-        relations,
-        relationSvgElRef.current,
-        {
-          fromContainerDomNode: diffEditorRef.current[0]!.getContainerDomNode(),
-          toContainerDomNode: diffEditorRef.current[1]!.getContainerDomNode(),
-          options,
-        }
-      );
+      // Will new RelationSvg double in `<React.StrictMode>`, if not check.
+      if (!monacoRelationView.current) {
+        monacoRelationView.current = new RelationSvg(
+          diffEditorRef.current[0],
+          diffEditorRef.current[1],
+          relations,
+          relationSvgElRef.current,
+          {
+            fromContainerDomNode: diffEditorRef.current[0]!.getContainerDomNode(),
+            toContainerDomNode: diffEditorRef.current[1]!.getContainerDomNode(),
+            options,
+          }
+        );
+      }
 
       if (currentId) {
         monacoRelationView.current.scrollToRelation(currentId);

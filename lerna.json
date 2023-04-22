@@ -6,7 +6,7 @@
   "npmClient": "yarn",
   "useNx": true,
   "useWorkspaces": true,
-  "version": "0.0.25",
+  "version": "0.0.26",
   "command": {
     "version": {
       "forcePublish": true,

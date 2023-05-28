@@ -1,17 +1,18 @@
-import remarkFrontmatter from "remark-frontmatter";
-import remarkParse from "remark-parse";
-import { unified } from "unified";
 import { getBlocks } from "./getBlocks.js";
 
+interface IRelation {
+  fromRange: [number, number];
+  toRange: [number, number];
+}
+
 export async function getRelationRanges(
-  fromContent,
-  toContent
-): Promise<
-  {
-    fromRange: [number, number];
-    toRange: [number, number];
-  }[]
-> {
+  fromContent: string,
+  toContent: string
+): Promise<IRelation[]> {
+  const { default: remarkFrontmatter } = await import("remark-frontmatter");
+  const { default: remarkParse } = await import("remark-parse");
+  const { unified } = await import("unified");
+
   const fromAst = await unified()
     .use(remarkParse)
     .use(remarkFrontmatter)
@@ -24,7 +25,7 @@ export async function getRelationRanges(
   const fromBlocks = getBlocks(fromAst);
   const toBlocks = getBlocks(toAst);
 
-  const relations = [];
+  const relations: IRelation[] = [];
 
   for (let i = 0; i < toBlocks.length; i++) {
     const fromBlock = fromBlocks[i];

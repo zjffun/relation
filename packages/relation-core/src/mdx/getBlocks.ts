@@ -9,7 +9,10 @@ export interface IBlock {
 
 export function getBlocks(ast: Root) {
   const children = ast.children;
-  const blocks = [];
+  const blocks: {
+    start: number;
+    end: number;
+  }[] = [];
 
   if (!children.length) {
     return blocks;
@@ -18,8 +21,14 @@ export function getBlocks(ast: Root) {
   let startLine;
 
   for (let i = 0; i < children.length - 1; i++) {
+    const child = children[i];
+
+    if (!child.position) {
+      continue;
+    }
+
     if (startLine === undefined) {
-      startLine = children[i].position.start.line;
+      startLine = child.position.start.line;
     }
 
     if (!blockType.includes(children[i + 1].type)) {
@@ -28,21 +37,23 @@ export function getBlocks(ast: Root) {
 
     blocks.push({
       start: startLine,
-      end: children[i].position.end.line,
+      end: child.position.end.line,
     });
     startLine = undefined;
   }
 
   const lastChild = children.at(-1);
 
-  if (startLine === undefined) {
-    startLine = lastChild.position.start.line;
-  }
+  if (lastChild?.position) {
+    if (startLine === undefined) {
+      startLine = lastChild.position.start.line;
+    }
 
-  blocks.push({
-    start: startLine,
-    end: lastChild.position.end.line,
-  });
+    blocks.push({
+      start: startLine,
+      end: lastChild.position.end.line,
+    });
+  }
 
   return blocks;
 }
